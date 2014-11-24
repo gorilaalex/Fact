@@ -1,0 +1,3210 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>DbNetLink.DbNetCopy</name>
+    </assembly>
+    <members>
+        <member name="M:DbNetLink.Encryption.#ctor">
+            <summary>
+            Constructor, allows the key and initialization vetor to be provided
+            </summary>
+        </member>
+        <member name="M:DbNetLink.Encryption.Decrypt(System.Byte[])">
+            <summary>
+            Decrypt bytes
+            </summary>
+            <param name="bytes"></param>
+            <returns>Decrypted data as bytes</returns>
+        </member>
+        <member name="M:DbNetLink.Encryption.Encrypt(System.Byte[])">
+            <summary>
+            Encrypt bytes
+            </summary>
+            <param name="bytes"></param>
+            <returns>Encrypted data as bytes</returns>
+        </member>
+        <member name="M:DbNetLink.Encryption.Decrypt(System.String)">
+            <summary>
+            Decrypt a string
+            </summary>
+            <param name="text"></param>
+            <returns>Decrypted data as string</returns>
+        </member>
+        <member name="M:DbNetLink.Encryption.Encrypt(System.String)">
+            <summary>
+            Encrypt a string
+            </summary>
+            <param name="text"></param>
+            <returns>Encrypted data as string</returns>
+        </member>
+        <member name="M:DbNetLink.Encryption.Transform(System.Byte[],System.Security.Cryptography.ICryptoTransform)">
+            <summary>
+            Encrypt or Decrypt bytes.
+            </summary>
+            <remarks>
+            This is used by the public methods
+            </remarks>
+            <param name="input">Data to be encrypted/decrypted</param>
+            <param name="cryptoTransform">
+            <example>des.CreateEncryptor(this.keyValue, this.iVValue)</example>
+            </param>
+            <returns>Byte data containing result of opperation</returns>
+        </member>
+        <member name="P:DbNetLink.Encryption.Key">
+            <summary>
+            Key to use during encryption and decryption
+            </summary>
+            <remarks>
+            <example>
+            byte[] key = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24 };
+            </example>
+            </remarks>
+        </member>
+        <member name="P:DbNetLink.Encryption.iV">
+            <summary>
+            Initialization vetor to use during encryption and decryption
+            </summary>
+            <remarks>
+            <example>
+            byte[] iv = { 8, 7, 6, 5, 4, 3, 2, 1 };
+            </example>
+            </remarks>
+        </member>
+        <member name="T:DbNetLink.CopyOptions">
+            <summary> 
+            The CopyOptions enum is assigned to the <see cref="F:DbNetLink.DbNetCopy.CopyOption">CopyOption</see> property. The CopyOption 
+            dictates the way data is move from the source to the target database. 
+            </summary>
+            <remarks> 
+            For the MergeRows, InsertRows and UpdateRows options the target and source tables must have a primary key specified as this key is used to uniquely identify a row.
+            </remarks>
+        </member>
+        <member name="F:DbNetLink.CopyOptions.SchemaAndData">
+            <summary>
+            The table is created in the target database and all rows are copied. If the target table exists already it is dropped.
+            </summary>
+        </member>
+        <member name="F:DbNetLink.CopyOptions.SchemaOnly">
+            <summary>
+            The table is created in the target database but no data is copied. If the target table exists already it is dropped.
+            </summary>
+        </member>
+        <member name="F:DbNetLink.CopyOptions.ReplaceRows">
+            <summary>
+            It is assumed that the table already exists in the target database. All rows are delete from the target table and replaced woth the rows in the source table
+            </summary>
+        </member>
+        <member name="F:DbNetLink.CopyOptions.MergeRows">
+            <summary>
+            It is assumed that the table already exists in the target database. Any rows where the primary key value cannot be found in the target database are added. Any rows where the primary key value can be found in the target database are updated. This is effectively the same as running InsertRows and UpdateRows together.
+            </summary>
+        </member>
+        <member name="F:DbNetLink.CopyOptions.InsertRows">
+            <summary>
+            It is assumed that the table already exists in the target database. Any rows where the primary key value cannot be found in the target database are added. 
+            </summary>
+        </member>
+        <member name="F:DbNetLink.CopyOptions.UpdateRows">
+            <summary>
+            It is assumed that the table already exists in the target database. Any rows where the primary key value can be found in the target database are updated.
+            </summary>
+        </member>
+        <member name="T:DbNetLink.SchemaOptions">
+            <summary> 
+            The SchemaOptions enum is assigned to the <see cref="F:DbNetLink.DbNetCopy.SchemaOption">SchemaOption</see> property. 
+            The SchemaOption dictates the way schema information is transferred to the target database. 
+            </summary>
+            <remarks> 
+            Some databases such MS Access do not support schemas and for these databases the Preserve option will not work
+            </remarks>
+        </member>
+        <member name="F:DbNetLink.SchemaOptions.Drop">
+            <summary>
+            Does not use the source schema name to qualify the table in the target database.
+            </summary>
+        </member>
+        <member name="F:DbNetLink.SchemaOptions.Preserve">
+            <summary>
+            Attempts to qualify the target table name with the source schema name.
+            </summary>
+        </member>
+        <member name="F:DbNetLink.SchemaOptions.IncludeInTableName">
+            <summary>
+            Prefixes the target table name with the schema name in order to ensure the table name is unique
+            </summary>
+        </member>
+        <member name="T:DbNetLink.TransactionModes">
+            <summary> 
+            The TransactionModes enum is assigned to the <see cref="F:DbNetLink.DbNetCopy.TransactionMode">TransactionMode</see> property. 
+            The TransactionMode controls the way database transactions are used to preserve the integrity of the copying of a table to 
+            the target database. 
+            </summary>
+        </member>
+        <member name="F:DbNetLink.TransactionModes.None">
+            <summary>
+            Transactions are not used when copying a table from the source to the target database
+            </summary>
+        </member>
+        <member name="F:DbNetLink.TransactionModes.Table">
+            <summary>
+            The copyiing of each table is done inside a transaction such that if an error occurs the state of the database is rolled back to the point at which the copying of the table began.
+            </summary>
+        </member>
+        <member name="T:DbNetLink.UpdateActions">
+            <summary> 
+            The UpdateActions enum is used to indicate the type of update that is to be applied. 
+            </summary>
+        </member>
+        <member name="F:DbNetLink.UpdateActions.Insert">
+            <summary>
+            Row is to be inserted
+            </summary>
+        </member>
+        <member name="F:DbNetLink.UpdateActions.Update">
+            <summary>
+            Row is to be updated
+            </summary>
+        </member>
+        <member name="T:DbNetLink.CopyModes">
+            <summary> 
+            The CopyModes enum is used to indicate the mode in which the data is copied. 
+            </summary>
+        </member>
+        <member name="F:DbNetLink.CopyModes.SingleRecord">
+            <summary>
+            The data is copied one row at a time. This is the most flexible method and suppored by all database types
+            </summary>
+        </member>
+        <member name="F:DbNetLink.CopyModes.Batch">
+            <summary>
+            The data is sent to the database server in batches. More efficient that SingleRecord especially on slower network
+            connections.
+            </summary>
+        </member>
+        <member name="F:DbNetLink.CopyModes.Bulk">
+            <summary>
+            The fastest method of moving data from one server to another. 
+            Currently only supported by <see cref="!:DbNetLink.Data.DataProvider.SqlClient">SqlClient</see> and <see cref="!:DbNetLink.Data.DataProvider.DB2">DB2</see> providers.
+            </summary>
+            <remarks>
+            Bulk mode can only be used with the SchemaAndData and ReplaceRows <see cref="T:DbNetLink.CopyOptions">CopyOptions</see>
+            With Bulk mode the <see cref="E:DbNetLink.DbNetCopy.OnBeforeRowCopied">OnBeforeRowCopied</see>, <see cref="E:DbNetLink.DbNetCopy.OnBeforeColumnCopied">OnBeforeColumnCopied</see> and <see cref="E:DbNetLink.DbNetCopy.OnBeforeRowApplied">OnBeforeRowApplied</see>
+            events must not have handlers assigned to them as they are bypassed.
+            </remarks>
+        </member>
+        <member name="T:DbNetLink.BeforeRowCopiedEventArgs">
+            <summary> 
+            Argument for the <see cref="E:DbNetLink.DbNetCopy.OnBeforeRowCopied">OnBeforeRowCopied</see> event
+            </summary>
+            
+        </member>
+        <member name="F:DbNetLink.BeforeRowCopiedEventArgs.UpdateParams">
+            <summary> 
+            The update parameters that will update the row in the target table
+            </summary>
+        </member>
+        <member name="F:DbNetLink.BeforeRowCopiedEventArgs.SourceDataReader">
+            <summary> 
+            The DataReader holding the current source table row
+            </summary>
+        </member>
+        <member name="F:DbNetLink.BeforeRowCopiedEventArgs.TargetTableName">
+            <summary> 
+            The name of the target table to be updated
+            </summary>
+        </member>
+        <member name="F:DbNetLink.BeforeRowCopiedEventArgs.UpdateAction">
+            <summary> 
+            Indicates if the target table row is to be inserted or updated
+            </summary>
+        </member>
+        <member name="M:DbNetLink.BeforeRowCopiedEventArgs.#ctor(System.Collections.Specialized.ListDictionary,System.Data.IDataReader,System.String,DbNetLink.UpdateActions)">
+            <summary>
+            BeforeRowCopiedEventArgs constructor
+            </summary>
+            <param name="UpdateParams">The update parameters that will update the row in the target table</param>
+            <param name="SourceDataReader">The DataReader holding the current source table row</param>
+            <param name="TargetTableName">The name of the target table to be updated</param>
+            <param name="UpdateAction">Indicates if the target table row is to be inserted or updated</param>
+            
+        </member>
+        <member name="T:DbNetLink.BeforeColumnCopiedEventArgs">
+            <summary> 
+            Argument for the <see cref="E:DbNetLink.DbNetCopy.OnBeforeColumnCopied">OnBeforeColumnCopied</see> event
+            </summary>
+            
+        </member>
+        <member name="F:DbNetLink.BeforeColumnCopiedEventArgs.ColumnName">
+            <summary> 
+            The name of the column to be copied
+            </summary>
+        </member>
+        <member name="F:DbNetLink.BeforeColumnCopiedEventArgs.ColumnValue">
+            <summary> 
+            The value of the column to be copied
+            </summary>
+        </member>
+        <member name="F:DbNetLink.BeforeColumnCopiedEventArgs.ColumnOrdinal">
+            <summary> 
+            The name of the target table to be updated
+            </summary>
+        </member>
+        <member name="F:DbNetLink.BeforeColumnCopiedEventArgs.TargetTableName">
+            <summary> 
+            The name of the target table to be updated
+            </summary>
+        </member>
+        <member name="F:DbNetLink.BeforeColumnCopiedEventArgs.SourceDataReader">
+            <summary> 
+            The DataReader holding the current source table row
+            </summary>
+        </member>
+        <member name="M:DbNetLink.BeforeColumnCopiedEventArgs.#ctor(System.String,System.Object,System.Int32,System.String,System.Data.IDataReader)">
+            <summary>
+            BeforeColumnCopiedEventArgs constructor
+            </summary>
+            <param name="ColumnName">The name of the column to be copied</param>
+            <param name="ColumnValue">The value of the column to be copied</param>
+            <param name="ColumnOrdinal">The index of the column in SourceDataReader</param>
+            <param name="TargetTableName">The name of the target table to be updated</param>
+            <param name="SourceDataReader">The DataReader holding the current source table row</param>
+            
+        </member>
+        <member name="T:DbNetLink.BeforeRowAppliedEventArgs">
+            <summary> 
+            Argument for the <see cref="E:DbNetLink.DbNetCopy.OnBeforeRowApplied">OnBeforeRowApplied</see> event
+            </summary>
+            
+        </member>
+        <member name="F:DbNetLink.BeforeRowAppliedEventArgs.Command">
+            <summary> 
+            The pre-assigned IDbCommand object
+            </summary>
+        </member>
+        <member name="F:DbNetLink.BeforeRowAppliedEventArgs.TargetTableName">
+            <summary> 
+            The name of the target table to be updated
+            </summary>
+        </member>
+        <member name="M:DbNetLink.BeforeRowAppliedEventArgs.#ctor(System.Data.IDbCommand,System.String)">
+            <summary>
+            BeforeRowAppliedEventArgs constructor
+            </summary>
+            <param name="Command">The pre-assigned IDbCommand object</param>
+            <param name="TargetTableName">The value of the column to be copied</param>
+            
+        </member>
+        <member name="T:DbNetLink.BeforeTableCreatedEventArgs">
+            <summary> 
+            Argument for the <see cref="E:DbNetLink.DbNetCopy.OnBeforeTableCreated">OnBeforeTableCreated</see> event
+            </summary>
+            
+        </member>
+        <member name="F:DbNetLink.BeforeTableCreatedEventArgs.TableSchemaInfo">
+            <summary> 
+            The DataTable populated with schema creation information
+            </summary>
+        </member>
+        <member name="F:DbNetLink.BeforeTableCreatedEventArgs.TargetTableName">
+            <summary> 
+            The name of the target table to be updated
+            </summary>
+        </member>
+        <member name="M:DbNetLink.BeforeTableCreatedEventArgs.#ctor(System.Data.DataTable,System.String)">
+            <summary>
+            BeforeTableCreatedEventArgs constructor
+            </summary>
+            <param name="TableSchemaInfo">The DataTable populated with schema creation information</param>
+            <param name="TargetTableName">The value of the column to be copied</param>
+            
+        </member>
+        <member name="T:DbNetLink.SourceRowReadEventArgs">
+            <summary> 
+            Argument for the <see cref="E:DbNetLink.DbNetCopy.OnBeforeRowCopied">OnBeforeRowCopied</see> event
+            </summary>
+            
+        </member>
+        <member name="F:DbNetLink.SourceRowReadEventArgs.SourceDataReader">
+            <summary> 
+            The DataReader holding the current source table row
+            </summary>
+        </member>
+        <member name="F:DbNetLink.SourceRowReadEventArgs.RowsRead">
+            <summary> 
+            The number of rows read so far
+            </summary>
+        </member>
+        <member name="M:DbNetLink.SourceRowReadEventArgs.#ctor(System.Data.IDataReader)">
+            <summary>
+            SourceRowReadEventArgs constructor
+            </summary>
+            <param name="SourceDataReader">The DataReader holding the current source table row</param>
+            
+        </member>
+        <member name="T:DbNetLink.DbNetCopy">
+            <summary> 
+            The DbNetCopy class is used to copy data from one database to another. The source and target database can 
+            be any of the supported databases (<see cref="!:DbNetLink.Data.DatabaseType"/>
+            </summary>
+        </member>
+        <member name="F:DbNetLink.DbNetCopy.CopyMode">
+            <summary>
+            The CopyMode property controls the mechanism in which data is copied from the source to the target database and is assigned a
+            value from the <see cref="T:DbNetLink.CopyModes">CopyModes</see> enum.
+            </summary>
+            <remarks>
+            The default value is <see cref="F:DbNetLink.CopyModes.SingleRecord"/>
+            </remarks>
+            <example>
+            <code>
+            private void button1_Click(object sender, EventArgs e)
+            {
+            	DbNetData SourceConnection = new DbNetData("Provider=Microsoft.Jet.OLEDB.4.0;Data Source=../data/source.mdb");
+            	DbNetData TargetConnection = new DbNetData("Server=DbServer;Initial Catalog=SalesData;Trusted_Connection=Yes;");
+            	using (DbNetCopy DbCopy = new DbNetCopy(SourceConnection, TargetConnection))
+            	{
+            		DbCopy.CopyOption = CopyOptions.SchemaAndData;
+            		DbCopy.CopyMode = CopyModes.Bulk;
+            		DbCopy.CopyTable("orders");
+            	}
+            }
+            </code>
+            </example>
+            
+        </member>
+        <member name="F:DbNetLink.DbNetCopy.CopyOption">
+            <summary>
+            The CopyOption property controls the way in which data is copied from the source to the target database and is assigned a
+            value from the <see cref="T:DbNetLink.CopyOptions">CopyOptions</see> enum.
+            </summary>
+            <remarks>
+            The default value is <see cref="F:DbNetLink.CopyOptions.SchemaAndData"/>
+            </remarks>
+            <example>
+            <code>
+            private void button1_Click(object sender, EventArgs e)
+            {
+            	DbNetData SourceConnection = new DbNetData("Provider=Microsoft.Jet.OLEDB.4.0;Data Source=../data/source.mdb");
+            	DbNetData TargetConnection = new DbNetData("Provider=Microsoft.Jet.OLEDB.4.0;Data Source=../data/target.mdb");
+            	using (DbNetCopy DbCopy = new DbNetCopy(SourceConnection, TargetConnection))
+            	{
+            		DbCopy.CopyOption = CopyOptions.MergeRows;
+            		DbCopy.CopyTable("orders");
+            	}
+            }
+            </code>
+            </example>
+            
+        </member>
+        <member name="F:DbNetLink.DbNetCopy.SchemaOption">
+            <summary>
+            The SchemaOption property controls the way in which schema information is tranbsferred from the source to the target database
+            value from the <see cref="T:DbNetLink.SchemaOptions">SchemaOptions</see> enum.
+            </summary>
+            <remarks>
+            The default value is <see cref="F:DbNetLink.SchemaOptions.Drop"/>
+            </remarks>
+            <example>
+            <code>
+            private void button1_Click(object sender, EventArgs e)
+            {
+            	DbNetData SourceConnection = new DbNetData("Provider=Microsoft.Jet.OLEDB.4.0;Data Source=../data/source.mdb");
+            	DbNetData TargetConnection = new DbNetData("Provider=Microsoft.Jet.OLEDB.4.0;Data Source=../data/target.mdb");
+            	using (DbNetCopy DbCopy = new DbNetCopy(SourceConnection, TargetConnection))
+            	{
+            		DbCopy.SchemaOption = SchemaOptions.Drop;
+            		DbCopy.CopyTable("orders");
+            	}
+            }
+            </code>
+            </example>
+        </member>
+        <member name="F:DbNetLink.DbNetCopy.CopyIndexes">
+            <summary>
+            Controls the copying of index and primary key information. 
+            </summary>
+            <remarks>
+            The default value is True
+            </remarks>
+            <example>
+            <code>
+            private void button1_Click(object sender, EventArgs e)
+            {
+            	DbNetData SourceConnection = new DbNetData("Provider=Microsoft.Jet.OLEDB.4.0;Data Source=../data/source.mdb");
+            	DbNetData TargetConnection = new DbNetData("Provider=Microsoft.Jet.OLEDB.4.0;Data Source=../data/target.mdb");
+            	using (DbNetCopy DbCopy = new DbNetCopy(SourceConnection, TargetConnection))
+            	{
+            		DbCopy.CopyIndexes = false;
+            		DbCopy.CopyDatabase();
+            	}
+            }
+            </code>
+            </example>
+        </member>
+        <member name="F:DbNetLink.DbNetCopy.DropTargetTable">
+            <summary>
+            Controls the dropping of tables in the target database if they already exist.
+            </summary>
+            <remarks>
+            An attempt to create a table in the target database that already exists will generate an exception unless DropTargetTable is 
+            set to True. The default value is False. 
+            </remarks>
+            <example>
+            <code>
+            private void button1_Click(object sender, EventArgs e)
+            {
+            	DbNetData SourceConnection = new DbNetData("Provider=Microsoft.Jet.OLEDB.4.0;Data Source=../data/source.mdb");
+            	DbNetData TargetConnection = new DbNetData("Provider=Microsoft.Jet.OLEDB.4.0;Data Source=../data/target.mdb");
+            	using (DbNetCopy DbCopy = new DbNetCopy(SourceConnection, TargetConnection))
+            	{
+            		DbCopy.DropTargetTable = true;
+            		DbCopy.CopyDatabase();
+            	}
+            }
+            </code>
+            </example>
+        </member>
+        <member name="F:DbNetLink.DbNetCopy.Cancelled">
+            <summary>
+            Set this property to true to cause a controlled immediate ending to the copy process
+            </summary>
+            <example>
+            <code>
+            private void CancelBtn_Click(object sender, EventArgs e)
+            {
+            	DbCopy.Cancelled = true;
+            }
+            </code>
+            </example>
+        </member>
+        <member name="F:DbNetLink.DbNetCopy.LicenseKey">
+            <summary>
+            As an alternative to picking up the license key from the configuration file you can assign the
+            LicenseKey property explicitly in your code
+            </summary>
+            <example>
+            <code>
+            private void button1_Click(object sender, EventArgs e)
+            {
+            	DbNetData SourceConnection = new DbNetData("Provider=Microsoft.Jet.OLEDB.4.0;Data Source=../data/source.mdb");
+            	DbNetData TargetConnection = new DbNetData("Provider=Microsoft.Jet.OLEDB.4.0;Data Source=../data/target.mdb");
+            	using (DbNetCopy DbCopy = new DbNetCopy(SourceConnection, TargetConnection))
+            	{
+            		DbCopy.LicenseKey = "iQWPQO5viS2jyoBDQ+wGOo/Xo3b/HIHuMr4S9kW2dkph5R8EvUHB4s66KRCXBoUfDP/JECFv4kHc1eHCev4rjFmsNOFNjbi2Ur9YQlleXyM0tEYne5kHaM6pu/r/GDqu5fsjqXP6SF/USxWkCytscDpzI2LUuBGnewIVlt59ytBxuhaF6ygwRHgeDZDPWYrT8cwLG172XtvFzbZUlXuvr3Rgr4tQX3z9F/9KP+h5jmmcexxTZWW6ZhtcA78KM+2Q9rh/n9199amVkIgw3OWFEmnKLniiFovjY7AUZ2jTZ8Fpd3JR47dVhotl8J/Ax8DQ";
+            		DbCopy.CopyDatabase();
+            	}
+            }
+            </code>
+            </example>
+        </member>
+        <member name="F:DbNetLink.DbNetCopy.TransactionMode">
+            <summary>
+            The TransactionMode property dictates the use or otherwise of transactions when copying a table and is assined a 
+            value from the <see cref="T:DbNetLink.TransactionModes">TransactionModes</see> enum.
+            </summary>
+            <remarks>
+            The default value is <see cref="F:DbNetLink.TransactionModes.Table"/>
+            </remarks>
+            <example>
+            <code>
+            private void button1_Click(object sender, EventArgs e)
+            {
+            	DbNetData SourceConnection = new DbNetData("Provider=Microsoft.Jet.OLEDB.4.0;Data Source=../data/source.mdb");
+            	DbNetData TargetConnection = new DbNetData("Provider=Microsoft.Jet.OLEDB.4.0;Data Source=../data/target.mdb");
+            	using (DbNetCopy DbCopy = new DbNetCopy(SourceConnection, TargetConnection))
+            	{
+            		DbCopy.TransactionMode = TransactionModes.None;
+            		DbCopy.CopyTable("orders");
+            	}
+            }
+            </code>
+            </example>
+        </member>
+        <member name="F:DbNetLink.DbNetCopy.SourceEncoding">
+            <summary>
+            The SourceEncoding property is used to specify the encoding of the source database when converting the encoding as a 
+            part of the copy process
+            </summary>
+        </member>
+        <member name="F:DbNetLink.DbNetCopy.TargetEncoding">
+            <summary>
+            The TargetEncoding property is used to specify the encoding of the target database when converting the encoding as a 
+            part of the copy process
+            </summary>
+        </member>
+        <member name="F:DbNetLink.DbNetCopy.UpdateBatchSize">
+            <summary>
+            Specifies the number of records sent for update in a single round-trip to the database.  
+            </summary>
+            <remarks>
+            Has no effect unless the Batch <see cref="T:DbNetLink.CopyModes">CopyMode</see> is specified
+            </remarks>
+            <example>
+            <code>
+            private void button1_Click(object sender, EventArgs e)
+            {
+            	DbNetData SourceConnection = new DbNetData("Server=DbServer;Initial Catalog=SalesData;Trusted_Connection=Yes;");
+            	DbNetData TargetConnection = new DbNetData("Server=SqlServer.MyDomain.Com;Initial Catalog=WebServerData;UID=UserId;PWD=password;");
+            	using (DbNetCopy DbCopy = new DbNetCopy(SourceConnection, TargetConnection))
+            	{
+            		DbCopy.UpdateBatchSize = 100;
+            		DbCopy.CopyMode = CopyModes.Batch;
+            		DbCopy.CopyTable("orders");
+            	}
+            }
+            </code>
+            </example>
+        </member>
+        <member name="M:DbNetLink.DbNetCopy.#ctor(DbNetLink.DbNetData,DbNetLink.DbNetData)">
+            <summary>
+            DbNetCopy constructor
+            </summary>
+            <param name="SourceConnection">Source DbNetData instance</param>
+            <param name="TargetConnection">Target DbNetData instance</param>
+            <example>
+            <code>
+            DbNetData SourceConnection = new DbNetData("Provider=Microsoft.Jet.OLEDB.4.0;Data Source=../data/source.mdb");
+            DbNetData TargetConnection = new DbNetData("Provider=Microsoft.Jet.OLEDB.4.0;Data Source=../data/target.mdb");
+            DbNetCopy DbCopy = new DbNetCopy(SourceConnection, TargetConnection);
+            </code>
+            </example>
+            
+        </member>
+        <member name="M:DbNetLink.DbNetCopy.CopyDatabase">
+            <summary>
+            Copies all the tables in the source database to the target database
+            </summary>
+            <example>
+            <code>
+            DbNetData SourceConnection = new DbNetData("Provider=Microsoft.Jet.OLEDB.4.0;Data Source=../data/source.mdb");
+            DbNetData TargetConnection = new DbNetData("Provider=Microsoft.Jet.OLEDB.4.0;Data Source=../data/target.mdb");
+            DbNetCopy DbCopy = new DbNetCopy(SourceConnection, TargetConnection);
+            DbCopy.CopyDatabase();
+            DbCopy.Close();
+            </code>
+            </example>
+        </member>
+        <member name="M:DbNetLink.DbNetCopy.CopyDatabase(System.String,System.String)">
+            <summary>
+            Copies all the tables in the source database from the specified schema to the target database schema
+            </summary>
+            <param name="SourceSchema">The name of the source table schema</param>
+            <param name="TargetSchema">The name of the target table schema</param>
+            <example>
+            <code>
+            DbNetData SourceConnection = new DbNetData( ConfigurationSettings.AppSettings[ "oraclesource" ], ProviderType.OracleClient );
+            DbNetData TargetConnection = new DbNetData( ConfigurationSettings.AppSettings[ "oracletarget" ], ProviderType.OracleClient );
+            DbNetCopy DbCopy = new DbNetCopy(SourceConnection, TargetConnection);
+            DbCopy.CopyDatabase("hr","hr");
+            DbCopy.Close();
+            </code>
+            </example>
+        </member>
+        <member name="M:DbNetLink.DbNetCopy.CopyTable(System.String)">
+            <summary>
+            Copies the specified table to the target database
+            </summary>
+            <param name="SourceTableName">The name of the table to copy</param>
+            <example>
+            <code>
+            DbNetData SourceConnection = new DbNetData("Provider=Microsoft.Jet.OLEDB.4.0;Data Source=../data/source.mdb");
+            DbNetData TargetConnection = new DbNetData("Provider=Microsoft.Jet.OLEDB.4.0;Data Source=../data/target.mdb");
+            DbNetCopy DbCopy = new DbNetCopy(SourceConnection, TargetConnection);
+            DbCopy.CopyTable("orders");
+            DbCopy.Close();
+            </code>
+            </example>
+        </member>
+        <member name="M:DbNetLink.DbNetCopy.CopyTable(System.String,System.String)">
+            <summary>
+            Copies the specified table to the target database renaming the table with the specified TargetTableName
+            </summary>
+            <param name="SourceTableName">The name of the table in the source database</param>
+            <param name="TargetTableName">The name of the table in the target database</param>
+            <example>
+            <code>
+            DbNetData SourceConnection = new DbNetData("Provider=Microsoft.Jet.OLEDB.4.0;Data Source=../data/source.mdb");
+            DbNetData TargetConnection = new DbNetData("Provider=Microsoft.Jet.OLEDB.4.0;Data Source=../data/target.mdb");
+            DbNetCopy DbCopy = new DbNetCopy(SourceConnection, TargetConnection);
+            DbCopy.CopyOption = CopyOptions.InsertRows;
+            DbCopy.CopyTable("orders", "orders_archive");
+            DbCopy.Close();
+            </code>
+            </example>
+        </member>
+        <member name="M:DbNetLink.DbNetCopy.CopyTable(System.String,System.String,System.Collections.ArrayList)">
+            <summary>
+            Copies only the specified columns of the source table to the target database
+            </summary>
+            <param name="SourceTableName">The name of the table in the source database</param>
+            <param name="TargetTableName">The name of the table in the target database</param>
+            <param name="CopyColumns">A list of column names to copy</param>
+            <example>
+            <code>
+            DbNetData SourceConnection = new DbNetData("Provider=Microsoft.Jet.OLEDB.4.0;Data Source=../data/source.mdb");
+            DbNetData TargetConnection = new DbNetData("Provider=Microsoft.Jet.OLEDB.4.0;Data Source=../data/target.mdb");
+            DbNetCopy DbCopy = new DbNetCopy(SourceConnection, TargetConnection);
+            DbCopy.CopyOption = CopyOptions.InsertRows;
+            ArrayList Columns = new ArrayList();
+            Columns.Add("CustomerID");
+            Columns.Add("CompanyName");
+            Columns.Add("ContactName");
+            DbCopy.CopyTable("customers", "customers_summary", Columns);
+            DbCopy.Close();
+            </code>
+            </example>
+        </member>
+        <member name="M:DbNetLink.DbNetCopy.CopyTable(System.String,System.String,System.Collections.ArrayList,System.Collections.ArrayList)">
+            <summary>
+            Copies only the specified columns of the source table to the target database using the supplied column name(s) 
+            as the keys values used to determine if the record exists in the target database. The KeyColumns parameter can be used 
+            where a primary key is not automatically identifiable such as in an Excel spreadheet.
+            </summary>
+            <param name="SourceTableName">The name of the table in the source database</param>
+            <param name="TargetTableName">The name of the table in the target database</param>
+            <param name="CopyColumns">A list of column names to copy</param>
+            <param name="KeyColumns">A list of primary key column name(s)</param>
+            <example>
+            <code>
+            DbNetData SourceConnection = new DbNetData("Provider=Microsoft.Jet.OLEDB.4.0;Extended Properties=Excel 8.0;Data Source=/upload/data/contacts-12-12-2007.xls");
+            DbNetData TargetConnection = new DbNetData("Server=DbServer;Database=CRMDB;Trusted_Connection=true;");
+            DbNetCopy DbCopy = new DbNetCopy(SourceConnection, TargetConnection);
+            DbCopy.CopyOption = CopyOptions.MergeRows;
+            ArrayList Columns = new ArrayList();
+            Columns.Add("FirstName");
+            Columns.Add("LastName");
+            Columns.Add("Address");
+            Columns.Add("City");
+            Columns.Add("State");
+            Columns.Add("Zip");
+            // Use FirstName and LastName as the primary key columns
+            ArrayList KeyColumns = new ArrayList();
+            Columns.Add("FirstName");
+            Columns.Add("LastName");
+            DbCopy.CopyTable("contacts", "contacts", Columns, KeyColumns);
+            DbCopy.Close();
+            </code>
+            </example>
+        </member>
+        <member name="M:DbNetLink.DbNetCopy.EmptyTargetDatabase(System.Collections.ArrayList)">
+            <summary>
+            Drops the supplied list of tables from the target database
+            </summary>
+            <param name="TableList">A list of tables names to drop</param>
+            <example>
+            <code>
+            DbNetData SourceConnection = new DbNetData("Provider=Microsoft.Jet.OLEDB.4.0;Data Source=../data/source.mdb");
+            DbNetData TargetConnection = new DbNetData("Provider=Microsoft.Jet.OLEDB.4.0;Data Source=../data/target.mdb");
+            DbNetCopy DbCopy = new DbNetCopy(SourceConnection, TargetConnection);
+            ArrayList Tables = new ArrayList();
+            Tables.Add("Orders");
+            Tables.Add("OrderLines");
+            DbCopy.EmptyTargetDatabase(Tables);
+            DbCopy.CopyTable("Orders");
+            DbCopy.CopyTable("OrdersLines");
+            DbCopy.Close();
+            </code>
+            </example>
+        </member>
+        <member name="M:DbNetLink.DbNetCopy.EmptyTargetDatabase">
+            <summary>
+            Drops all tables from the target database
+            </summary>
+            <example>
+            <code>
+            DbNetData SourceConnection = new DbNetData("Provider=Microsoft.Jet.OLEDB.4.0;Data Source=../data/source.mdb");
+            DbNetData TargetConnection = new DbNetData("Provider=Microsoft.Jet.OLEDB.4.0;Data Source=../data/target.mdb");
+            DbNetCopy DbCopy = new DbNetCopy(SourceConnection, TargetConnection);
+            DbCopy.EmptyTargetDatabase();
+            DbCopy.CopyDatabase();
+            DbCopy.Close();
+            </code>
+            </example>
+        </member>
+        <member name="M:DbNetLink.DbNetCopy.EmptyTargetDatabase(System.String)">
+            <summary>
+            Drops all tables from the specified schema in the target database
+            </summary>
+            <param name="SchemaName">The name of the target database schema from which tables should be dropped</param>
+            <example>
+            <code>
+            DbNetData SourceConnection = new DbNetData("Provider=Microsoft.Jet.OLEDB.4.0;Data Source=../data/source.mdb");
+            DbNetData TargetConnection = new DbNetData("Provider=Microsoft.Jet.OLEDB.4.0;Data Source=../data/target.mdb");
+            DbNetCopy DbCopy = new DbNetCopy(SourceConnection, TargetConnection);
+            DbCopy.EmptyTargetDatabase("hr");
+            DbCopy.CopyDatabase();
+            DbCopy.Close();
+            </code>
+            </example>
+        </member>
+        <member name="M:DbNetLink.DbNetCopy.EmptyTargetDatabase(System.String,System.Collections.ArrayList)">
+            <summary>
+            Drops the supplied list of tables from the specified schema in the target database
+            </summary>
+            <param name="TableList">A list of tables names to drop</param>
+            <param name="SchemaName">The name of the target database schema from which tables should be dropped</param>
+            <example>
+            <code>
+            DbNetData SourceConnection = new DbNetData("Provider=Microsoft.Jet.OLEDB.4.0;Data Source=../data/source.mdb");
+            DbNetData TargetConnection = new DbNetData("Provider=Microsoft.Jet.OLEDB.4.0;Data Source=../data/target.mdb");
+            DbNetCopy DbCopy = new DbNetCopy(SourceConnection, TargetConnection);
+            ArrayList Tables = new ArrayList();
+            Tables.Add("Employees");
+            DbCopy.EmptyTargetDatabase( "hr", Tables);
+            DbCopy.CopyTable("Employees");
+            DbCopy.Close();
+            </code>
+            </example>
+        </member>
+        <member name="M:DbNetLink.DbNetCopy.SummaryDataTable">
+            <summary>
+            Returns a DataTable containing summary information for each of the copied tables
+            </summary>
+            <remarks>
+            	<para>The DataTable contains a row for each table that was copied and the each row contains the following columns</para>
+            	<list type="table">
+            		<listheader>
+            			<term>ColumnName</term>
+            			<description>Description</description>
+            		</listheader>
+            		<item><term>SourceTableName</term><para>The name of the source table</para></item>
+            		<item><term>TargetTableName</term><para>The name of the target table</para></item>
+            		<item><term>Columns</term><para>Column names (if specified)</para></item>
+            		<item><term>RecordsRead</term><para>Number of source records read</para></item>
+            		<item><term>RecordsAdded</term><para>Number of records added</para></item>
+            		<item><term>RecordsUpdated</term><para>Number of records updated</para></item>
+            		<item><term>Exceptions</term><para>Any non-critical exceptions encountered</para></item>
+            	</list>
+            </remarks>
+            <returns>DataTable</returns>
+            <example>
+            <code>
+            DbNetData SourceConnection = new DbNetData("Provider=Microsoft.Jet.OLEDB.4.0;Data Source=../data/source.mdb");
+            DbNetData TargetConnection = new DbNetData("Provider=Microsoft.Jet.OLEDB.4.0;Data Source=../data/target.mdb");
+            DbNetCopy DbCopy = new DbNetCopy(SourceConnection, TargetConnection);
+            DbCopy.CopyDatabase();
+            SummaryGrid.DataSource = DbCopy.SummaryDataTable();
+            SummaryGrid.DataBind();
+            DbCopy.Close();
+            </code>
+            </example>		
+        </member>
+        <member name="M:DbNetLink.DbNetCopy.UpdateParameterPlaceholder(System.String,System.String)">
+            <summary>
+            Can be used in the <see cref="E:DbNetLink.DbNetCopy.OnBeforeRowApplied">OnBeforeRowApplied</see> event handler to modify the CommandText paramater placeholder for a particular column
+            </summary>
+            <remarks>
+            See <see cref="E:DbNetLink.DbNetCopy.OnBeforeRowApplied">OnBeforeRowApplied</see> for an example of implementation
+            </remarks>
+        </member>
+        <member name="M:DbNetLink.DbNetCopy.UpdateTargetTableColumn(System.String,System.String)">
+            <summary>
+            Can be used in the <see cref="E:DbNetLink.DbNetCopy.OnBeforeTableCreated">OnBeforeTableCreated</see> event handler to 
+            modify a column definition before the target table is created.
+            </summary>
+            <remarks>
+            See <see cref="E:DbNetLink.DbNetCopy.OnBeforeTableCreated">OnBeforeTableCreated</see> for an example of implementation
+            </remarks>
+        </member>
+        <member name="E:DbNetLink.DbNetCopy.OnBeforeRowCopied">
+             <summary>
+             The OnBeforeRowCopied event allows the values in the source row to be reviewed and modified if necessary before being 
+             assigned to the update/insert command. The applying of the update on the target table can be suppressed by returning false from the event handler.
+             </summary>
+             <remarks>
+             The handler is passed a reference to the <see cref="T:DbNetLink.DbNetCopy">DbNetCopy</see> object and the <see cref="T:DbNetLink.BeforeRowCopiedEventArgs">BeforeRowCopiedEventArgs</see> object
+             </remarks>
+             <example>
+             <code>
+             private void button1_Click(object sender, EventArgs e)
+             {
+                 DbNetData SourceConnection = new DbNetData("Provider=Microsoft.Jet.OLEDB.4.0;Data Source=../data/source.mdb");
+                 DbNetData TargetConnection = new DbNetData("Provider=Microsoft.Jet.OLEDB.4.0;Data Source=../data/target.mdb");
+                 using (DbNetCopy DbCopy = new DbNetCopy(SourceConnection, TargetConnection))
+                 {
+                     DbCopy.EmptyTargetDatabase();
+                     DbCopy.OnBeforeRowCopied += ReviewDataToCopy;
+                     DbCopy.CopyTable("customers");
+                     DbCopy.CopyTable("products");
+                 }
+            
+                 MessageBox.Show("Copy complete");
+             }
+             
+             private bool ReviewDataToCopy(DbNetCopy DbCopy, BeforeRowCopiedEventArgs Args)
+             {
+                 switch (Args.TargetTableName.ToLower())
+                 {
+                     case "customers":
+                         switch (Args.UpdateParams["Country"].ToString())
+                         {
+                             // Set the Region to EU for european countries
+                             case "UK":
+                             case "France":
+                             case "Germany":
+                             case "Spain":
+                                 Args.UpdateParams["Region"] = "EU";
+                                 break;
+                         }
+                         break;
+                     case "products":
+                         // Do not copy discontinued products
+                         if ((bool)Args.UpdateParams["Discontinued"])
+                             return false;
+                         break;
+                 }
+            
+                 return true;
+             }
+             </code>
+             </example>
+        </member>
+        <member name="E:DbNetLink.DbNetCopy.OnBeforeTableCreated">
+             <summary>
+             The OnBeforeTableCreated event allows the definition of the target table schema to be modified before it is created in the 
+             target database
+             </summary>
+             <remarks>
+             The handler is passed a reference to the <see cref="T:DbNetLink.DbNetCopy">DbNetCopy</see> object and the<see cref="T:DbNetLink.BeforeTableCreatedEventArgs">BeforeTableCreatedEventArgs</see> object
+             The method <see cref="M:DbNetLink.DbNetCopy.UpdateTargetTableColumn(System.String,System.String)">UpdateTargetTableColumn</see>
+             can be used to update the schema text for the specfied column. 
+             </remarks>
+             <example>
+             <code>
+             private void button1_Click(object sender, EventArgs e)
+             {
+                 DbNetData SourceConnection = new DbNetData("Provider=Microsoft.Jet.OLEDB.4.0;Data Source=../data/source.mdb");
+                 DbNetData TargetConnection = new DbNetData("Provider=Microsoft.Jet.OLEDB.4.0;Data Source=../data/target.mdb");
+                 using (DbNetCopy DbCopy = new DbNetCopy(SourceConnection, TargetConnection))
+                 {
+                     DbCopy.EmptyTargetDatabase();
+                     DbCopy.OnBeforeTableCreated += ModifyTableSchema;
+                     DbCopy.CopyTable("customers");
+                 }
+             
+                 MessageBox.Show("Copy complete");
+             }
+            
+             private bool ModifyTableSchema(DbNetCopy DbCopy, BeforeTableCreatedEventArgs Args)
+             {
+                 switch (Args.TargetTableName.ToLower())
+                 {
+                     case "customers":
+                         DbCopy.UpdateTargetTableColumn("companyname", "varchar(100)");
+                         break;
+                 }
+             
+             }
+             </code>
+             </example>
+        </member>
+        <member name="E:DbNetLink.DbNetCopy.OnBeforeRowApplied">
+            <summary>
+            The OnBeforeRowApplied event allows command parameters and command text to be reviewed and/or modified just prior 
+            to the target row being inserted/updated
+            </summary>
+            <remarks>
+            The handler is passed a reference to the <see cref="T:DbNetLink.DbNetCopy">DbNetCopy</see> object and the <see cref="T:DbNetLink.BeforeRowAppliedEventArgs">BeforeRowAppliedEventArgs</see> object
+            The method <see cref="M:DbNetLink.DbNetCopy.UpdateParameterPlaceholder(System.String,System.String)">UpdateParameterPlaceholder</see>
+            can be used to update the parameter placeholder in the command text. For example you may want to use a database function to 
+            process the value as it is applied to the database
+            </remarks>
+            <example>
+            <code>
+            private void button1_Click(object sender, EventArgs e)
+            {
+                DbNetData SourceConnection = new DbNetData("Provider=Microsoft.Jet.OLEDB.4.0;Data Source=../data/source.mdb");
+                DbNetData TargetConnection = new DbNetData("Provider=Microsoft.Jet.OLEDB.4.0;Data Source=../data/target.mdb");
+                using (DbNetCopy DbCopy = new DbNetCopy(SourceConnection, TargetConnection))
+                {
+                    DbCopy.EmptyTargetDatabase();
+                    DbCopy.OnBeforeRowApplied += ModifyCommand;
+                    DbCopy.CopyTable("orders");
+                }
+            
+                MessageBox.Show("Copy complete");
+            }
+            
+            private void ModifyCommand(DbNetCopy DbCopy, BeforeRowAppliedEventArgs Args)
+            {
+                IDataParameterCollection UpdateParams = Args.Command.Parameters;
+            
+                switch (DbCopy.CurrentTargetTableName.ToLower())
+                {
+                    case "orders":
+                        // Use the Access CDate and Format functions to remove the time part of the date/time value
+                        // The function is only assigned if the date is not null
+                        if (((IDbDataParameter)UpdateParams["OrderDate"]).Value != System.DBNull.Value)
+                            DbCopy.UpdateParameterPlaceholder("OrderDate", "CDate(Format(?,'short date'))");
+                        if (((IDbDataParameter)UpdateParams["RequiredDate"]).Value != System.DBNull.Value)
+                            DbCopy.UpdateParameterPlaceholder("RequiredDate", "CDate(Format(?,'short date'))");
+                        if (((IDbDataParameter)UpdateParams["ShippedDate"]).Value != System.DBNull.Value)
+                            DbCopy.UpdateParameterPlaceholder("ShippedDate", "CDate(Format(?,'short date'))");
+                        break;
+                }
+            }
+            </code>
+            </example>
+        </member>
+        <member name="E:DbNetLink.DbNetCopy.OnBeforeColumnCopied">
+            <summary>
+            The OnBeforeColumnCopied event is invoked before the source column value is assigned to the row update parameter collection
+            and offers an opportunity to modify the value
+            </summary>
+            <remarks>
+            The handler is passed a reference to the <see cref="T:DbNetLink.DbNetCopy">DbNetCopy</see> object and the <see cref="T:DbNetLink.BeforeColumnCopiedEventArgs">BeforeColumnCopiedEventArgs</see> object
+            </remarks>
+            <example>
+            <code>
+            private void button1_Click(object sender, EventArgs e)
+            {
+                DbNetData SourceConnection = new DbNetData("Provider=Microsoft.Jet.OLEDB.4.0;Data Source=../data/source.mdb");
+                DbNetData TargetConnection = new DbNetData("Provider=Microsoft.Jet.OLEDB.4.0;Data Source=../data/target.mdb");
+                using (DbNetCopy DbCopy = new DbNetCopy(SourceConnection, TargetConnection))
+                {
+                    DbCopy.EmptyTargetDatabase();
+                    DbCopy.OnBeforeColumnCopied += ModifyColumnValue;
+                    DbCopy.CopyTable("customers");
+                }
+            
+                MessageBox.Show("Copy complete");
+            }
+            
+            private void ModifyColumnValue(DbNetCopy DbCopy, BeforeColumnCopiedEventArgs Args)
+            {
+                switch (Args.TargetTableName.ToLower())
+                {
+                    case "customers":
+                        switch (Args.ColumnName)
+                        {
+                            case "CompanyName":
+                            case "City":
+                                Args.ColumnValue = Args.ColumnValue.ToString().ToUpper();
+                                break;
+                        }
+                        break;
+                }
+            
+            }
+            </code>
+            </example>
+        </member>
+        <member name="E:DbNetLink.DbNetCopy.OnSourceRowRead">
+            <summary>
+            The OnSourceRowRead event is invoked as each row is read from the target database
+            </summary>
+            <remarks>
+            The handler is passed a reference to the <see cref="T:DbNetLink.DbNetCopy">DbNetCopy</see> object and the <see cref="T:DbNetLink.SourceRowReadEventArgs">SourceRowReadEventArgs</see> object
+            </remarks>
+            <example>
+            <code>
+            private void button1_Click(object sender, EventArgs e)
+            {
+                DbNetData SourceConnection = new DbNetData("Provider=Microsoft.Jet.OLEDB.4.0;Data Source=../data/source.mdb");
+                DbNetData TargetConnection = new DbNetData("Provider=Microsoft.Jet.OLEDB.4.0;Data Source=../data/target.mdb");
+                using (DbNetCopy DbCopy = new DbNetCopy(SourceConnection, TargetConnection))
+                {
+                    DbCopy.SourceConnection.ExecuteSingletonQuery("select count(*) from [order details]");
+                    progressBar1.Value = 0;
+                    progressBar1.Maximum = Convert.ToInt32(DbCopy.SourceConnection.Reader.GetValue(0));
+                    DbCopy.EmptyTargetDatabase();
+                    DbCopy.OnSourceRowRead += UpdateProgressBar;
+                    DbCopy.CopyTable("order details");
+                }
+            
+                MessageBox.Show("Copy complete");
+            }
+            
+            private void UpdateProgressBar(DbNetCopy DbCopy, SourceRowReadEventArgs Args)
+            {
+                progressBar1.PerformStep();
+            }
+            </code>
+            </example>
+        </member>
+        <member name="P:DbNetLink.DbNetCopy.RecordLimit">
+            <summary>
+            Limits the number of rows read for copying
+            </summary>
+            <remarks>
+            On a large table you may wish to limit the number of number of rows copied intially in a testing phase
+            </remarks>
+            <example>
+            <code>
+            private void button1_Click(object sender, EventArgs e)
+            {
+            	DbNetData SourceConnection = new DbNetData("Provider=Microsoft.Jet.OLEDB.4.0;Data Source=../data/source.mdb");
+            	DbNetData TargetConnection = new DbNetData("Provider=Microsoft.Jet.OLEDB.4.0;Data Source=../data/target.mdb");
+            	using (DbNetCopy DbCopy = new DbNetCopy(SourceConnection, TargetConnection))
+            	{
+            		DbCopy.RecordLimit = 100;
+            		DbCopy.CopyTable("orders");
+            	}
+            }
+            </code>
+            </example>
+        </member>
+        <member name="P:DbNetLink.DbNetCopy.SourceConnection">
+            <summary>
+            The Source Database <see cref="!:DbNetLink.Data.DbNetData">DbNetData</see> instance and is assigned in the DbNetCopy constructor.
+            </summary>
+        </member>
+        <member name="P:DbNetLink.DbNetCopy.TargetConnection">
+            <summary>
+            The Target Database <see cref="!:DbNetLink.Data.DbNetData">DbNetData</see> instance and is assigned in the DbNetCopy constructor.
+            </summary>
+        </member>
+        <member name="P:DbNetLink.DbNetCopy.CurrentSourceTableName">
+            <summary>
+            The CurrentSourceTableName property identifies the name of the source table that is currently being copied
+            </summary>
+        </member>
+        <member name="P:DbNetLink.DbNetCopy.CurrentTargetTableName">
+            <summary>
+            The CurrentTargetTableName property identifies the name of the target table that is currently being copied
+            </summary>
+        </member>
+        <member name="P:DbNetLink.DbNetCopy.CurrentColumnOrdinal">
+            <summary>
+            The CurrentColumnOrdinal property identifies the ordinal of the column that is currently being copied. 
+            Used specifcally in the <see cref="E:DbNetLink.DbNetCopy.OnBeforeColumnCopied">OnBeforeColumnCopied</see> event
+            </summary>
+        </member>
+        <member name="T:DbNetLink.DbNetCopy.BeforeRowCopiedHandler">
+            <summary>
+            Delegate definition for the <see cref="E:DbNetLink.DbNetCopy.OnBeforeRowCopied"/> event.
+            </summary>
+        </member>
+        <member name="T:DbNetLink.DbNetCopy.BeforeTableCreatedHandler">
+            <summary>
+            Delegate definition for the <see cref="E:DbNetLink.DbNetCopy.OnBeforeTableCreated"/> event.
+            </summary>
+        </member>
+        <member name="T:DbNetLink.DbNetCopy.BeforeRowAppliedHandler">
+            <summary>
+            Delegate definition for the <see cref="E:DbNetLink.DbNetCopy.OnBeforeRowApplied"/> event.
+            </summary>
+        </member>
+        <member name="T:DbNetLink.DbNetCopy.SourceRowReadHandler">
+            <summary>
+            Delegate definition for the <see cref="E:DbNetLink.DbNetCopy.OnSourceRowRead"/> event.
+            </summary>
+        </member>
+        <member name="T:DbNetLink.DbNetCopy.BeforeColumnCopiedHandler">
+            <summary>
+            Delegate definition for the <see cref="E:DbNetLink.DbNetCopy.OnBeforeColumnCopied"/> event.
+            </summary>
+        </member>
+        <member name="T:DbNetLink.DataProvider">
+            <summary>
+            The DataProvider enumerator identifies the .Net DataProvider to be used when connecting to a database with the <see cref="!:DbNetLink.Data.DbNetData.Open()"/> method
+            </summary>
+        </member>
+        <member name="F:DbNetLink.DataProvider.SqlClient">
+            <summary>
+            MS Sql Server Data Provider (default).
+            </summary>
+        </member>
+        <member name="F:DbNetLink.DataProvider.SqlServerCE">
+            <summary>
+            MS Sql Server Compact Data Provider.
+            </summary>
+        </member>
+        <member name="F:DbNetLink.DataProvider.OracleClient">
+            <summary>
+            Microsoft's Oracle Data Provider. Included with version 2.0 and above of the .Net Framework. 
+            </summary>
+        </member>
+        <member name="F:DbNetLink.DataProvider.Odbc">
+            <summary>
+            Generic ODBC Data Provider. Included with version 2.0 and above of the .Net Framework.
+            </summary>		
+        </member>
+        <member name="F:DbNetLink.DataProvider.OleDb">
+            <summary>
+            Generic OleDb Data Provider.
+            </summary>
+        </member>
+        <member name="F:DbNetLink.DataProvider.Oracle">
+            <summary>
+            Oracles's Data Provider.
+            </summary>
+        </member>
+        <member name="F:DbNetLink.DataProvider.Sybase">
+            <summary>
+            Sybase Data Provider.
+            </summary>
+        </member>
+        <member name="F:DbNetLink.DataProvider.MySql">
+            <summary>
+            MySql Data Provider.
+            </summary>
+        </member>
+        <member name="F:DbNetLink.DataProvider.MyDirect">
+            <summary>
+            CoreLabs MySql Data Provider.
+            </summary>
+        </member>
+        <member name="F:DbNetLink.DataProvider.Npgsql">
+            <summary>
+            PgFoundry's PostgreSql Data Provider.
+            </summary>
+        </member>
+        <member name="F:DbNetLink.DataProvider.PostgreSqlDirect">
+            <summary>
+            Core Labs's PostgreSql Data Provider.
+            </summary>
+        </member>
+        <member name="F:DbNetLink.DataProvider.Firebird">
+            <summary>
+            Firebird Data Provider.
+            </summary>
+        </member>
+        <member name="F:DbNetLink.DataProvider.Pervasive">
+            <summary>
+            Pervasive Data Provider.
+            </summary>
+        </member>
+        <member name="F:DbNetLink.DataProvider.DB2">
+            <summary>
+            DB2 Data Provider. 
+            </summary>
+        </member>
+        <member name="F:DbNetLink.DataProvider.VistaDB">
+            <summary>
+            VistaDB Data Provider.
+            </summary>
+        </member>
+        <member name="F:DbNetLink.DataProvider.SybaseDataDirect">
+            <summary>
+            Sybase Data Provider from DataDirect.
+            </summary>
+        </member>
+        <member name="F:DbNetLink.DataProvider.InterSystemsCache">
+            <summary>
+            InterSystems Cache Data Provider.
+            </summary>
+        </member>
+        <member name="F:DbNetLink.DataProvider.Advantage">
+            <summary>
+            Advanage Data Provider.
+            </summary>
+        </member>
+        <member name="F:DbNetLink.DataProvider.SQLite">
+            <summary>
+            SQLite Data Provider
+            </summary>
+        </member>
+        <member name="T:DbNetLink.DatabaseType">
+            <summary>
+            The DatabaseType enumerator identifies the database that is connected to. The enumerator is used for the <see cref="!:DbNetLink.Data.DbNetData.Database"/> property of the <see cref="!:DbNetLink.Data.DbNetData"/> class . The enumerator can also be specified on the DbNetData constructor <see cref="M:DbNetLink.Data.DbNetData.#ctor(System.String,DbNetLink.Data.DataProvider,DbNetLink.DatabaseType)"/> when it is not possible to automatically detect the database connected to.
+            </summary>
+        </member>
+        <member name="F:DbNetLink.DatabaseType.Access">
+            <summary>
+            MS Access. <seealso href="http://office.microsoft.com/access/">Web site</seealso> 
+            </summary>
+        </member>
+        <member name="F:DbNetLink.DatabaseType.Access2007">
+            <summary>
+            MS Access(2007). <seealso href="http://www.microsoft.com/downloads/details.aspx?displaylang=en&amp;FamilyID=7554f536-8c28-4598-9b72-ef94e038c891">2007 Office Data Connectivity Components</seealso> 
+            </summary>
+        </member>
+        <member name="F:DbNetLink.DatabaseType.Advantage">
+            <summary>
+            Advantage Database Server. <seealso href="http://www.sybase.com/products/databasemanagement/advantagedatabaseserver">Web site</seealso> 
+            </summary>
+        </member>
+        <member name="F:DbNetLink.DatabaseType.dBASE">
+            <summary>
+            dBASE. <seealso href="http://www.dbase.com">Web site</seealso> 
+            </summary>
+        </member>
+        <member name="F:DbNetLink.DatabaseType.DB2">
+            <summary>
+            IBM DB2. <seealso href="http://www.ibm.com/db2">Web site</seealso> 
+            </summary>
+        </member>
+        <member name="F:DbNetLink.DatabaseType.Excel">
+            <summary>
+            Excel spreadsheet 
+            </summary>
+        </member>
+        <member name="F:DbNetLink.DatabaseType.Excel2007">
+            <summary>
+            Excel(2007). <seealso href="http://www.microsoft.com/downloads/details.aspx?displaylang=en&amp;FamilyID=7554f536-8c28-4598-9b72-ef94e038c891">2007 Office Data Connectivity Components</seealso> 
+            </summary>
+        </member>
+        <member name="F:DbNetLink.DatabaseType.Firebird">
+            <summary>
+            Firebird. <seealso href="http://www.firebirdsql.org">Web site</seealso> 
+            </summary>
+        </member>
+        <member name="F:DbNetLink.DatabaseType.InterSystemsCache">
+            <summary>
+            InterSystems Caché. <seealso href="http://www.intersystems.com/cache/">Web site</seealso> 
+            </summary>
+        </member>
+        <member name="F:DbNetLink.DatabaseType.MySql">
+            <summary>
+            MySQL. <seealso href="http://www.mysql.com/">Web site</seealso> 
+            </summary>
+        </member>
+        <member name="F:DbNetLink.DatabaseType.Oracle">
+            <summary>
+            Oracle. <seealso href="http://www.oracle.com/">Web site</seealso> 
+            </summary>
+        </member>
+        <member name="F:DbNetLink.DatabaseType.Paradox">
+            <summary>
+            Paradox
+            </summary>
+        </member>
+        <member name="F:DbNetLink.DatabaseType.Pervasive">
+            <summary>
+            PostgreSQL. <seealso href="http://www.postgresql.org">Web site</seealso> 
+            </summary>
+        </member>
+        <member name="F:DbNetLink.DatabaseType.PostgreSql">
+            <summary>
+            PostgreSQL. <seealso href="http://www.postgresql.org">Web site</seealso> 
+            </summary>
+        </member>
+        <member name="F:DbNetLink.DatabaseType.Progress">
+            <summary>
+            Progress OpenEdge. <seealso href="http://www.progress.com/openedge">Web site</seealso> 
+            </summary>
+        </member>
+        <member name="F:DbNetLink.DatabaseType.SQLite">
+            <summary>
+            SQLite. <seealso href="http://www.sqlite.org">Web site</seealso> 
+            </summary>
+        </member>
+        <member name="F:DbNetLink.DatabaseType.SqlServer">
+            <summary>
+            MS SQL Server. <seealso href="http://www.microsoft.com/sql">Web site</seealso> 
+            </summary>
+        </member>
+        <member name="F:DbNetLink.DatabaseType.SqlServerCE">
+            <summary>
+            MS SQL Server Compact Edition.
+            </summary>
+        </member>
+        <member name="F:DbNetLink.DatabaseType.Sybase">
+            <summary>
+            Sybase. <seealso href="http://www.sybase.com/products/databasemanagement/adaptiveserverenterprise">Web site</seealso> 
+            </summary>
+        </member>
+        <member name="F:DbNetLink.DatabaseType.TextFile">
+            <summary>
+            VistaDB. <seealso href="http://www.vistadb.net/">Web site</seealso> 
+            </summary>
+        </member>
+        <member name="F:DbNetLink.DatabaseType.VistaDB">
+            <summary>
+            Plain text files in delimited of fixed width format 
+            </summary>
+        </member>
+        <member name="F:DbNetLink.DatabaseType.VisualFoxPro">
+            <summary>
+            Visual FoxPro. <seealso href="http://msdn.microsoft.com/vfoxpro">Web site</seealso> 
+            </summary>
+        </member>
+        <member name="T:DbNetLink.MetaDataType">
+            <summary>
+            The MetaDataType enumerator identifies the meta data table that is returned when passed as a parameter to the <see cref="!:DbNetLink.Data.DbNetData.MetaDataCollection(DbNetLink.Data.MetaDataType)"/> method of the <see cref="!:DbNetLink.Data.DbNetData"/> class.
+            </summary>
+        </member>
+        <member name="F:DbNetLink.MetaDataType.MetaDataCollections">
+            <summary>
+            Lists the meta data collections supported by the database
+            </summary>
+        </member>
+        <member name="F:DbNetLink.MetaDataType.Columns">
+            <summary>
+            Lists the columns in the database
+            </summary>
+        </member>
+        <member name="F:DbNetLink.MetaDataType.Databases">
+            <summary>
+            Lists the databases
+            </summary>
+        </member>
+        <member name="F:DbNetLink.MetaDataType.DataSourceInformation">
+            <summary>
+            Lists information about the database such as version number
+            </summary>
+        </member>
+        <member name="F:DbNetLink.MetaDataType.DataTypes">
+            <summary>
+            Lists the data types supported by the database
+            </summary>
+        </member>
+        <member name="F:DbNetLink.MetaDataType.ForeignKeys">
+            <summary>
+            Lists the foreign keys the database
+            </summary>
+        </member>
+        <member name="F:DbNetLink.MetaDataType.Functions">
+            <summary>
+            Lists the user defined functions in the database (SQL Server only)
+            </summary>
+        </member>
+        <member name="F:DbNetLink.MetaDataType.IndexColumns">
+            <summary>
+            Lists the index columns in the database
+            </summary>
+        </member>
+        <member name="F:DbNetLink.MetaDataType.Indexes">
+            <summary>
+            Lists the indexes in the database
+            </summary>
+        </member>
+        <member name="F:DbNetLink.MetaDataType.PrimaryKeys">
+            <summary>
+            Lists the primary keys in the database
+            </summary>
+        </member>
+        <member name="F:DbNetLink.MetaDataType.Procedures">
+            <summary>
+            Lists the stored procedures in the database
+            </summary>
+        </member>
+        <member name="F:DbNetLink.MetaDataType.ProcedureParameters">
+            <summary>
+            Lists the stored procedure parameters in the database
+            </summary>
+        </member>
+        <member name="F:DbNetLink.MetaDataType.Restrictions">
+            <summary>
+            Lists the restrictions in the database
+            </summary>
+        </member>
+        <member name="F:DbNetLink.MetaDataType.ReservedWords">
+            <summary>
+            Lists the reserved words in the database
+            </summary>
+        </member>
+        <member name="F:DbNetLink.MetaDataType.Tables">
+            <summary>
+            Lists the tables in the database
+            </summary>
+        </member>
+        <member name="F:DbNetLink.MetaDataType.Views">
+            <summary>
+            Lists the views in the database
+            </summary>
+        </member>
+        <member name="F:DbNetLink.MetaDataType.ViewColumns">
+            <summary>
+            Lists the view columns in the database
+            </summary>
+        </member>
+        <member name="F:DbNetLink.MetaDataType.UserDefinedTypes">
+            <summary>
+            Lists the user defined types in the database
+            </summary>
+        </member>
+        <member name="F:DbNetLink.MetaDataType.Users">
+            <summary>
+            Lists the users in the database
+            </summary>
+        </member>
+        <member name="F:DbNetLink.MetaDataType.UserTables">
+            <summary>
+            Lists the non-system tables in the database
+            </summary>
+        </member>
+        <member name="F:DbNetLink.MetaDataType.UserViews">
+            <summary>
+            Lists the non-system views in the database
+            </summary>
+        </member>
+        <member name="T:DbNetLink.CommandConfig">
+            <summary>
+            The CommandConfig class is used to combine an SQL statment and its associated parameters
+            into a single object
+            </summary>
+            <remarks>
+            	<para>The CommandConfig class can be used with the following methods</para>
+            	<list type="bullet">
+            		<item><see cref="!:DbNetLink.Data.DbNetData.ExecuteDelete(CommandConfig)"/></item>
+            		<item><see cref="!:DbNetLink.Data.DbNetData.ExecuteInsert(CommandConfig)"/></item>
+            		<item><see cref="!:DbNetLink.Data.DbNetData.ExecuteQuery(CommandConfig)"/></item>
+            		<item><see cref="!:DbNetLink.Data.DbNetData.ExecuteNonQuery(CommandConfig)"/></item>
+            		<item><see cref="!:DbNetLink.Data.DbNetData.ExecuteSingletonQuery(CommandConfig)"/></item>
+            		<item><see cref="!:DbNetLink.Data.DbNetData.ExecuteDelete(CommandConfig)"/></item>
+            	</list>
+            </remarks>
+            <example>
+            <code>
+            DbNetData Db = new DbNetData("Server=dbserver;Database=Northwind;Trusted_Connection=true;");
+            CommandConfig CmdConfig = new CommandConfig("select * from customers where city = @city and country = @country");
+            CmdConfig.Params["city"] = "London";
+            CmdConfig.Params["country"] = "UK";
+            Db.ExecuteQuery(CmdConfig);
+            </code>
+            </example>
+        </member>
+        <member name="F:DbNetLink.CommandConfig.Sql">
+            <summary>
+            Sql command text including any paramater placeholders
+            </summary>
+        </member>
+        <member name="F:DbNetLink.CommandConfig.Params">
+            <summary>
+            Parameter values collection
+            </summary>
+        </member>
+        <member name="M:DbNetLink.CommandConfig.#ctor(System.String)">
+            <param name="Sql">
+                <para>
+                   The SQL statement
+                </para>
+            </param>
+        </member>
+        <member name="T:DbNetLink.QueryCommandConfig">
+            <summary>
+            The QueryCommandConfig class is used to combine an SQL statment, associated parameters
+            and CommandBehavior into a single object
+            </summary>
+            <remarks>
+            	<para>The QueryCommandConfig object can be used with the following methods</para>
+            	<list type="bullet">
+            		<item><see cref="!:DbNetLink.Data.DbNetData.ExecuteQuery(QueryCommandConfig)"/></item>
+            		<item><see cref="!:DbNetLink.Data.DbNetData.GetDataSet(QueryCommandConfig)"/></item>
+            		<item><see cref="!:DbNetLink.Data.DbNetData.GetDataTable(QueryCommandConfig)"/></item>
+            	</list>
+            </remarks>
+            <example>
+            <code>
+            DbNetData Db = new DbNetData("Server=dbserver;Database=Northwind;Trusted_Connection=true;");
+            QueryCommandConfig CmdConfig = new QueryCommandConfig("select * from customers where city = @city and country = @country");
+            CmdConfig.Params["city"] = "London";
+            CmdConfig.Params["country"] = "UK";
+            CmdConfig.Behavior = CommandBehavior.SequentialAccess;
+            Db.ExecuteQuery(CmdConfig);
+            </code>
+            </example>
+        </member>
+        <member name="F:DbNetLink.QueryCommandConfig.Behavior">
+            <summary>
+            The QueryCommandConfig class is used to combine an SQL statment, associated parameters
+            and CommandBehavior into a single object
+            </summary>
+        </member>
+        <member name="M:DbNetLink.QueryCommandConfig.#ctor(System.String)">
+            <param name="Sql">
+                <para>
+                   The SQL statement
+                </para>
+            </param>
+        </member>
+        <member name="T:DbNetLink.UpdateCommandConfig">
+            <summary>
+            The UpdateCommandConfig class is used to combine an SQL statment, associated update parameters
+            and filter parameters into a single object
+            </summary>
+            <remarks>
+            	<para>The UpdateCommandConfig object can be used with the following methods</para>
+            	<list type="bullet">
+            		<item><see cref="!:DbNetLink.Data.DbNetData.ExecuteUpdate(UpdateCommandConfig)"/></item>
+            	</list>
+            </remarks>
+            <example>
+            <code>
+            DbNetData Db = new DbNetData("Server=dbserver;Database=Northwind;Trusted_Connection=true;");
+            UpdateCommandConfig CmdConfig = new UpdateCommandConfig("update products set discontinued = @discontinued where categoryid = @categoryid");
+            CmdConfig.Params["discontinued"] = 1;
+            CmdConfig.FilterParams["categoryid"] = 9;
+            // Discontinue all products that have a Category Id of 9
+            Db.ExecuteUpdate(CmdConfig);
+            </code>
+            </example>
+            
+        </member>
+        <member name="F:DbNetLink.UpdateCommandConfig.FilterParams">
+            <summary>
+            Parameters used to create the "where" filter on the update statement
+            </summary>
+        </member>
+        <member name="M:DbNetLink.UpdateCommandConfig.#ctor(System.String)">
+            <param name="Sql">
+                <para>
+                   The SQL statement
+                </para>
+            </param>
+        </member>
+        <member name="T:DbNetLink.DbNetData">
+            <summary>
+            The DbNetData class is used to encapsulate a database connection with a collection of methods and properties 
+            that use the connection.
+            </summary>
+        </member>
+        <member name="F:DbNetLink.DbNetData.Adapter">
+            <summary>
+            <seealso href="http://msdn.microsoft.com/en-us/library/system.data.IDbDataAdapter.aspx">IDbDataAdapter</seealso> implemented by provider
+            </summary>
+        </member>
+        <member name="F:DbNetLink.DbNetData.Conn">
+            <summary>
+            <seealso href="http://msdn.microsoft.com/en-us/library/system.data.IDbConnection.aspx">IDbConnection</seealso> implemented by provider
+            </summary>
+        </member>
+        <member name="F:DbNetLink.DbNetData.Command">
+            <summary>
+            <seealso href="http://msdn.microsoft.com/en-us/library/system.data.IDbCommand.aspx">IDbCommand</seealso> implemented by provider
+            </summary>
+        </member>
+        <member name="F:DbNetLink.DbNetData.Reader">
+            <summary>
+            <seealso href="http://msdn.microsoft.com/en-us/library/system.data.IDataReader.aspx">IDataReader</seealso> implemented by provider
+            </summary>
+        </member>
+        <member name="F:DbNetLink.DbNetData.Transaction">
+            <summary>
+            <seealso href="http://msdn.microsoft.com/en-us/library/system.data.IDbTransaction.aspx">IDbTransaction</seealso> implemented by provider
+            </summary>
+        </member>
+        <member name="F:DbNetLink.DbNetData.CloseConnectionOnError">
+            <summary>
+            If set to true then the connection is automatically closed if an error occurs
+            </summary>
+        </member>
+        <member name="F:DbNetLink.DbNetData.InjectionDetectionEnabled">
+            <summary>
+            If set to true then the command text will have any illegal characters rejected
+            </summary>
+        </member>
+        <member name="F:DbNetLink.DbNetData.CommandTimeout">
+            <summary>
+            The number of seconds before a command will timeout. 30 is the default. A value of 0 will prevent a timeout.
+            </summary>
+        </member>
+        <member name="F:DbNetLink.DbNetData.Identity">
+            <summary>
+            The autoincrementing value assigned to the last inserted record (where applicable). Only set if <see cref="!:DbNetLink.Data.DbNetData.ReturnAutoIncrementValue"/> is set to true
+            </summary>
+        </member>
+        <member name="F:DbNetLink.DbNetData.CommandDurationWarningThreshold">
+            <summary>
+            The threshold in milliseconds above which details of commands executing for longer will be logged
+            </summary>
+        </member>
+        <member name="F:DbNetLink.DbNetData.NameDelimiterTemplate">
+            <summary>
+            The template used to qualify database object names containing spaces
+            </summary>
+        </member>
+        <member name="F:DbNetLink.DbNetData.ReturnAutoIncrementValue">
+            <summary>
+            Determines if an attempt is made to fetch the value assigned by an autoincrementing column after an insert
+            </summary>
+        </member>
+        <member name="F:DbNetLink.DbNetData.RowsAffected">
+            <summary>
+            The number of rows affected by the last <see cref="!:DbNetLink.Data.DbNetData.ExecuteDelete(string)"/>  or <see cref="!:DbNetLink.Data.DbNetData.ExecuteUpdate(string)"/> method
+            </summary>
+        </member>
+        <member name="F:DbNetLink.DbNetData.DataSourcePath">
+            <summary>
+            The fully mapped path to the data source
+            </summary>
+        </member>
+        <member name="F:DbNetLink.DbNetData.VerboseErrorInfo">
+            <summary>
+            Controls the verbosity of the error message
+            </summary>
+        </member>
+        <member name="F:DbNetLink.DbNetData.AllowUnqualifiedUpdates">
+            <summary>
+            Prevents accidental execution of unqualified update/delete statements
+            </summary>
+        </member>
+        <member name="F:DbNetLink.DbNetData.SummaryExceptionMessage">
+            <summary>
+            Controls the level of detail shown in any exceptions
+            </summary>
+        </member>
+        <member name="F:DbNetLink.DbNetData.ConvertEmptyToNull">
+            <summary>
+            Converts empty string to null values in update statements when set to true
+            </summary>
+        </member>
+        <member name="F:DbNetLink.DbNetData.ShowConnectionStringOnError">
+            <summary>
+            Controls the display of the connection string when reporting an error condition
+            </summary>
+        </member>
+        <member name="F:DbNetLink.DbNetData.QualifyAllObjectNames">
+            <summary>
+            Indicates that all database object names should be qualified.
+            </summary>
+        </member>
+        <member name="F:DbNetLink.DbNetData.UpgradeSQLServerCE">
+            <summary>
+            If true will automatically upgrade a SQL Server CE database.
+            </summary>
+        </member>
+        <member name="M:DbNetLink.DbNetData.#ctor">
+            <summary>
+            Creates an instance of DbNeData by deriving the connection string from the configuration file using the name DbNetData
+            </summary>
+            <remarks>
+            	<para>The connection string is derived on the following basis:</para>
+            	<list type="bullet">
+            		<item>IAn entry in the web.config connection strings collection called DbNetData is looked for</item>
+            	</list>
+            </remarks>
+            <example>
+            <code>
+            DbNetData Db = new DbNetData();
+            </code>
+            </example>
+        </member>
+        <member name="M:DbNetLink.DbNetData.#ctor(System.String)">
+            <summary>
+            Creates an instance of DbNeData without provider information
+            </summary>
+            <remarks>
+            	<para>The provider is derived on the following basis:</para>
+            	<list type="bullet">
+            		<item>If the connection string matches the regular expression "Provider=.*oledb.*;" then the <see cref="!:DbNetLink.Data.DataProvider.OleDb">OleDb</see> data provider is used</item>
+            		<item>If the connection string matches the regular expression "dsn=.*" then the <see cref="!:DbNetLink.Data.DataProvider.Odbc">Odbc</see> data provider is used</item>
+            		<item>If the connection string matches the regular expression "Data Source=(.*)\.vdb3;" then the <see cref="!:DbNetLink.Data.DataProvider.VistaDB">VistaDB</see> data provider is used</item>
+            		<item>If the connection string matches the regular expression "Data Source=(.*)\.fdb;" then the <see cref="!:DbNetLink.Data.DataProvider.Firebird">Firebird</see> data provider is used</item>
+            		<item>If the connection string matches none of the above then the <see cref="!:DbNetLink.Data.DataProvider.SqlClient">SqlClient</see> data provider is used</item>
+            	</list>
+            Provider information can also be supplied in the connection string as an additional property called DataProvider 
+            specifying one of the supported <see cref="!:DbNetLink.Data.DataProvider">Data providers</see>
+            </remarks>
+            <param name="ConnectionString">Connection string</param>
+            <example>
+            <code>
+            DbNetData Db = new DbNetData("Server=dbserver;Database=Northwind;Trusted_Connection=true;");
+            </code>
+            <code>
+            DbNetData Db = new DbNetData("Provider=Microsoft.Jet.OLEDB.4.0;Data Source=C:\data\hr.mdb");
+            </code>
+            <code>
+            // Speciying the data provider in the connection string
+            DbNetData Db = new DbNetData("Data Source=Employees;user id=scott;password=tiger;DataProvider=OracleClient;");
+            </code>
+            <code>
+            // You can also simply provide the key for a &lt;connectionStrings&gt; entry in the web.config entry
+            DbNetData Db = new DbNetData("nwind");
+            </code> 
+            </example>
+        </member>
+        <member name="M:DbNetLink.DbNetData.#ctor(System.String,DbNetLink.DataProvider)">
+            <summary>
+            Creates an instance of DbNeData with the data provider specified
+            </summary>
+            <param name="ConnectionString">Connection string</param>
+            <param name="Provider"><see cref="!:DbNetLink.Data.DataProvider">Data provider</see></param>
+            <example>
+            <code>
+            DbNetData Db = new DbNetData("Data Source=HUMANRESOURCES;user id=hr;password=hr;", DataProvider.OracleClient);
+            </code>
+            </example>
+        </member>
+        <member name="M:DbNetLink.DbNetData.#ctor(System.Configuration.ConnectionStringSettings)">
+            <summary>
+            Creates an instance of DbNeData with an instance of <seealso href="http://msdn.microsoft.com/en-us/library/system.configuration.connectionstringsettings.aspx">ConnectionStringSettings</seealso> from the web.config file
+            </summary>
+            <param name="CSS">ConnectionStringSettings instance</param>
+            <example>
+            <code>
+            ConnectionStringSettings CSS = ConfigurationManager.ConnectionStrings["northwind"];
+            DbNetData Db = new DbNetData(CSS);
+            </code>
+            </example>
+        </member>
+        <member name="M:DbNetLink.DbNetData.#ctor(System.String,DbNetLink.DataProvider,DbNetLink.DatabaseType)">
+            <summary>
+            Creates an instance of DbNeData with the data provider specified and the database
+            </summary>
+            <remarks>
+            	<para>In most cases specifying the Database type is not necessary as DbNetData can get this information automatically</para>
+            </remarks>
+            <param name="ConnectionString">Connection string</param>
+            <param name="Provider"><see cref="!:DbNetLink.Data.DataProvider">Data provider</see></param>
+            <param name="Database"><see cref="!:DbNetLink.Data.DatabaseType">Database type</see></param>
+            <example>
+            <code>
+            DbNetData Db = new DbNetData("DSN=HumanResources;", DataProvider.Odbc, Database.DB2);
+            </code>
+            </example>
+        </member>
+        <member name="M:DbNetLink.DbNetData.AddColumn(System.String,System.String,System.String)">
+            <summary>
+            Adds a column (if it does not already exist) to an existing SQL server table 
+            </summary>
+            <param name="TableName">
+                <para>
+                   The name of the table
+                </para>
+            </param>
+            <param name="ColumnName">
+                <para>
+                   The name of the column
+                </para>
+            </param>
+            <param name="ColumnDef">
+                <para>
+                   The column definition
+                </para>
+            </param>        
+            <example>
+            <code>
+            DbNetData Db = new DbNetData( "DbNetTime" );
+            Db.Open();
+            Db.AddColumn("dbnetbug_task_user", "task_id", "int");
+            Db.AddColumn("dbnetbug_task_user", "user_id", "int");
+            Db.AddColumn("dbnetbug_task_user", "hourly_rate", "real");
+            Db.Close();		
+            </code>
+            </example>        
+        </member>
+        <member name="M:DbNetLink.DbNetData.AddColumn(System.String,System.String,System.String,System.Object)">
+            <summary>
+            Adds a column to an existing SQL server table and assigns a default value
+            </summary>
+            <param name="TableName">
+                <para>
+                   The name of the table
+                </para>
+            </param>
+            <param name="ColumnName">
+                <para>
+                   The name of the column
+                </para>
+            </param>
+            <param name="ColumnDef">
+                <para>
+                   The column definition
+                </para>
+            </param>  
+            <param name="DefaultValue">
+                <para>
+                   The default value for the columns
+                </para>
+            </param>    
+            <example>
+            <code>
+            DbNetData Db = new DbNetData( "DbNetTime" );
+            Db.Open();
+            Db.AddColumn("dbnetbug_config", "singlestep_quickentry", "bit", 1);
+            Db.AddColumn("dbnetbug_user", "supplies_start_end", "bit", 0);
+            Db.Close();		
+            </code>
+            </example>
+        </member>
+        <member name="M:DbNetLink.DbNetData.ColumnExists(System.String,System.String)">
+            <summary>
+            Checks for the existence of a column in a table
+            </summary>
+            <param name="TableName">
+                <para>
+                   The name of the table
+                </para>
+            </param>
+            <param name="ColumnName">
+                <para>
+                   The name of the column
+                </para>
+            </param>
+            <returns>
+                Returns true if the column exists
+            </returns> 
+        </member>
+        <member name="M:DbNetLink.DbNetData.AddTable(System.String)">
+            <summary>
+            Adds a table to the database if it does not alreay exist (SQL Server only). The table is created 
+            with a single IDENTITY column named ID. Additonal columns can be added with <see cref="!:DbNetLink.Data.DbNetData.AddColumn(string,string,string)"/>.
+            </summary>
+            <param name="TableName">
+                <para>
+                   The name of the table
+                </para>
+            </param>
+        </member>
+        <member name="M:DbNetLink.DbNetData.GetColumnDataType(System.String,System.String)">
+            <summary>
+            Returns the .Net data type of a table column 
+            </summary>
+            <param name="TableName">
+                <para>
+                   The name of the table
+                </para>
+            </param>
+            <param name="ColumnName">
+                <para>
+                   The name of the column
+                </para>
+            </param>
+            <returns>
+                Returns .Net data type
+            </returns> 
+            
+        </member>
+        <member name="M:DbNetLink.DbNetData.TableExists(System.String)">
+            <summary>
+            Checks for the existence of a table in the database
+            </summary>
+            <param name="TableName">
+                <para>
+                   The name of the table
+                </para>
+            </param>
+            <returns>
+                Returns true if the table exists
+            </returns> 
+        </member>
+        <member name="M:DbNetLink.DbNetData.AddViewColumn(System.String,System.String)">
+            <summary>
+            Adds a column (if it does not already exist) to an existing SQL Server View (SQL Server Only) 
+            </summary>
+            <param name="ViewName">
+                <para>
+                   The name of the view
+                </para>
+            </param>
+            <param name="ColumnExpression">
+                <para>
+                   The expression representing the column
+                </para>
+            </param>
+            <example>
+            <code>
+            DbNetData Db = new DbNetData( "DbNetTime" );
+            Db.Open();
+            Db.AddViewColumn("dbnetbug_hours_view", "h.hourly_rate as hourly_rate");
+            Db.AddViewColumn("dbnetbug_hours_view", "(h.hourly_rate * h.decimal_time) as hours_value");
+            Db.Close();		
+            </code>
+            </example>    
+        </member>
+        <member name="M:DbNetLink.DbNetData.ApplyBatchUpdate">
+            <summary>
+            Applys the batch of updates
+            </summary>
+        </member>
+        <member name="M:DbNetLink.DbNetData.ColumnIsNull(System.String)">
+            <summary>
+            Returns a boolean indicating id the value for the specified column name is null
+            </summary>
+            <param name="ColumnName">
+                <para>
+                   The name of the column
+                </para>
+            </param>
+            <returns>
+            bool
+            </returns>
+        </member>
+        <member name="M:DbNetLink.DbNetData.BeginTransaction">
+            <summary>
+            Starts a database transaction
+            </summary>
+        </member>
+        <member name="M:DbNetLink.DbNetData.Rollback">
+            <summary>
+            Rolls back a database transaction
+            </summary>
+        </member>
+        <member name="M:DbNetLink.DbNetData.Commit">
+            <summary>
+            Commits a database transaction
+            </summary>
+        </member>
+        <member name="M:DbNetLink.DbNetData.Close">
+            <summary>
+            Closes the connection
+            </summary>
+        </member>
+        <member name="M:DbNetLink.DbNetData.CreateDatabase">
+            <summary>
+            Creates a database using the supplied connection string
+            </summary>
+        </member>
+        <member name="M:DbNetLink.DbNetData.CompactDatabase">
+            <summary>
+            Compacts and repairs a database using the supplied connection string
+            </summary>
+        </member>
+        <member name="M:DbNetLink.DbNetData.ParseParameters(System.String)">
+            <summary>
+            Parses the Sql statement for parameter names and returns a corresponding paramater collection 
+            </summary>
+            <param name="Sql">
+                <para>
+                   The SQL statement
+                </para>
+            </param>
+            <returns>
+                Returns a collection of parameter objects for each parameter in the SQL
+            </returns>
+            <example>
+            <code>
+            DbNetData Db = new DbNetData( ConfigurationManager.ConnectionStrings["nwind"] );
+            Db.Open();
+            string Sql = "select first_name from user where userid = @userid";
+            ListDictionary Params = Data.ParseParameters(Sql);
+            Params["userid"] = Users.SelectedValue;
+            Db.ExecuteQuery( Sql, Params );
+            Db.Close();		
+            </code>
+            </example>
+        </member>
+        <member name="M:DbNetLink.DbNetData.DeriveParameters(System.String)">
+            <summary>
+            Derives the parameters for a stored procedure
+            </summary>
+            <param name="ProcedureName">
+                <para>
+                   The name of the stored procedure
+                </para>
+            </param>
+            <returns>
+                Returns a collection of IDbDataParameter objects for each parameter in the stored procedure
+            </returns>
+            <example>
+            <code>
+            DbNetData Db = new DbNetData( ConfigurationManager.ConnectionStrings["nwind"] );
+            Db.Open();
+            ListDictionary Params = Db.DeriveParameters("CustOrderHist");
+            ((IDbDataParameter)Params["customerid"]).Value = Customers.SelectedValue;
+            Db.ExecuteQuery( "CustOrderHist", Params );
+            ResultsGridView.DataSource = Db.Reader;
+            ResultsGridView.DataBind();
+            Db.Close();		
+            </code>
+            </example>
+        </member>
+        <member name="M:DbNetLink.DbNetData.ExecuteDelete(System.String)">
+            <summary>
+            Deletes record from the table using the supplied SQL statement
+            </summary>
+            <param name="Sql">
+                <para>
+                   The delete statement
+                </para>
+            </param>
+            <returns>
+                Returns the number of records deleted
+            </returns>
+            <example>
+            <code>
+            DbNetData Db = new DbNetData( ConfigurationManager.ConnectionStrings["nwind"] );
+            Db.Open();
+            Db.ExecuteDelete("delete from products where discontinued = 1")
+            Db.Close();		
+            </code>
+            </example>
+        </member>
+        <member name="M:DbNetLink.DbNetData.ExecuteDelete(DbNetLink.CommandConfig)">
+             <summary>
+             Deletes record from the table using the supplied CommandConfig
+             </summary>
+             <param name="CmdConfig">
+                 <para>
+                    The parameterised delete statement/table name and parameter values
+                 </para>
+             </param>
+             <returns>
+                 Returns the number of records deleted
+             </returns>
+             <example>
+             <code>
+             DbNetData Db = new DbNetData( ConfigurationManager.ConnectionStrings["nwind"] );
+             Db.Open();
+             CommandConfig CmdConfig = new CommandConfig("products");
+             // You only need to specify the table name. DbNetData will build the rest of 
+             // the delete statement automatically using the parameters to build the where
+             // clause
+             CmdConfig.Params["discontinued"] = 1;
+            
+             Db.ExecuteDelete(CmdConfig)
+             Db.Close();		
+             </code>
+             </example>
+        </member>
+        <member name="M:DbNetLink.DbNetData.ExecuteDelete(System.String,System.Collections.IDictionary)">
+             <summary>
+             Deletes record from the table using the supplied parameterised statement and parameter values	
+             </summary>
+             <param name="Sql">
+                 <para>
+                    The parameterised delete statement or table name
+                 </para>
+             </param>
+             <param name="Params">
+                 <para>
+                    The paramater values
+                 </para>
+             </param>
+             <returns>
+                 Returns the number of records deleted
+             </returns>
+             <example>
+             <code>
+             DbNetData Db = new DbNetData( ConfigurationManager.ConnectionStrings["nwind"] );
+             Db.Open();
+             Params = new ListDisctionary();
+             Params["discontinued"] = 1;
+            
+             Db.ExecuteDelete("products", Params)
+             // You only need to specify the table name. DbNetData will build the rest of 
+             // the delete statement automatically using the parameters to build the where
+             // clause					
+             Db.Close();		
+             </code>
+             </example>
+        </member>
+        <member name="M:DbNetLink.DbNetData.ExecuteInsert(System.String)">
+            <summary>
+            Inserts a record into the database using the supplied insert statement
+            </summary>
+            <param name="Sql">
+                <para>
+                   The insert statement
+                </para>
+            </param>
+            <returns>
+                Returns the value assigned to the auto-incrementing (where applicable) column or -1
+            </returns>
+            <example>
+            <code>
+            DbNetData Db = new DbNetData( ConfigurationManager.ConnectionStrings["nwind"] );
+            Db.Open();
+            Db.ReturnAutoIncrementValue = true;
+            long ProductID = Db.ExecuteInsert("insert into products (productname) values (" + ProductName.Value + ")");
+            Db.Close();		
+            </code>
+            </example>
+        </member>
+        <member name="M:DbNetLink.DbNetData.ExecuteInsert(DbNetLink.CommandConfig)">
+            <summary>
+            Inserts a record into the database using the supplied CommandConfig
+            </summary>
+            <param name="CmdConfig">
+                <para>
+                   The parameterised insert statement/table name and parameter values
+                </para>
+            </param>
+            <returns>
+                Returns the value assigned to the auto-incrementing (where applicable) column or -1
+            </returns>
+            <example>
+            <code>
+            DbNetData Db = new DbNetData( ConfigurationManager.ConnectionStrings["nwind"] );
+            Db.Open();
+            CommandConfig CmdConfig = new CommandConfig("products");
+            // You only need to specify the table name. DbNetData will build the rest of 
+            // the insert statement automatically using the parameters 
+            CmdConfig.Params["productname"] = ProductName.Value;
+            CmdConfig.Params["categoryid"] = CategoryID.Value;
+            CmdConfig.Params["description"] = ProductName.Description;
+            CmdConfig.Params["discontinued"] = 0;
+            Db.ReturnAutoIncrementValue = true;
+            long ProductID = Db.ExecuteInsert(CmdConfig)
+            Db.Close();		
+            </code>
+            </example>
+        </member>
+        <member name="M:DbNetLink.DbNetData.ExecuteInsert(System.String,System.Collections.IDictionary)">
+            <summary>
+            Inserts a record into the database using the supplied table name and parameters
+            </summary>
+            <param name="Sql">
+                <para>
+                   The insert statement or table name
+                </para>
+            </param>
+            <param name="Params">
+                <para>
+                   Collection of parameter values
+                </para>
+            </param>
+            <returns>
+                Returns the value assigned to the auto-incrementing (where applicable) column or -1. The property
+                <see cref="!:DbNetLink.Data.ReturnAutoIncrementValue"/> must be set to true for the auto-incrementing value to be returned.
+            </returns>
+            <example>
+            <code>
+            DbNetData Db = new DbNetData( ConfigurationManager.ConnectionStrings["nwind"] );
+            Db.Open();
+            ListDictionary Params = new ListDictionary();
+            // the insert statement automatically using the parameters 
+            Params["productname"] = ProductName.Value;
+            Params["categoryid"] = CategoryID.Value;
+            Params["description"] = ProductName.Description;
+            Params["discontinued"] = 0;
+            Db.ReturnAutoIncrementValue = true;
+            long ProductID = Db.ExecuteInsert("products", Params)
+            Db.Close();		
+            </code>
+            </example>
+        </member>
+        <member name="M:DbNetLink.DbNetData.ExecuteNonQuery(DbNetLink.CommandConfig)">
+            <summary>
+            Executes and ad-hoc SQL statement that does not return a record set.
+            </summary>
+            <param name="CmdConfig">
+                <para>
+                   The SQL statement and parameters
+                </para>
+            </param>
+            <returns>
+                Returns the number of rows affected
+            </returns>
+            <example>
+            <code>
+            DbNetData Db = new DbNetData( ConfigurationManager.ConnectionStrings["nwind"] );
+            Db.Open();
+            CommandConfig CmdConfig = new CommandConfig("drop table products");
+            Db.ExecuteNonQuery(CmdConfig)
+            Db.Close();		
+            </code>
+            </example>
+        </member>
+        <member name="M:DbNetLink.DbNetData.ExecuteNonQuery(System.String)">
+            <summary>
+            Executes and ad-hoc SQL statement that does not return a record set.
+            </summary>
+            <param name="Sql">
+                <para>
+                   The insert statement or table name
+                </para>
+            </param>
+            <returns>
+                Returns the number of rows affected
+            </returns>
+            <example>
+            <code>
+            DbNetData Db = new DbNetData( ConfigurationManager.ConnectionStrings["nwind"] );
+            Db.Open();
+            Db.ExecuteNonQuery("drop table products")
+            Db.Close();		
+            </code>
+            </example>
+        </member>
+        <member name="M:DbNetLink.DbNetData.ExecuteNonQuery(System.String,System.Collections.IDictionary)">
+            <summary>
+            Executes and ad-hoc SQL statement that does not return a record set.
+            </summary>
+            <param name="Sql">
+                <para>
+                   The insert statement or table name
+                </para>
+            </param>
+            <param name="Params">
+                <para>
+                   Collection of parameter values
+                </para>
+            </param>
+            <returns>
+                Returns the number of rows affected
+            </returns>
+            <example>
+            <code>
+            DbNetData Db = new DbNetData( ConfigurationManager.ConnectionStrings["nwind"] );
+            Db.Open();
+            ListDictionary Params = new ListDictionary();
+            Params["param1"] = 1;
+            Params["param2"] = CategoryID.Value;
+            Db.ExecuteNonQuery("update products set discontinued = @param1 where category = @param2")
+            Db.Close();		
+            </code>
+            </example>
+        </member>
+        <member name="M:DbNetLink.DbNetData.ExecuteNonQuery(System.String,System.Boolean)">
+            <summary>
+            Executes and ad-hoc SQL statement that does not return a record set.
+            </summary>
+            <param name="Sql">
+                <para>
+                   The insert statement or table name
+                </para>
+            </param>
+            <param name="IgnoreErrors">
+                <para>
+                   Suppress any encountered errors
+                </para>
+            </param>
+            <returns>
+                Returns the number of rows affected
+            </returns>
+            <example>
+            <code>
+            DbNetData Db = new DbNetData( ConfigurationManager.ConnectionStrings["nwind"] );
+            Db.Open();
+            Db.ExecuteNonQuery("drop table products", true)
+            Db.Close();		
+            </code>
+            </example>
+        </member>
+        <member name="M:DbNetLink.DbNetData.ExecuteNonQuery(System.String,System.Collections.IDictionary,System.Boolean)">
+            <summary>
+            Executes and ad-hoc SQL statement that does not return a record set.
+            </summary>
+            <param name="Sql">
+                <para>
+                   The insert statement or table name
+                </para>
+            </param>
+            <param name="Params">
+                <para>
+                   Parameter values collection
+                </para>
+            </param>
+            <param name="IgnoreErrors">
+                <para>
+                   Suppress any encountered errors
+                </para>
+            </param>
+            <returns>
+                Returns the number of rows affected
+            </returns>
+            <example>
+            <code>
+            DbNetData Db = new DbNetData( ConfigurationManager.ConnectionStrings["nwind"] );
+            Db.Open();
+            Db.ExecuteNonQuery("drop table products", null, true)
+            Db.Close();		
+            </code>
+            </example>
+        </member>
+        <member name="M:DbNetLink.DbNetData.ExecuteScalar(DbNetLink.CommandConfig)">
+            <summary>
+            Executes a stored procedure that returns a scalar value.
+            </summary>
+            <param name="Config">
+                <para>
+                   Stored procedure name and parameter values collection
+                </para>
+            </param>
+            <returns>
+                Returns the scalar value
+            </returns>
+            <example>
+            <code>
+            DbNetData Db = new DbNetData( ConfigurationManager.ConnectionStrings["nwind"] );
+            Db.Open();
+            CommandConfig SpConfig = new CommandConfig("sp_process_message");
+            SpConfig.Params["message_id"] = MessageId;
+            string StatusMessage = Db.ExecuteScalar(SpConfig).ToString()
+            Db.Close();	
+            </code>
+            </example>
+        </member>
+        <member name="M:DbNetLink.DbNetData.ExecuteQuery(DbNetLink.CommandConfig)">
+            <summary>
+            Executes a select statement or stored procedure that returns a record set. Uses the CommandConfig argument to encapsulate the
+            command text and any parameter values.
+            </summary>
+            <param name="CmdConfig">
+                <para>
+                   The SQL statement and parameters
+                </para>
+            </param>
+            <example>
+            <code>
+            DbNetData Db = new DbNetData( ConfigurationManager.ConnectionStrings["nwind"] );
+            Db.Open();
+            CommandConfig CmdConfig = new CommandConfig("select * products");
+            CmdConfig.Params["discontinued"] = 1;
+            Db.ExecuteQuery(CmdConfig)
+            DiscontinuedProductsGridView.DataSource = Db.Reader;   
+            DiscontinuedProductsGridView.DataBind(); 
+            Db.Close();		
+            </code>
+            </example>
+        </member>
+        <member name="M:DbNetLink.DbNetData.ExecuteQuery(DbNetLink.QueryCommandConfig)">
+            <summary>
+            Executes a select statement or stored procedure that returns a record set. Uses the CommandConfig argument to encapsulate the
+            command text, parameter values and command behavior.
+            </summary>
+            <param name="CmdConfig">
+                <para>
+                   The SQL statement, parameters and command behavior
+                </para>
+            </param>
+            <example>
+            <code>
+            DbNetData Db = new DbNetData( ConfigurationManager.ConnectionStrings["nwind"] );
+            Db.Open();
+            QueryCommandConfig CmdConfig = new QueryCommandConfig("select * products");
+            CmdConfig.Params["discontinued"] = 1;
+            CmdConfig.Behavior = CommandBehavior.SequentialAccess;
+            Db.ExecuteQuery(CmdConfig)
+            DiscontinuedProductsGridView.DataSource = Db.Reader;   
+            DiscontinuedProductsGridView.DataBind(); 
+            Db.Close();		
+            </code>
+            </example>
+        </member>
+        <member name="M:DbNetLink.DbNetData.ExecuteQuery(System.String)">
+            <summary>
+            Executes a select statement or stored procedure
+            </summary>
+            <param name="Sql">
+                <para>
+                   The SQL statement
+                </para>
+            </param>
+            <example>
+            <code>
+            DbNetData Db = new DbNetData( ConfigurationManager.ConnectionStrings["nwind"] );
+            Db.Open();
+            Db.ExecuteQuery("select * from products where discontinued &lt;&gt; 0");
+            DiscontinuedProductsGridView.DataSource = Db.Reader;   
+            DiscontinuedProductsGridView.DataBind(); 
+            Db.Close();		
+            </code>
+            </example>
+        </member>
+        <member name="M:DbNetLink.DbNetData.ExecuteQuery(System.String,System.Collections.IDictionary)">
+            <summary>
+            Executes a parameterised select statement or stored procedure 
+            </summary>
+            <param name="Sql">
+                <para>
+                   The SQL statement
+                </para>
+            </param>
+            <param name="Params">
+                <para>
+                   Parameter values collection
+                </para>
+            </param>
+            <returns>
+                Returns the number of rows affected
+            </returns>
+            <example>
+            <code>
+            DbNetData Db = new DbNetData( ConfigurationManager.ConnectionStrings["nwind"] );
+            Db.Open();
+            ListDicitonary Params = new ListDicitonary();
+            Params["discontinued"] = 0;
+            Db.ExecuteQuery("select * from products where discontinued &lt;&gt; @discontinued");
+            DiscontinuedProductsGridView.DataSource = Db.Reader;   
+            DiscontinuedProductsGridView.DataBind(); 
+            Db.Close();		
+            </code>
+            </example>
+        </member>
+        <member name="M:DbNetLink.DbNetData.ExecuteQuery(System.String,System.Collections.IDictionary,System.Data.CommandBehavior)">
+            <summary>
+            Executes a parameterised select statement or stored procedure with a specified command behavior
+            </summary>
+            <param name="Sql">
+                <para>
+                   The SQL statement
+                </para>
+            </param>
+            <param name="Params">
+                <para>
+                   Parameter values collection
+                </para>
+            </param>
+            <param name="Behaviour">
+                <para>
+                   CommandBehavior
+                </para>
+            </param>
+            <example>
+            <code>
+            DbNetData Db = new DbNetData( ConfigurationManager.ConnectionStrings["nwind"] );
+            Db.Open();
+            ListDicitonary Params = new ListDicitonary();
+            Params["discontinued"] = 0;
+            Db.ExecuteQuery("select * from products where discontinued &lt;&gt; @discontinued")
+            DiscontinuedProductsGridView.DataSource = Db.Reader;   
+            DiscontinuedProductsGridView.DataBind(); 
+            Db.Close();		
+            </code>
+            </example>
+        </member>
+        <member name="M:DbNetLink.DbNetData.ExecuteSingletonQuery(System.String)">
+            <summary>
+            Executes a select statement or stored procedure and reads the first row of the returned record set
+            </summary>
+            <param name="Sql">
+                <para>
+                   The SQL statement
+                </para>
+            </param>
+            <returns>
+            Returns True if a record is found otherwise False
+            </returns>
+            <example>
+            <code>
+            DbNetData Db = new DbNetData( ConfigurationManager.ConnectionStrings["nwind"] );
+            Db.Open();
+            if ( Db.ExecuteSingletonQuery("select productname from products where id = 1") )
+            	ProductName.Text = Db.ReaderValue("productname"); 
+            Db.Close();		
+            </code>
+            </example>
+        </member>
+        <member name="M:DbNetLink.DbNetData.ExecuteSingletonQuery(DbNetLink.QueryCommandConfig)">
+            <summary>
+            Executes a select statement or stored procedure and reads the first row of the returned record set
+            </summary>
+            <param name="CmdConfig">
+                <para>
+                   The SQL statement and parameter values
+                </para>
+            </param>
+            <returns>
+            Returns True if a record is found otherwise False
+            </returns>
+            <example>
+            <code>
+            DbNetData Db = new DbNetData( ConfigurationManager.ConnectionStrings["nwind"] );
+            Db.Open();
+            CommandConfig CmdConfig = new CommandConfig("select productname from products");
+            CmdConfig.Params["id"] = ProductID.Value;
+            if ( Db.ExecuteSingletonQuery(CmdConfig) )
+            	ProductName.Text = Db.ReaderValue("productname"); 
+            Db.Close();		
+            </code>
+            </example>
+        </member>
+        <member name="M:DbNetLink.DbNetData.ExecuteSingletonQuery(System.String,System.Collections.IDictionary)">
+            <summary>
+            Executes a select statement or stored procedure and reads the first row of the returned record set
+            </summary>
+            <param name="Sql">
+                <para>
+                   The SQL statement
+                </para>
+            </param>
+            <param name="Params">
+                <para>
+                   Parameter values collection
+                </para>
+            </param>
+            <returns>
+            Returns True if a record is found otherwise False
+            </returns>
+            <example>
+            <code>
+            DbNetData Db = new DbNetData( ConfigurationManager.ConnectionStrings["nwind"] );
+            Db.Open();
+            ListDictionary Params = new ListDictionary();
+            CmdConfig.Params["id"] = ProductID.Value;
+            if ( Db.ExecuteSingletonQuery("select productname from products", Params) )
+            	ProductName.Text = Db.ReaderValue("productname"); 
+            Db.Close();		
+            </code>
+            </example>
+        </member>
+        <member name="M:DbNetLink.DbNetData.ExecuteSingletonQuery(System.String,System.Collections.IDictionary,System.Data.CommandBehavior)">
+            <summary>
+            Executes a select statement or stored procedure and reads the first row of the returned record set
+            </summary>
+            <param name="Sql">
+                <para>
+                   The SQL statement
+                </para>
+            </param>
+            <param name="Params">
+                <para>
+                   Parameter values collection
+                </para>
+            </param>
+            <param name="Behavior">
+                <para>
+                   CommandBehavior enum
+                </para>
+            </param> 
+            <returns>
+            Returns True if a record is found otherwise False
+            </returns>
+        </member>
+        <member name="M:DbNetLink.DbNetData.ExecuteUpdate(DbNetLink.UpdateCommandConfig)">
+            <summary>
+            Executes an SQL update statement built using the supplied UpdateCommandConfig object
+            </summary>
+            <param name="CmdConfig">
+                <para>
+                   The SQL statement, update and filter parameter collections
+                </para>
+            </param>
+            <returns>
+            Returns the number of rows affected
+            </returns>
+            <example>
+            <code>
+            DbNetData Db = new DbNetData( ConfigurationManager.ConnectionStrings["nwind"] );
+            Db.Open();
+            UpdateCommandConfig CmdConfig = new UpdateCommandConfig("products");
+            // It is only necessary to supply the table name as the full update statement is built automatically
+            CmdConfig.Params["productname"] = ProductName.Value;
+            CmdConfig.FilterParams["productid"] = ProductID.Value;
+            Db.ExecuteUpdate(CmdConfig);
+            Db.Close();		
+            </code>
+            </example>
+        </member>
+        <member name="M:DbNetLink.DbNetData.ExecuteUpdate(System.String)">
+            <summary>
+            Executes an SQL update statement
+            </summary>
+            <param name="Sql">
+                <para>
+                   The SQL update statement
+                </para>
+            </param>
+            <returns>
+            Returns the number of rows affected
+            </returns>
+            <example>
+            <code>
+            DbNetData Db = new DbNetData( ConfigurationManager.ConnectionStrings["nwind"] );
+            Db.Open();
+            Db.ExecuteUpdate("update product set productname = '" + ProductName.Value + "' where productid = " + ProductID.Value );
+            Db.Close();		
+            </code>
+            </example>
+        </member>
+        <member name="M:DbNetLink.DbNetData.ExecuteUpdate(System.String,System.Collections.IDictionary)">
+            <summary>
+            Executes update statement built using the supplied SQL statement and parameters
+            </summary>
+            <param name="Sql">
+                <para>
+                   The SQL statement, update and filter parameter collections
+                </para>
+            </param>
+            <param name="Params">
+                <para>
+                   Parameter values collection
+                </para>
+            </param>
+            <returns>
+            Returns the number of rows affected
+            </returns>
+            <example>
+            <code>
+            DbNetData Db = new DbNetData( ConfigurationManager.ConnectionStrings["nwind"] );
+            Db.Open();
+            ListDictionary Params = new ListDictionary();
+            Params["productname"] = ProductName.Value;
+            Params["productid"] = ProductID.Value;
+            Db.ExecuteUpdate("update product set productname = @productname where productid = @productid", Params);
+            Db.Close();		
+            </code>
+            </example>
+        </member>
+        <member name="M:DbNetLink.DbNetData.ExecuteUpdate(System.String,System.Collections.IDictionary,System.Collections.IDictionary)">
+            <summary>
+            Executes update statement built using the supplied SQL statement and seperate update value and filter parameters
+            </summary>
+            <param name="Sql">
+                <para>
+                   The SQL statement, update and filter parameter collections
+                </para>
+            </param>
+            <param name="Params">
+                <para>
+                   Column value parameters collection
+                </para>
+            </param>
+            <param name="FilterParams">
+                <para>
+                   Filter value parameters collection
+                </para>
+            </param>
+            <returns>
+            Returns the number of rows affected
+            </returns>
+            <example>
+            <code>
+            DbNetData Db = new DbNetData( ConfigurationManager.ConnectionStrings["nwind"] );
+            Db.Open();
+            ListDictionary Params = new ListDictionary();
+            ListDictionary FilterParams = new ListDictionary();
+            Params["productname"] = ProductName.Value;
+            FilterParams["productid"] = ProductID.Value;
+            Db.ExecuteUpdate("product", Params, FilterParams);
+            // When using separate column value and filter parameters it is only 
+            // necessary to specify the table name in statement text
+            Db.Close();		
+            </code>
+            </example>
+        </member>
+        <member name="M:DbNetLink.DbNetData.GetDataSet(System.String)">
+            <summary>
+            Returns a DataSet for the supplied SQL statement
+            </summary>
+            <param name="Sql">
+                <para>
+                   The SQL statement, update and filter parameter collections
+                </para>
+            </param>
+            <returns>
+            A DataSet
+            </returns>
+            <example>
+            <code>
+            DbNetData Db = new DbNetData( ConfigurationManager.ConnectionStrings["nwind"] );
+            Db.Open();
+            DataGrid1.DataSource = Db.GetDataSet("select * from products");
+            DataGrid1.DataBind();
+            Db.Close();		
+            </code>
+            </example>
+        </member>
+        <member name="M:DbNetLink.DbNetData.GetDataSet(DbNetLink.QueryCommandConfig)">
+            <summary>
+            Returns a DataSet for the supplied QueryCommandConfig
+            </summary>
+            <param name="CmdConfig">
+                <para>
+                   Combined parameterised sql statement/procedure and parameter values
+                </para>
+            </param>
+            <returns>
+            A DataSet
+            </returns>
+            <example>
+            <code>
+            DbNetData Db = new DbNetData( ConfigurationManager.ConnectionStrings["nwind"] );
+            Db.Open();
+            QueryCommandConfig CmdConfig = new QueryCommandConfig("select * from products");
+            CmdConfig.Params["categoryid"] = CategoryID.Value;
+            DataGrid1.DataSource = Db.GetDataSet(CmdConfig);
+            DataGrid1.DataBind();
+            Db.Close();		
+            </code>
+            </example>
+        </member>
+        <member name="M:DbNetLink.DbNetData.GetDataSet(System.String,System.Collections.IDictionary)">
+            <summary>
+            Returns a DataSet for the supplied SQL statement and parameter values
+            </summary>
+            <param name="Sql">
+                <para>
+                   SQL statement or stored procedure name
+                </para>
+            </param>
+            <param name="Params">
+                <para>
+                   Parameter values collection
+                </para>
+            </param>
+            <returns>
+            A DataSet
+            </returns>
+            <example>
+            <code>
+            DbNetData Db = new DbNetData( ConfigurationSettings.AppSettings["nwind"] );
+            Db.Open();
+            ListDictionary Params = new ListDictionary();
+            Params["categoryid"] = CategoryID.Value;
+            DataGrid1.DataSource = Db.GetDataSet("select * from products", Params);
+            DataGrid1.DataBind();
+            Db.Close();		
+            </code>
+            </example>
+        </member>
+        <member name="M:DbNetLink.DbNetData.GetDataTable(System.String)">
+            <summary>
+            Returns a DataTable for the supplied SQL statement
+            </summary>
+            <param name="Sql">
+                <para>
+                   The SQL statement, update and filter parameter collections
+                </para>
+            </param>
+            <returns>
+            A DataTable
+            </returns>
+            <example>
+            <code>
+            DbNetData Db = new DbNetData( ConfigurationManager.ConnectionStrings["nwind"] );
+            Db.Open();
+            Product.DataTextField="ProductName";
+            Product.DataValueField="ProductID";
+            Product.DataSource = Db.GetDataTable( "select * from products" );
+            Product.DataBind()
+            Db.Close();		
+            </code>
+            </example>
+        </member>
+        <member name="M:DbNetLink.DbNetData.GetDataTable(DbNetLink.QueryCommandConfig)">
+            <summary>
+            Returns a DataTable for the supplied QueryCommandConfig
+            </summary>
+            <param name="CmdConfig">
+                <para>
+                   Combined parameterised sql statement/procedure and parameter values
+                </para>
+            </param>
+            <returns>
+            A DataTable
+            </returns>
+            <example>
+            <code>
+            DbNetData Db = new DbNetData( ConfigurationManager.ConnectionStrings["nwind"] );
+            Db.Open();
+            Product.DataTextField="ProductName";
+            Product.DataValueField="ProductID";
+            QueryCommandConfig CmdConfig = new QueryCommandConfig("select * from products where categoryid = @categoryid");
+            CmdConfig.Params["categoryid"] = CategoryID.Value;
+            Product.DataSource = Db.GetDataTable(CmdConfig);
+            Product.DataBind()
+            Db.Close();		
+            </code>
+            </example>
+        </member>
+        <member name="M:DbNetLink.DbNetData.GetDataTable(System.String,System.Collections.IDictionary)">
+            <summary>
+            Returns a DataTable for the supplied SQL statement and parameter values
+            </summary>
+            <param name="Sql">
+                <para>
+                   SQL statement or stored procedure name
+                </para>
+            </param>
+            <param name="Params">
+                <para>
+                   Parameter values collection
+                </para>
+            </param>
+            <returns>
+            A DataTable
+            </returns>
+            <example>
+            <code>
+            DbNetData Db = new DbNetData( ConfigurationManager.ConnectionStrings["nwind"] );
+            Db.Open();
+            Product.DataTextField="ProductName";
+            Product.DataValueField="ProductID";
+            ListDictionary Params = new ListDictionary();
+            Params["categoryid"] = CategoryID.Value;
+            Product.DataSource = Db.GetDataSet("select * from products where categoryid = @categoryid", Params);
+            Product.DataBind()
+            Db.Close();		
+            </code>
+            </example>
+        </member>
+        <member name="M:DbNetLink.DbNetData.GetHashtable(DbNetLink.QueryCommandConfig)">
+            <summary>
+            Returns the data for the current record in the data reader as a Hashtable
+            </summary>
+            <returns>
+            A Hashtable
+            </returns>
+            <example>
+            <code>
+            DbNetData Db = new DbNetData( ConfigurationManager.ConnectionStrings["nwind"] );
+            Db.Open();
+            ListDictionary Params = new ListDictionary();
+            Params["productid"] = ProductID.Value;
+            Hashtable ProductData = new Hashtable();
+            if ( Db.ExecuteSingletonQuery("select * from products where productid = @productid", Params) )
+                ProductData = Db.GetHashtable();
+            Db.Close();		
+            </code>
+            </example>
+        </member>
+        <member name="M:DbNetLink.DbNetData.GetSchemaTable(System.String)">
+            <summary>
+            Returns a DataTable containing column metadata for the supplied SQL statement/table name
+            </summary>
+            <param name="Sql">
+                <para>
+                   SQL statement or table name
+                </para>
+            </param>
+            <returns>
+            A DataTable
+            </returns>
+            <example>
+            <code>
+            DbNetData Db = new DbNetData( ConfigurationManager.ConnectionStrings["nwind"] );
+            Db.Open();
+            DataTable SchemaInfo = Db.GetSchemaTable("customers");
+            foreach ( DataRow R in 	SchemaInfo.Rows )
+            	if (R["ColumnName"].ToString() == "CustomID" )
+            		if ( (bool)R["IsKey"]  )
+            			CustomerID.ReadOnly = true;
+            </code>
+            </example>
+        </member>
+        <member name="M:DbNetLink.DbNetData.GetSchemaTable(System.String,System.Collections.Specialized.ListDictionary)">
+            <summary>
+            Returns a DataTable containing column metadata for the supplied SQL statement/table name and parameters
+            </summary>
+            <param name="Sql">
+                <para>
+                   SQL statement or table name
+                </para>
+            </param>
+            <param name="Params">
+                <para>
+                   Parameter values collection
+                </para>
+            </param>
+            <returns>
+            A DataTable
+            </returns>
+        </member>
+        <member name="M:DbNetLink.DbNetData.GetSequenceValue(System.String,System.Boolean)">
+            <summary>
+            Returns the next or current Oracle sequence value
+            </summary>
+            <param name="SequenceName">
+                <para>
+                   The name of the Oracle Sequence
+                </para>
+            </param>
+            <param name="Increment">
+                <para>
+                   If true returns the next value otherwise returns the current value
+                </para>
+            </param>
+            <returns>
+            Boolean
+            </returns>
+        </member>
+        <member name="M:DbNetLink.DbNetData.IsReservedWord(System.String)">
+            <summary>
+            Returns true if the Token parameter is a reserved word in the database
+            </summary>
+            <param name="Token">
+                <para>
+                   The reserved word
+                </para>
+            </param>
+            <returns>
+            Boolean
+            </returns>
+        </member>
+        <member name="M:DbNetLink.DbNetData.JsonRecord">
+            <summary>
+            Returns a ListDictionary object representing the current record in a format suitable for serialising in JSON format
+            </summary>
+            <returns>
+            ListDictionary
+            </returns>
+        </member>
+        <member name="M:DbNetLink.DbNetData.MetaDataCollection(DbNetLink.MetaDataType)">
+            <summary>
+            Returns a DataTable containing database metadata of the specified type
+            </summary>
+            <param name="CollectionType">
+                <para>
+                   The Meta data collection type
+                </para>
+            </param>
+            <returns>
+            DataTable
+            </returns>
+            <example>
+            <code>
+            DbNetData Db = new DbNetData( ConfigurationManager.ConnectionStrings["nwind"] );
+            Db.Open();
+            DatabaseTables.DataTextField="TableName";
+            DatabaseTables.DataValueField="TableName";
+            DatabaseTables.DataSource = Db.MetaDataCollection( MetaDataType.Tables );
+            DatabaseTables.DataBind();
+            Db.Close();		
+            </code>
+            </example>
+        </member>
+        <member name="M:DbNetLink.DbNetData.MetaDataCollection(System.String)">
+            <summary>
+            Returns a DataTable containing database metadata of the specified type
+            </summary>
+            <param name="CollectionType">
+                <para>
+                   The Meta data collection type
+                </para>
+            </param>
+            <returns>
+            DataTable
+            </returns>
+            <example>
+            <code>
+            DbNetData Db = new DbNetData( ConfigurationManager.ConnectionStrings["nwind"] );
+            Db.Open();
+            DatabaseTables.DataTextField="TableName";
+            DatabaseTables.DataValueField="TableName";
+            DatabaseTables.DataSource = Db.MetaDataCollection( "Tables" );
+            DatabaseTables.DataBind();
+            Db.Close();		
+            </code>
+            </example> 
+        </member>
+        <member name="M:DbNetLink.DbNetData.Open">
+            <summary>
+            Opens the database connection
+            </summary>
+            <example>
+            <code>
+            DbNetData Db = new DbNetData( ConfigurationManager.ConnectionStrings["nwind"] );
+            Db.Open();
+            ...
+            Db.Close();		
+            </code>
+            </example> 
+        </member>
+        <member name="M:DbNetLink.DbNetData.ParameterName(System.String)">
+            <summary>
+            Returns then corresponding database parameter name for the supplied token
+            </summary>
+            <param name="Key">
+                <para>
+                   The unformatted name of the parameter e.g. "userid"
+                </para>
+            </param>
+            <returns>
+            The qualified parameter name. For example for an MS SQL Server connection the key "userid" would be 
+            returned as "@userid".
+            </returns>
+        </member>
+        <member name="M:DbNetLink.DbNetData.QualifiedDbObjectName(System.String,System.Char)">
+            <summary>
+            Qualifies a delimited list of database object names to ensure that it can can be used in an SQL Statement.
+            </summary>
+            <remarks>
+            The function only qualifies the name if necessary for example if the name contains an embeded space or is a reserved word.
+            </remarks>
+            <param name="ObjectName">
+                <para>
+                   Delimited list of names
+                </para>
+            </param>
+            <returns>
+            The qualified object names. For example for a MS SQL Server connection the name "order id,product id" would become "[order id],[product id]".
+            </returns>
+        </member>
+        <member name="M:DbNetLink.DbNetData.QualifiedDbObjectName(System.String)">
+            <summary>
+            Qualifies a database object name to ensure that it can can be used in an SQL Statement.
+            </summary>
+            <remarks>
+            The function only qualifies the name if necessary for example if the name contains an embeded space or is a reserved word.
+            </remarks>
+            <param name="ObjectName">
+                <para>
+                   The name of the column, table, index etc
+                </para>
+            </param>
+            <returns>
+            The qualified object name. For example for a MS SQL Server connection the name "order details" would become "[order details]".
+            </returns>
+        </member>
+        <member name="M:DbNetLink.DbNetData.UnqualifiedDbObjectName(System.String)">
+            <summary>
+            Removes the qualifiers from a database object name.
+            </summary>
+            <param name="ObjectName">
+                <para>
+                   The qualified name of the column, table, index etc
+                </para>
+            </param>
+            <returns>
+            The unqualified object name. For example for a MS SQL Server connection the name "[order details]" would become "order details".
+            </returns>
+        </member>
+        <member name="M:DbNetLink.DbNetData.UnqualifiedDbObjectName(System.String,System.Boolean)">
+            <summary>
+            Removes the qualifiers from a database object name.
+            </summary>
+            <param name="ObjectName">
+                <para>
+                   The qualified name of the column, table, index etc
+                </para>
+            </param>
+            <param name="BaseNameOnly">
+                <para>
+                   Only unqualifies the base part of the database object name
+                </para>
+            </param>
+            <returns>
+            The unqualified object name. For example for a MS SQL Server connection the name "[northwind].[order details]" would become "[northwind].order details".
+            </returns>
+        </member>
+        <member name="M:DbNetLink.DbNetData.ReaderString(System.String)">
+            <summary>
+            Returns the string value for the current row in the Reader for the specified column name
+            </summary>
+            <param name="ColumnName">
+                <para>
+                   The name of the column
+                </para>
+            </param>
+            <returns>
+            The reader column value string
+            </returns>
+            <example>
+            <code>
+            DbNetData Db = new DbNetData( ConfigurationManager.ConnectionStrings["nwind"] );
+            Db.Open();
+            Db.ExecuteQuery("select * from subscribers");
+            while ( Db.Reader.Read() )
+            {
+            	SendMailMessage( Daa.ReaderString("email_address") )
+            }
+            Db.Close();		
+            </code>
+            </example> 
+        </member>
+        <member name="M:DbNetLink.DbNetData.ReaderValue(System.String)">
+            <summary>
+            Returns the value for the current row in the Reader for the specified column name
+            </summary>
+            <param name="ColumnName">
+                <para>
+                   The name of the column
+                </para>
+            </param>
+            <returns>
+            The reader column value
+            </returns>
+            <example>
+            <code>
+            DbNetData Db = new DbNetData( ConfigurationManager.ConnectionStrings["nwind"] );
+            Db.Open();
+            Db.ExecuteQuery("select * from subscribers");
+            while ( Db.Reader.Read() )
+            {
+            	SendMailMessage( Daa.ReaderValue("email_address").ToString() )
+            }
+            Db.Close();		
+            </code>
+            </example> 
+            
+        </member>
+        <member name="M:DbNetLink.DbNetData.ReaderValue(System.Int32)">
+            <summary>
+            Returns the value for the current row in the Reader for the specified column index
+            </summary>
+            <param name="ColumnIndex">
+                <para>
+                   The inedx of the column
+                </para>
+            </param>
+            <returns>
+            The reader column value
+            </returns>
+            <example>
+            <code>
+            DbNetData Db = new DbNetData( ConfigurationManager.ConnectionStrings["nwind"] );
+            Db.Open();
+            Db.ExecuteSingletonQuery("select count(*) from subscribers");
+            SubsriberCount.Value = Db.ReaderValue(0);
+            Db.Close();		
+            </code>
+            </example> 		
+        </member>
+        <member name="M:DbNetLink.DbNetData.SetParamValue(System.Collections.Specialized.ListDictionary,System.String,System.Object)">
+            <summary>
+            Sets the value of a parameter in a collection irrespective of case-sensitivity and whether the parameter is a simple 
+            value or IDbDataParameter object 
+            </summary>
+            <param name="Params">
+                <para>
+                   The parameter collection
+                </para>
+            </param>
+            <param name="ParamName">
+                <para>
+                   The name of the parameter
+                </para>
+            </param>
+            <param name="ParamValue">
+                <para>
+                   The parameter value to assign
+                </para>
+            </param>
+            <example>
+            <code>
+            DbNetData Db = new DbNetData( ConfigurationManager.ConnectionStrings["nwind"] );
+            Db.Open();
+            ListDictionary Params = Db.DeriveParameters("CustOrderHist");
+            Db.SetParamValue( Params, "customerid", Customers.SelectedValue );
+            Db.ExecuteQuery( "CustOrderHist", Params );
+            ResultsGridView.DataSource = Db.Reader;
+            ResultsGridView.DataBind();
+            Db.Close();		
+            </code>
+            </example>	
+        </member>
+        <member name="M:DbNetLink.DbNetData.UserTableFilter">
+            <summary>
+            Creates a vendor independent filter string for the Tables metadata collection to select on "user" tables.
+            </summary>
+            <returns>
+            The filter string
+            </returns>
+            <example>	
+            <code>
+            DbNetData Db = new DbNetData( ConfigurationManager.ConnectionStrings["nwind"] );
+            Db.Open();
+            DataRow[] UserTables = Db.MetaDataCollection( MetaDataType.Tables ).Select( Db.UserTableFilter() );
+            Db.Close();		
+            </code>
+            </example>	
+        </member>
+        <member name="E:DbNetLink.DbNetData.OnCommandConfigured">
+            <summary>
+            OnCommandConfigured event can be used to customise the configuration of the command just prior to it being executed.
+            </summary>
+        </member>
+        <member name="P:DbNetLink.DbNetData.ConnectionString">
+            <summary>
+            The connection string (after any path mappings have been made)
+            </summary>
+        </member>
+        <member name="P:DbNetLink.DbNetData.Database">
+            <summary>
+            The type of database connected to
+            </summary>
+            <remarks>
+            Property is read-only. To assign the database type it must be passed as a parameter to the <see cref="!:DbNetLink.Data.DbNetData(string,DataProvider,DatabaseType)">constructor</see>
+            </remarks>
+        </member>
+        <member name="P:DbNetLink.DbNetData.Provider">
+            <summary>
+            The data provider used for the connection
+            </summary>
+            <remarks>
+            Property is read-only. To assign the provider type it must be passed as a parameter to the <see cref="!:DbNetLink.Data.DbNetData(string,DataProvider)">constructor</see>
+            </remarks>
+        </member>
+        <member name="P:DbNetLink.DbNetData.UpdateBatchSize">
+            <summary>
+            Specifies the batch size for batch updates.
+            </summary>
+        </member>
+        <member name="P:DbNetLink.DbNetData.ReservedWords">
+            <summary>
+            Returns a list of reserved words for the database
+            </summary>
+        </member>
+        <member name="P:DbNetLink.DbNetData.DatabaseVersion">
+            <summary>
+            Returns the major version number for the database
+            </summary>
+        </member>
+        <member name="P:DbNetLink.DbNetData.IsBatchUpdateSupported">
+            <summary>
+            Indicates if database provider supports batch updates
+            </summary>
+        </member>
+        <member name="T:DbNetLink.DbNetData.CommandConfiguredHandler">
+            <summary>
+            Delegate definition for the <see cref="!:DbNetLink.Data.DbNetData.OnCommandConfigured"/> event.
+            </summary>
+        </member>
+    </members>
+</doc>

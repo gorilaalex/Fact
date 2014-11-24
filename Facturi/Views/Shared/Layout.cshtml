@@ -1,0 +1,93 @@
+﻿<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>@ViewBag.Title</title>
+
+    
+    @Styles.Render("~/bundles/boot")
+    @Styles.Render("~/bundles/other")
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/jqueryui")
+
+    @Scripts.Render("~/bundles/dependent")
+    @Scripts.Render("~/bundles/common_js")
+    @Scripts.Render("~/bundles/auth_js")
+
+    <script type="text/javascript">
+        $.ajaxSetup({ cache: false });
+        </script>
+</head>
+<body>
+    @Html.Hidden("LoginUrl", Url.Action("Login", "Account"))
+    @Html.Hidden("LogOutUrl", Url.Action("Logout", "Account"))
+
+    
+    @Html.Hidden("DashboardUrl", Url.Action("MyDashboard", "Home"))
+    
+    @Html.Hidden("MyProfileUrl", Url.Action("MyProfile", "Home"))
+   
+
+     @Html.Hidden("InsertUpdateCompanyUrl", Url.Action("AddCompany", "Home"))
+
+
+   
+        <header class="fixed content header">
+            <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+
+                 <nav class="header-right-side float-right" style="margin-top: 25px;">
+            <ol class="nav-list float-right">
+                <li class="menu-item" ">
+                    <a href="#/dashboard">
+                        DashBoard</a>
+                </li>
+                <li class="menu-item" data-bind="">
+                    <a href="#/profile">
+                        Profile</a>
+                </li>
+            </ol>
+            <div class="clear"></div>
+            <div id="profile-menu" style="padding:10px;">
+                <ul>
+                    <li style="text-align:right;">
+                        <span class="raleway-regular " data-bind="text: 'Hello, ' +  '.'"></span>
+                    </li>
+                    <li style="text-align:right;">
+                        <a class="raleway-regular " href="#/profile">Profile</a>
+                    </li>
+                    <li style="text-align:right;">
+                        <span style="cursor: pointer;" class="raleway-regular white-13" data-bind="click: doLogout">Logout</span>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+        <div class="clear"></div>
+
+            </nav>
+        </header>
+
+        <div id="body-wrapper" class="content content-top-margin relative">
+        @RenderBody()
+        </div>
+
+    <div id="overlay" style="top: 0px; width: 1680px; height: 925px;">
+        <img src="/Images/loading.gif" id="img-load" alt="loading">
+    </div>
+        <div class="clear"></div>
+
+    </header>
+
+ 
+
+    <script src="@Url.Content("~/Scripts/Utils/entities.js")" type="text/javascript"> </script>
+    <script src="@Url.Content("~/Scripts/Utils/nav-model.js")" type="text/javascript"> </script>
+    <script src="@Url.Content("~/Scripts/Utils/utils.js")" type="text/javascript"> </script>
+    
+    <script src="@Url.Content("~/Scripts/Utils/fact-app-module.js")" type="text/javascript"> </script>
+    
+    <script src="@Url.Content("~/Scripts/Utils/fact-app-navigation.js")" type="text/javascript"> </script>
+</body>
+</html>

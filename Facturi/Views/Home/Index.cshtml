@@ -1,0 +1,104 @@
+﻿@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/Layout.cshtml";
+}
+<script src="@Url.Content("~/Scripts/Home/profile-module.js")" type="text/javascript"></script>
+
+
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        NavigationModel.getInstance().SetToDashboard();
+        ProfileModule.getInstance().init(@(Html.Raw(Json.Encode(Model))));
+        ko.applyBindings(ProfileModule.getInstance(), document.getElementById("body-container"));
+    });
+</script>
+
+<script id="tmpl-dashboard" type="text/html">
+    <div id="dashboard-wrapper">
+        <label>Dashboard page</label>
+        <div class="container" id="body-container">
+            <div>
+                <form id="user">
+                    <div>
+                        <div><span>User details:</span></div>
+                        <div class="input-group">
+                            <label>Username</label>
+                            <input type="text" class="form-control" placeholder="Username" disabled data-bind="value: User().Model().Username">
+                        </div>
+                        <div class="input-group">
+                            <label>First name</label>
+                            <input type="text" class="form-control" placeholder="Firstname" data-bind="value: User().Model().FirstName">
+                        </div>
+                        <div class="input-group">
+                            <label>Last name</label>
+                            <input type="text" class="form-control" placeholder="Lastname" data-bind="value: User().Model().LastName">
+                        </div>
+                        <div class="input-group">
+                            <label>Email</label>
+                            <input type="email" class="form-control" placeholder="E-mail" data-bind="value: User().Model().Email">
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div>
+                <form id="company">
+                    <div><span>Company Details:</span></div>
+                    <div class="input-group">
+                        <label>Contractor name</label>
+                        <input type="text" class="form-control" placeholder="ContractorName" data-bind="value: Company().Model().ContractorName">
+                    </div>
+                    <div class="input-group">
+                        <label>Serial Number</label>
+                        <input type="text" class="form-control" placeholder="SerialNumber" data-bind="value: Company().Model().SerialNumber">
+                    </div>
+                    <div class="input-group">
+                        <label>CIF/CUI</label>
+                        <input type="text" class="form-control" placeholder="CIF/CUI" data-bind="value: Company().Model().CUI">
+                    </div>
+                    <div class="input-group">
+                        <label>IBAN</label>
+                        <input type="text" class="form-control" placeholder="IBAN" data-bind="value: Company().Model().IBAN">
+                    </div>
+                    <div class="input-group">
+                        <label>Bank</label>
+                        <input type="text" class="form-control" placeholder="Bank" data-bind="value: Company().Model().Bank">
+                    </div>
+                    <div class="input-group">
+                        <label>Email</label>
+                        <input type="text" class="form-control" placeholder="Email" data-bind="value: Company().Model().Email">
+                    </div>
+                    <div class="input-group">
+                        <label>Telephone</label>
+                        <input type="text" class="form-control" placeholder="Telephone" data-bind="value: Company().Model().Telephone">
+                    </div>
+                    <div class="input-group">
+                        <label>SocialCapital</label>//need to make two cases for add company. one for user, the rest for facts
+            <input type="text" class="form-control" placeholder="SocialCapital" data-bind="value: Company().Model().SocialCapital">
+                    </div>
+                    <div class="input-group">
+                        <label>TVARate</label>
+                        <input type="text" class="form-control" placeholder="TVARate" data-bind="value: Company().Model().TVARate">
+                    </div>
+                    <div class="buttons">
+                        <button type="button" data-bind="click: Company().update">Update</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</script>
+
+<script id="tmpl-addcompany" type="text/html">
+    <div id="addcompany-wrapper">
+        <label>here we will add companies</label>
+    </div>
+</script>
+
+<script id="tmpl-profile" type="text/html">
+    <div style="padding-top: 40px;">
+        <label>Here we will have user settings</label>
+    </div>
+</script>
+

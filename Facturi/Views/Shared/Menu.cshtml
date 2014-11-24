@@ -1,0 +1,16 @@
+﻿
+    <ul class="nav nav-pills nav-justified" data-bind="with: NavigationModel">
+        <li data-bind="css: { 'active': IsHomeSelected }">
+            <a href="~/home/index">Home</a>
+        </li>
+        <li data-bind="css: {'active':IsFactsSelected}">
+            <a href="~/facts/getfacts">Facts</a>
+        </li>
+        <li data-bind="css: { 'active': IsReportsSelected }">
+            <a href="~/reports/index">Reports</a>
+        </li>
+        <li>
+            <a href="~/account/logout">LogOut</a>
+        </li>
+    </ul>
+

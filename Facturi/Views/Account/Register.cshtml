@@ -1,0 +1,81 @@
+﻿@using Recaptcha;
+@{
+    ViewBag.Title = "Register";
+    Layout = "~/Views/Shared/AnonymousLayout.cshtml";
+}
+<script src="@Url.Content("~/Scripts/Account/register-module.js")" type="text/javascript"></script>
+
+<script src="~/Scripts/Utils/ext/aes.js" type="text/javascript"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        RegisterModule.getInstance().init();
+        ko.applyBindings(RegisterModule.getInstance(), document.getElementById("register-container"));
+    });
+</script>
+<div id="register-container" class="container">
+    <div>
+       <label class="control-label" data-bind="text: Message"></label>
+    </div>
+    <div style="width:500px;">
+    <form class="no-auth-form form-horizontal" id="register">
+        <div class="form-group">
+            <label class="control-label">Username</label>
+            <input type="text" class="form-control" id="username" name="username" placeholder="Enter Username" data-bind="value: UserModel().Username">
+        </div>
+        <div class="form-group">
+            <label class="control-label">Password</label>
+            <div class="controls">
+            <input type="password" class="form-control" id="password" name="password" placeholder="Password" data-bind="value: UserModel().Password">
+        
+            </div>
+            </div>
+        <div class="form-group">
+            <label class="control-label">Confirm Password</label>
+            <div class="controls">
+            <input type="password" class="form-control" id="confirmPassword" name="confirmPassword" placeholder="Confirm Password" data-bind="value: UserModel().ConfirmPassword">
+        </div>
+            </div>
+        <div class="form-group">
+            <label class="control-label">First Name</label>
+            <div class="controls">
+            <input type="text" class="form-control" id="firstname" name="firstname" placeholder="Enter Firstname" data-bind="value: UserModel().FirstName">
+        </div>
+            </div>
+        <div class="form-group">
+            <label class="control-label">Last Name</label>
+            <div class="controls">
+            <input type="text" class="form-control" id="lastname" name="lastname" placeholder="Enter Lastname" data-bind="value: UserModel().LastName">
+        </div>
+            </div>
+         <div class="editor-container" style="margin-top: 20px;">
+                <div class="editor-field" style="margin-bottom: 15px; position:relative;">
+                    <div id="recaptcha_image" style="width:140px !important; padding-top:20px;">
+                    </div>
+                    <div class="editor-field" style="margin-top:45px;">
+                        <input type="text" id="recaptcha_response_field" name="recaptcha_response_field" style="width:330px !important;height:30px !important;" tabindex="9" placeholder="Word verification (required)" />
+                    </div>
+                    <div style="position:absolute; left:-30px; top:25px;">
+                        <img style="display:block;cursor:pointer;" src="~/Images/recaptcha-refresh.png" onclick="javascript:Recaptcha.reload()" /> 
+                        <img  style="display:block;cursor:pointer;" class="recaptcha_only_if_image" src="~/Images/recaptcha-audio.png" onclick="javascript:Recaptcha.switch_type('audio')"/>
+                        <img style="display:block;cursor:pointer;" class="recaptcha_only_if_audio" src="~/Images/recaptcha-image.png" onclick="javascript:Recaptcha.switch_type('image')"/>
+
+                        <img style="display:block;cursor:pointer;" src="~/Images/recaptcha-help.png" onclick="javascript:Recaptcha.showhelp()"/>
+                    </div>
+                    <div style="position:absolute; right:0px;top:0px;">
+                        <img src="~/Images/recaptcha.png" />
+                    </div>
+                    @Html.Raw(Html.GenerateCaptcha("captcha", "custom"))
+                    @Html.ValidationMessage("captcha")
+                </div>
+            </div>
+
+         
+        <div>
+            
+        <button type="button" class="btn btn-primary" data-bind="click: cancel">Cancel</button>
+            <button type="submit" class="btn btn-success" data-bind="click: register">Submit</button>
+        </div>
+        </form>
+    </div>
+</div>
+
