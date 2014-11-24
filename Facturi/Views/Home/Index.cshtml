@@ -9,9 +9,7 @@
 <script type="text/javascript">
 
     $(document).ready(function () {
-        NavigationModel.getInstance().SetToDashboard();
-        ProfileModule.getInstance().init(@(Html.Raw(Json.Encode(Model))));
-        ko.applyBindings(ProfileModule.getInstance(), document.getElementById("body-container"));
+       
     });
 </script>
 
@@ -91,14 +89,17 @@
 </script>
 
 <script id="tmpl-addcompany" type="text/html">
-    <div id="addcompany-wrapper">
+     <div class="container">
         <label>here we will add companies</label>
     </div>
 </script>
 
 <script id="tmpl-profile" type="text/html">
-    <div style="padding-top: 40px;">
-        <label>Here we will have user settings</label>
+    <div class="container">
+        <span>Here we will have user settings</span>
     </div>
 </script>
+
+<div id="body-content" data-bind="template: { 'name': CurrentTemplate(), data: BindingContext}">
+</div>
 

@@ -51,7 +51,7 @@ namespace Facturi.Controllers
                     {
                         model = new UserViewModel(response.Value);
                         model.IsSuccess = true;
-                        model.ReturnUrl = new UrlHelper(Request.RequestContext).Action("Index","Home");
+                        model.ReturnUrl = "/home/index" ;//new UrlHelper(Request.RequestContext).Action("Index","Home");
                         FormsAuthentication.SetAuthCookie(loginModel.Username, loginModel.RememberMe);
                         UserMembershipUser membershipUser = new UserMembershipUser(model);
                         UserFormsPrincipal.CachePrincipalInSession("Principal", membershipUser, HttpContext.Session);

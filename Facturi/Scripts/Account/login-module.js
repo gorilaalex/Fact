@@ -1,5 +1,6 @@
 ﻿/// <reference path="../Utils/fact-app-module.js" />
 /// <reference path="../Utils/fact-app-navigation.js" />
+/// <reference path="../Utils/ext/crypto/_referenceCrypto.js" />
 /// <reference path="../Utils/utils.js" />
 function LoginViewModel() {
     var self = this;
@@ -68,10 +69,10 @@ function LoginModule() {
             return;
         }
 
-       // var password = Utils.Encrypt(self.Model().Password(), self.Model().Username());
+       // var password = CryptoJS.AES.encrypt(self.Model().Password(), self.Model().Username());
        // console.log(password);
-        debugger;
-        //self.Model().Password(password);
+      //  debugger;
+      //  self.Model().Password(password);
         if (self.Model().Username() != null && self.Model().Username() != ''  && self.Model().Password() != null && self.Model().Password() != '') {
             Utils.postOnServer(self.Model(), $("#LoginUrl").val(), self.loginSuccess);
         }

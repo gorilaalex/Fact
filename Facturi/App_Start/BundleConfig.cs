@@ -45,20 +45,19 @@ namespace Facturi
                .Include("~/Scripts/ext/modernizr-*"));
 
             #endregion
+            */
+           #region Crypto
 
-         /*   #region File Upload
-
-            bundles.Add(new ScriptBundle("~/bundles/fileupload")
-                .Include("~/Scripts/ext/load-image.js")
-                .Include("~/Scripts/ext/canvas-to-blob.js")
-                .Include("~/Scripts/ext/jquery.iframe-transport.js")
-                .Include("~/Scripts/ext/jquery.fileupload.js")
-                .Include("~/Scripts/ext/jquery.fileupload-process.js")
-                .Include("~/Scripts/ext/jquery.fileupload-resize.js")
-                .Include("~/Scripts/ext/iframe-transport.js"));
+            bundles.Add(new ScriptBundle("~/bundles/crypto")
+                .Include("~/Scripts/Utils/crypto/aes.js")
+                .Include("~/Scripts/Utils/crypto//core.js")
+                .Include("~/Scripts/Utils/crypto/enc-base64.js")
+                .Include("~/Scripts/Utils/crypto/enc-utf16.js")
+                .Include("~/Scripts/Utils/crypto/md5.js")
+                .Include("~/Scripts/Utils/crypto/sha3.js"));
 
             #endregion
-            */
+            
             #region Other JS dependencies
 
             bundles.Add(new ScriptBundle("~/bundles/dependent")

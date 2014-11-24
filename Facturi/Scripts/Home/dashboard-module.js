@@ -4,6 +4,9 @@
         return arguments.callee.instance;
     arguments.callee.instance = self;
 
+    self.doLogout = function () {
+        ProfileModule.getInstance().doLogout();
+    };
 
     //here will go logic for dashboard
     return self;

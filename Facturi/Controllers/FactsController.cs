@@ -34,11 +34,6 @@ namespace Facturi.Controllers
             return View();
         }
 
-        public ActionResult UpdateFact()
-        {
-            return View();
-        }
-
         public ActionResult DeleteFact()
         {
             return View();

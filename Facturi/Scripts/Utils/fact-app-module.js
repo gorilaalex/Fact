@@ -1,4 +1,6 @@
 ﻿/// <reference path="../Settings/settings-module.js" />
+/// <reference path="../Home/dashboard-module.js" />
+/// <reference path="../Home/profile-module.js" />
 /// <reference path="Constants.js" />
 /// <reference path="fact-app-navigation.js" />
 //this is the main module for authenticated user. Here we will define routes for sammy and will take care of comunication between modules. Also it will be a sort of business layer.
@@ -19,6 +21,7 @@ function FactAppModule() {
         setSammy();
     };
 
+
     function setSammy() {
         var app = Sammy('#body-wrapper', function () {
 
@@ -37,7 +40,6 @@ function FactAppModule() {
                     if (data.IsSuccess) {
                         ProfileModule.getInstance().init();
                         self.BindingContext = ProfileModule.getInstance();
-                       // UserSession.getInstance().NavigationModel.SetToProfile();
                         self.CurrentTemplate('tmpl-profile');
                     }
                     else window.location.href = '/Error/NotFound';
@@ -54,13 +56,13 @@ function FactAppModule() {
     //#region Methods
 
     self.initBindingContext = function () {
-       // self.BindingContext = DashboardModule.getInstance();
+        self.BindingContext = DashboardModule.getInstance();
         self.CurrentTemplate('tmpl-dashboard');
     };
 
     self.runDashboard = function () {
         NavigationModel.getInstance().SetToDashboard();
-       // self.BindingContext = DashboardModule.getInstance();
+        self.BindingContext = DashboardModule.getInstance();
         self.CurrentTemplate('tmpl-dashboard');
     };
 

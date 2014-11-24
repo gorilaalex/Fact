@@ -15,7 +15,7 @@ namespace ViewModels.Facts
         public string Car { get; set; }
         public string Email { get; set; }
         public DateTime ExpeditionDate { get; set; }
-        public Guid FactId { get; set; }
+        public Guid UserId { get; set; }
 
         public ExpeditorViewModel()
         {
@@ -29,7 +29,7 @@ namespace ViewModels.Facts
             this.Car = expeditor.Car;
             this.Email = expeditor.Email;
             this.ExpeditionDate = expeditor.ExpeditionDate;
-            this.FactId = expeditor.FactId;
+            this.UserId = expeditor.UserId;
         }
     }
 }

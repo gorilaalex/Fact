@@ -62,5 +62,11 @@
             return self;
         },
 
+        //fact definition
+        Fact: function () {
+            var self = this;
+
+            return self;
+        }
     };
 });

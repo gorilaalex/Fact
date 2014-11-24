@@ -1,4 +1,5 @@
 ﻿/// <reference path="../Utils/entities.js" />
+/// <reference path="../Utils/ext/crypto/_referenceCrypto.js" />
 
 /// <reference path="../Utils/utils.js" />
 function RegistrationModel() {
@@ -89,12 +90,14 @@ function RegisterModule() {
 
         if (!self.PasswordMatch()) return;
         self.UserModel().bindCaptcha();
+       // CryptoJS.AES.encrypt
+      //  var password = CryptoJS.AES.encrypt(self.UserModel().Password, self.UserModel().Username);
+       // console.log(password);
+      //  debugger;
+      //  self.UserModel().Password(password);
+      //  self.UserModel().ConfirmPassword(password);
 
-        if (self.UserModel().Password() != undefined && self.UserModel().Username() != undefined) {
-            var password = Utils.Encrypt(self.UserModel().Password(), self.UserModel().Username());
-            console.log(password);
-            self.UserModel().Password(password);
-        }
+       
 
        Utils.postOnServer(self.UserModel(), $("#RegisterUrl").val(), self.registerSuccess);
 

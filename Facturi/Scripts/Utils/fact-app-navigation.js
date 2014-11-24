@@ -13,11 +13,14 @@
     self.SetToDashboard = function () {
         self.IsDashboardSelected(true);
         self.IsProfileSelected(false);
+        
     };
 
     self.SetToProfile = function () {
         self.IsDashboardSelected(false);
         self.IsProfileSelected(true);
+        $("#dashboard-tab").removeClass("active");
+        $("#profile-tab").addClass("active");
     };
   
 };

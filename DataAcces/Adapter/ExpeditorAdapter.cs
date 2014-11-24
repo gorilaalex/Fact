@@ -40,7 +40,7 @@ namespace DataAcces.Adapter
                     }
                     if (dt.Rows[0].Table.Columns.Contains("FactId") && dt.Rows[0]["FactId"] != null)
                     {
-                        expeditor.FactId = new Guid(dt.Rows[0]["FactId"].ToString());
+                        expeditor.UserId = new Guid(dt.Rows[0]["UserId"].ToString());
                     }
                     if (dt.Rows[0].Table.Columns.Contains("ExpeditionDate") && dt.Rows[0]["ExpeditionDate"] != null)
                     {

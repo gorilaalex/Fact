@@ -14,6 +14,6 @@ namespace DataAccessAbstraction.Entities
         string Car { get; set; }
         string Email { get; set; }
         DateTime ExpeditionDate { get; set; }
-        Guid FactId { get; set; }
+        Guid UserId { get; set; }
     }
 }

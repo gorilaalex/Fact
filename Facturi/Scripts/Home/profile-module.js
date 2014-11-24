@@ -17,7 +17,6 @@ function ProfileModule()
        // self.Company().initModel(data.CompanyVM);
        // console.log(data.UserVM.Username);
        // console.log(data.CompanyVM.ContractorName);
-        FactAppModule.getInstance().init();
     };
 
 
@@ -28,14 +27,37 @@ function ProfileModule()
     self.doLogoutSuccess = function (data) {
         debugger;
         if (data.IsSuccess) {
-            if (data.ReturnUrl) window.location.href  = data.ReturnUrl;
+            if (data.ReturnUrl) window.location.href = data.ReturnUrl;
         }
     };
 
     self.doLogout = function () {
+        console.log("running");
         Utils.getOnServer($("#LogOutUrl").val(), self.logoutBeforeSend, self.doLogoutSuccess, null, null);
-          
     };
+
+    self.updateProfile = function () {
+        self.bindValidation();
+
+        if (!$('#updateProfile').valid()) {
+            return;
+        }
+
+        Utils.postOnServer(self.Model,
+            $("#UpdateUrl").val(), self.updateProfileSuccess
+        );
+    };
+
+    self.updateProfileSuccess = function (data) {
+        if (data.IsSuccess) {
+        }
+    };
+
+    self.bindValidation = function () {
+
+    };
+
+    
 };
 
 ProfileModule.getInstance = function () {
