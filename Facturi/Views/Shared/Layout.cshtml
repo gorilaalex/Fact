@@ -6,7 +6,7 @@
     <link href='https://fonts.googleapis.com/css?family=Raleway:400,700,300' rel='stylesheet' type='text/css' />
     <title>@ViewBag.Title</title>
 
-
+    <link href="~/Content/app.css" rel="stylesheet" />
     @Styles.Render("~/bundles/boot")
     @Styles.Render("~/bundles/other")
 
@@ -42,22 +42,32 @@
 
 
 
-    <header class="fixed content header">
-        <nav class="navbar navbar-default navbar-fixed-top" role="navigation" id="navigation">
-
-
+    <header class="fixed content header" id="header">
+        <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
             <ul class="nav nav-pills" >
-                <li role="presentation" id="dashboard-tab" data-bind="css: {active: IsDashboardSelected() == true }" ><a href="#/dashboard">Home</a></li>
-                <li role="presentation" id="profile-tab" data-bind="css: { active: IsProfileSelected() == true }"><a href="#/profile">Profile</a></li>
-                <li role="presentation" id="account-tab" data-bind="css: { active: IAccountSelected() == true }"><a href="#/account">Account</a></li>
-                <li role="presentation" id="company-tab" data-bind="css: { active: IsCompanySelected() == true }"><a href="#/company">Company</a></li>
-                <li role="presentation" id="logout-tab" ><a href="#">Logout</a></li>
+                <li role="presentation" id="dashboard-tab"><a href="#/dashboard">Home</a></li>
+                <li role="presentation" id="profile-tab" ><a href="#/profile">Profile</a></li>
+                <li role="presentation" id="account-tab"><a href="#/account">Account</a></li>
+                <li role="presentation" id="company-tab" ><a href="#/company">Company</a></li>
+                <li role="presentation" id="logout-tab" ><a href="#" data-bind="click: doLogout">Logout</a></li>
             </ul>
             <div class="clear"></div>
         </nav>
         <div class="clear"></div>
 
     </header>
+
+    
+    <script src="@Url.Content("~/Scripts/Utils/entities.js")" type="text/javascript"> </script>
+    <script src="@Url.Content("~/Scripts/Utils/nav-model.js")" type="text/javascript"> </script>
+    <script src="@Url.Content("~/Scripts/Utils/utils.js")" type="text/javascript"> </script>
+
+    <script src="@Url.Content("~/Scripts/Utils/fact-app-module.js")" type="text/javascript"> </script>
+    
+    <script src="@Url.Content("~/Scripts/Account/user-session.js")" type="text/javascript"> </script>
+    <script src="@Url.Content("~/Scripts/Home/dashboard-module.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/Home/profile-module.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/Utils/fact-app-navigation.js")" type="text/javascript"> </script>
 
     <div id="body-wrapper" class="content content-top-margin relative">
         @RenderBody()
@@ -68,21 +78,20 @@
     </div>
     <div class="clear"></div>
 
-    
+     <script type="text/javascript">
+         $(document).ready(function () {
 
- 
+             var userSession = UserSession.getInstance();
+             userSession.init();
+             Utils.bindData(userSession, document.getElementById("header"));
 
-   
+
+             var factModule = FactAppModule.getInstance();
+             factModule.init();
+             Utils.bindData(factModule, document.getElementById("body-wrapper"));
 
 
-
-    <script src="@Url.Content("~/Scripts/Utils/entities.js")" type="text/javascript"> </script>
-    <script src="@Url.Content("~/Scripts/Utils/nav-model.js")" type="text/javascript"> </script>
-    <script src="@Url.Content("~/Scripts/Utils/utils.js")" type="text/javascript"> </script>
-
-    <script src="@Url.Content("~/Scripts/Utils/fact-app-module.js")" type="text/javascript"> </script>
-    <script src="@Url.Content("~/Scripts/Home/dashboard-module.js")" type="text/javascript"></script>
-    <script src="@Url.Content("~/Scripts/Home/profile-module.js")" type="text/javascript"></script>
-    <script src="@Url.Content("~/Scripts/Utils/fact-app-navigation.js")" type="text/javascript"> </script>
+         });
+    </script>
 </body>
 </html>

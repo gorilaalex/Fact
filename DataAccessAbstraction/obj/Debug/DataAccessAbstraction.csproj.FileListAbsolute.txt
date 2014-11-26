@@ -47,5 +47,6 @@ D:\tutorials\Fact\DataAccessAbstraction\bin\Debug\System.Web.Razor.xml
 D:\tutorials\Fact\DataAccessAbstraction\bin\Debug\System.Web.WebPages.xml
 D:\tutorials\Fact\DataAccessAbstraction\bin\Debug\System.Web.WebPages.Deployment.xml
 D:\tutorials\Fact\DataAccessAbstraction\bin\Debug\System.Web.WebPages.Razor.xml
+D:\tutorials\Fact\DataAccessAbstraction\obj\Debug\DataAccessAbstraction.csprojResolveAssemblyReference.cache
 D:\tutorials\Fact\DataAccessAbstraction\obj\Debug\DataAccessAbstraction.dll
 D:\tutorials\Fact\DataAccessAbstraction\obj\Debug\DataAccessAbstraction.pdb

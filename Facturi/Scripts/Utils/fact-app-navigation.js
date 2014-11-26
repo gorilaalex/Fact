@@ -6,6 +6,7 @@
     arguments.callee.instance = self;
 
     self.BindingContext;
+    debugger;
 
     self.IsDashboardSelected = ko.observable(false);
     self.IsProfileSelected = ko.observable(false);

@@ -1,5 +1,6 @@
 ﻿/// <reference path="../Settings/settings-module.js" />
 /// <reference path="../Home/dashboard-module.js" />
+/// <reference path="../Account/user-session.js" />
 /// <reference path="../Home/profile-module.js" />
 /// <reference path="Constants.js" />
 /// <reference path="fact-app-navigation.js" />
@@ -15,8 +16,9 @@ function FactAppModule() {
 
     self.CurrentTemplate = ko.observable('');
     self.BindingContext;
-
+    debugger;
     self.init = function () {
+        console.log("fact app module - init ");
         self.initBindingContext();
         setSammy();
     };
@@ -84,38 +86,37 @@ function FactAppModule() {
     //#region Methods
 
     self.initBindingContext = function () {
-        self.BindingContext = DashboardModule.getInstance();
-        self.CurrentTemplate('tmpl-dashboard');
+        self.runDashboard();
+        debugger;
     };
 
     self.runDashboard = function () {
-        NavigationModel.getInstance().SetToDashboard();
+        UserSession.getInstance().NavigationModel.SetToDashboard();
         self.BindingContext = DashboardModule.getInstance();
         self.CurrentTemplate('tmpl-dashboard');
     };
 
     self.runProfile = function () {
-        NavigationModel.getInstance().SetToProfile();
+        UserSession.getInstance().NavigationModel.SetToProfile();
         self.BindingContext = ProfileModule.getInstance();
         self.BindingContext.init();
         self.CurrentTemplate('tmpl-profile');
     };
 
     self.runCompany = function () {
-        NavigationModel.getInstance().SetToCompany();
+        UserSession.getInstance().NavigationModel.SetToCompany();
         self.CurrentTemplate('tmpl-company');
         self.BindingContext = ProfileModule.getInstance();
     };
 
     self.runAccount = function () {
-        NavigationModel.getInstance().SetToAccount();
+        UserSession.getInstance().NavigationModel.SetToAccount();
         self.CurrentTemplate('tmpl-account');
        // self.BindingContext = .getInstance();
     };
 
     self.runLogout = function () {
-        NavigationModel.getInstance().SetToAccount();
-        self.BindingContext = ProfileModule.getInstance();
+        window.location.href = "/";
     };
     //#endregion
 

@@ -76,7 +76,6 @@ namespace Facturi
                 .Include("~/Scripts/Utils/Entities.js")
                 .Include("~/Scripts/Utils/utils.js")
                 .Include("~/Scripts/Utils/nav-model.js")
-
                .Include("~/Scripts/Utils/Constants.js"));
 
             #endregion
@@ -93,7 +92,8 @@ namespace Facturi
 
             bundles.Add(new ScriptBundle("~/bundles/auth_js")
                .Include("~/Facts/facts-definition.js")
-               .Include("~/Home/profile-module.js"));
+               .Include("~/Home/profile-module.js")
+                .Include("~/Scripts/Account/user-session.js"));
 
             #endregion
         }

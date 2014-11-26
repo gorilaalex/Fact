@@ -4,83 +4,52 @@
 }
 <script src="@Url.Content("~/Scripts/Home/profile-module.js")" type="text/javascript"></script>
 
-
-
-<script type="text/javascript">
-
-    $(document).ready(function () {
-        FactAppModule.getInstance().init();
-    });
-</script>
-
-<script id="tmpl-dashboard" type="text/html" data-bind="with: BindingContext">
+<script id="tmpl-dashboard" type="text/html">
     <div id="dashboard-wrapper">
         <label>Dashboard page</label>
-        <div class="container" id="body-container">
-            <div>
-                <form id="user">
-                    <div>
-                        <div><span>User details:</span></div>
-                        <div class="input-group">
-                            <label>Username</label>
-                            <input type="text" class="form-control" placeholder="Username" disabled data-bind="value: User().Model().Username">
-                        </div>
-                        <div class="input-group">
-                            <label>First name</label>
-                            <input type="text" class="form-control" placeholder="Firstname" data-bind="value: User().Model().FirstName">
-                        </div>
-                        <div class="input-group">
-                            <label>Last name</label>
-                            <input type="text" class="form-control" placeholder="Lastname" data-bind="value: User().Model().LastName">
-                        </div>
-                        <div class="input-group">
-                            <label>Email</label>
-                            <input type="email" class="form-control" placeholder="E-mail" data-bind="value: User().Model().Email">
-                        </div>
-                    </div>
-                </form>
-            </div>
+        <div class="container " id="body-container">
+            
             <div>
                 <form id="company">
                     <div><span>Company Details:</span></div>
                     <div class="input-group">
                         <label>Contractor name</label>
-                        <input type="text" class="form-control" placeholder="ContractorName" data-bind="value: Company().Model().ContractorName">
+                        <input type="text" class="form-control" placeholder="ContractorName" >
                     </div>
                     <div class="input-group">
                         <label>Serial Number</label>
-                        <input type="text" class="form-control" placeholder="SerialNumber" data-bind="value: Company().Model().SerialNumber">
+                        <input type="text" class="form-control" placeholder="SerialNumber" >
                     </div>
                     <div class="input-group">
                         <label>CIF/CUI</label>
-                        <input type="text" class="form-control" placeholder="CIF/CUI" data-bind="value: Company().Model().CUI">
+                        <input type="text" class="form-control" placeholder="CIF/CUI" >
                     </div>
                     <div class="input-group">
                         <label>IBAN</label>
-                        <input type="text" class="form-control" placeholder="IBAN" data-bind="value: Company().Model().IBAN">
+                        <input type="text" class="form-control" placeholder="IBAN" >
                     </div>
                     <div class="input-group">
                         <label>Bank</label>
-                        <input type="text" class="form-control" placeholder="Bank" data-bind="value: Company().Model().Bank">
+                        <input type="text" class="form-control" placeholder="Bank" >
                     </div>
                     <div class="input-group">
                         <label>Email</label>
-                        <input type="text" class="form-control" placeholder="Email" data-bind="value: Company().Model().Email">
+                        <input type="text" class="form-control" placeholder="Email" >
                     </div>
                     <div class="input-group">
                         <label>Telephone</label>
-                        <input type="text" class="form-control" placeholder="Telephone" data-bind="value: Company().Model().Telephone">
+                        <input type="text" class="form-control" placeholder="Telephone" >
                     </div>
                     <div class="input-group">
                         <label>SocialCapital</label>//need to make two cases for add company. one for user, the rest for facts
-            <input type="text" class="form-control" placeholder="SocialCapital" data-bind="value: Company().Model().SocialCapital">
+            <input type="text" class="form-control" placeholder="SocialCapital" >
                     </div>
                     <div class="input-group">
                         <label>TVARate</label>
-                        <input type="text" class="form-control" placeholder="TVARate" data-bind="value: Company().Model().TVARate">
+                        <input type="text" class="form-control" placeholder="TVARate" >
                     </div>
                     <div class="buttons">
-                        <button type="button" data-bind="click: Company().update">Update</button>
+                        <button type="button" >Update</button>
                     </div>
                 </form>
             </div>
@@ -101,8 +70,29 @@
 </script>
 
 <script id="tmpl-profile" type="text/html" data-bind="with: BindingContext">
-    <div class="container">
-        <span>Here we will have user settings</span>
+    <div class="container" >
+        <div>
+                <form id="user">
+                    <div>
+                        <div><span >User details:</span></div>
+                        <div class="input-group">
+                            <label>Username</label>
+                            <input type="text" class="form-control" placeholder="Username" disabled >
+                        </div>
+                        <div class="input-group">
+                            <label>First name</label>
+                            <input type="text" class="form-control" placeholder="Firstname" >
+                        </div>
+                        <div class="input-group">
+                            <label>Last name</label>
+                            <input type="text" class="form-control" placeholder="Lastname" >
+                        </div>
+                            <div>
+                            <button>Update</button>
+                            </div>
+                    </div>
+                </form>
+            </div>
     </div>
 </script>
 

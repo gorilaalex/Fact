@@ -1,7 +1,21 @@
 ﻿/// <reference path="../Utils/entities.js" />
 /// <reference path="../Utils/fact-app-module.js" />
 /// <reference path="../Utils/fact-app-navigation.js" />
-function ProfileModule() 
+function UserModel() {
+    var self = this;
+    self.Model = ko.observable(new User());
+    self.initModel = function (data) {
+        self.Model().init(data);
+    };
+    self.update = function () {
+    };
+    self.updateSuccess = function (data) {
+
+    };
+    return self;
+};
+
+function ProfileModule()
 {
     if (arguments.callee.instance)
         return arguments.callee.instance;
@@ -10,32 +24,14 @@ function ProfileModule()
 
 
     var self = this;
-    self.User = ko.observable(new User());
-    self.Company = ko.observable(new CompanyModel());
-    self.init = function (data) {
-       // self.User().init(data.UserVM);
-       // self.Company().initModel(data.CompanyVM);
-       // console.log(data.UserVM.Username);
-       // console.log(data.CompanyVM.ContractorName);
+    self.User = ko.observable(new UserModel());
+   
+    self.init = function () {
+        console.log("log from profile module");
     };
 
 
-    self.logoutBeforeSend = function () {
-        //TODO: remove other session related data
-    };
-
-    self.doLogoutSuccess = function (data) {
-        debugger;
-        if (data.IsSuccess) {
-            if (data.ReturnUrl) window.location.href = data.ReturnUrl;
-        }
-    };
-
-    self.doLogout = function () {
-        console.log("running");
-        Utils.getOnServer($("#LogOutUrl").val(), self.logoutBeforeSend, self.doLogoutSuccess, null, null);
-    };
-
+  
     self.updateProfile = function () {
         self.bindValidation();
 
@@ -65,19 +61,7 @@ ProfileModule.getInstance = function () {
     return singletonClass;
 };
 
-function UserModel() {
-    var self = this;
-    self.Model = ko.observable(new User());
-    self.initModel = function (data) {
-        self.Model().init(data);
-    };
-    self.update = function () {
-          };
-    self.updateSuccess = function (data) {
 
-    };
-    return self;
-};
 
 function CompanyModel() {
     var self = this;

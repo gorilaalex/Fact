@@ -13,6 +13,10 @@ Utils.getInstance = function () {
     return singletonClass;
 };
 
+Utils.bindData = function (viewModel, DOMregion) {
+    ko.applyBindings(viewModel, DOMregion);
+};
+
 Utils.ajaxLoad = function (elementId) {
     $(elementId).addClass("effect");
     $("#overlay").fadeIn();
