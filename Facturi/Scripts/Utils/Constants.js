@@ -6,6 +6,9 @@
 
     self.DASHBOARD_URL = "#/dashboard";
     self.PROFILE_URL = "#/profile";
+    self.COMPANY_URL = "#/company";
+    self.ACCOUNT_URL = "#/account";
+    self.LOGOUT_URL = "#/logout";
 
     return self;
 }

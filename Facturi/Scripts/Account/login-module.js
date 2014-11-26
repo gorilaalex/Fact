@@ -22,6 +22,7 @@ function LoginViewModel() {
 function LoginModule() {
     var self = this;
     self.Model = ko.observable(new LoginViewModel());
+    self.Message = ko.observable();
 
     self.signUp = function () {
         Utils.redirectToUrl("/account/register");
@@ -84,13 +85,16 @@ function LoginModule() {
                 Utils.pushOnLocaleStore("rememberMe", self.Model().Username());
             }
             else {
-                Utils.pushOnLocaleStore("rememberMe",null);
+                Utils.pushOnLocaleStore("rememberMe", null);
             }
             if (data.ReturnUrl != null) {
                 //NavigationModel.getInstance().SetToDashboard();
                 Utils.redirectToUrl(data.ReturnUrl);
                 //FactAppModule.getInstance().init();
             }
+        }
+        else {
+            self.Message(data.Message);
         }
     };
 

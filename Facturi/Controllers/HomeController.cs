@@ -78,6 +78,63 @@ namespace Facturi.Controllers
             }
         }
 
+        [HttpGet]
+        public ActionResult MyCompany()
+        {
+            BaseViewModel model;
+            UserFormsPrincipal principal = UserFormsPrincipal.GetPrincipal("Principal", HttpContext.Session);
+            try
+            {
+                if (principal != null && principal is UserFormsPrincipal && (principal.Identity as UserFormsIdentity).User != null)
+                {
+
+                    model = new BaseViewModel();
+                    model.IsSuccess = true;
+                    model.Message = "My Company";
+
+                    return Json(model, JsonRequestBehavior.AllowGet);
+                }
+                else return Json(GetDefaultSessionExpiredViewModel(), JsonRequestBehavior.AllowGet);
+
+            }
+            catch (Exception ex)
+            {
+                model = new BaseViewModel();
+                model.IsSuccess = false;
+                model.Message = ex.Message;
+                return Json(model, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        [HttpGet]
+        public ActionResult MyAccount()
+        {
+            BaseViewModel model;
+            UserFormsPrincipal principal = UserFormsPrincipal.GetPrincipal("Principal", HttpContext.Session);
+            try
+            {
+                if (principal != null && principal is UserFormsPrincipal && (principal.Identity as UserFormsIdentity).User != null)
+                {
+
+                    model = new BaseViewModel();
+                    model.IsSuccess = true;
+                    model.Message = "My Account";
+
+                    return Json(model, JsonRequestBehavior.AllowGet);
+                }
+                else return Json(GetDefaultSessionExpiredViewModel(), JsonRequestBehavior.AllowGet);
+
+            }
+            catch (Exception ex)
+            {
+                model = new BaseViewModel();
+                model.IsSuccess = false;
+                model.Message = ex.Message;
+                return Json(model, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+
         public ActionResult x() 
             {
             UserFormsPrincipal principal = UserFormsPrincipal.GetPrincipal("Principal", HttpContext.Session);

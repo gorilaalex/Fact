@@ -13,6 +13,9 @@
         </div>
         <form class="no-auth-form form-horizontal" method="post" action="" autocomplete="off" id="login">
             <div class="control-group">
+                <span data-bind="text: Message"></span>
+            </div>
+            <div class="control-group">
                 <label class="control-label" for="inputEmail">Email address</label>
                 <div class="controls">
                     <input type="email" name="username" id="inputEmail" placeholder="Enter email" data-bind ="value: Model().Username">

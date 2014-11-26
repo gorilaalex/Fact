@@ -38,9 +38,37 @@ function FactAppModule() {
 
                 Utils.doJSONGetWithLoad($("#MyProfileUrl").val(), function (data) {
                     if (data.IsSuccess) {
-                        ProfileModule.getInstance().init();
-                        self.BindingContext = ProfileModule.getInstance();
-                        self.CurrentTemplate('tmpl-profile');
+                        self.runProfile();
+                    }
+                    else window.location.href = '/Error/NotFound';
+                });
+            });
+
+            this.get(Constants.getInstance().COMPANY_URL, function () {
+
+                Utils.doJSONGetWithLoad($("#MyCompanyUrl").val(), function (data) {
+                    if (data.IsSuccess) {
+                        self.runCompany();
+                    }
+                    else window.location.href = '/Error/NotFound';
+                });
+            });
+
+            this.get(Constants.getInstance().ACCOUNT_URL, function () {
+
+                Utils.doJSONGetWithLoad($("#MyAccountUrl").val(), function (data) {
+                    if (data.IsSuccess) {
+                        self.runAccount();
+                    }
+                    else window.location.href = '/Error/NotFound';
+                });
+            });
+
+            this.get(Constants.getInstance().LOGOUT_URL, function () {
+
+                Utils.doJSONGetWithLoad($("#LogOutUrl").val(), function (data) {
+                    if (data.IsSuccess) {
+                        self.runLogout();
                     }
                     else window.location.href = '/Error/NotFound';
                 });
@@ -68,8 +96,26 @@ function FactAppModule() {
 
     self.runProfile = function () {
         NavigationModel.getInstance().SetToProfile();
-        //self.BindingContext = ProfileModule.getInstance();
+        self.BindingContext = ProfileModule.getInstance();
+        self.BindingContext.init();
         self.CurrentTemplate('tmpl-profile');
+    };
+
+    self.runCompany = function () {
+        NavigationModel.getInstance().SetToCompany();
+        self.CurrentTemplate('tmpl-company');
+        self.BindingContext = ProfileModule.getInstance();
+    };
+
+    self.runAccount = function () {
+        NavigationModel.getInstance().SetToAccount();
+        self.CurrentTemplate('tmpl-account');
+       // self.BindingContext = .getInstance();
+    };
+
+    self.runLogout = function () {
+        NavigationModel.getInstance().SetToAccount();
+        self.BindingContext = ProfileModule.getInstance();
     };
     //#endregion
 

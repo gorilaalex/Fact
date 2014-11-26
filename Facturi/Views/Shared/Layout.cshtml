@@ -21,7 +21,7 @@
 
     <script type="text/javascript">
         $.ajaxSetup({ cache: false });
-        </script>
+         </script>
 </head>
 <body>
     @Html.Hidden("LoginUrl", Url.Action("Login", "Account"))
@@ -31,6 +31,11 @@
     @Html.Hidden("DashboardUrl", Url.Action("MyDashboard", "Home"))
 
     @Html.Hidden("MyProfileUrl", Url.Action("MyProfile", "Home"))
+    
+    @Html.Hidden("MyCompanyUrl", Url.Action("MyCompany", "Home"))
+    
+    @Html.Hidden("MyAccountUrl", Url.Action("MyAccount", "Home"))
+
 
 
     @Html.Hidden("InsertUpdateCompanyUrl", Url.Action("AddCompany", "Home"))
@@ -38,15 +43,15 @@
 
 
     <header class="fixed content header">
-        <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+        <nav class="navbar navbar-default navbar-fixed-top" role="navigation" id="navigation">
 
 
-            <ul class="nav nav-pills">
-                <li role="presentation" id="dashboard-tab" class="active"><a href="#/dashboard">Home</a></li>
-                <li role="presentation" id="profile-tab"><a href="#/profile">Profile</a></li>
-                <li role="presentation" id="account-tab"><a href="#/acount">Account</a></li>
-                <li role="presentation" id="company-tab"><a href="#/company">Company</a></li>
-                <li role="presentation" id="logout-tab"><a href="#">Logout</a></li>
+            <ul class="nav nav-pills" >
+                <li role="presentation" id="dashboard-tab" data-bind="css: {active: IsDashboardSelected() == true }" ><a href="#/dashboard">Home</a></li>
+                <li role="presentation" id="profile-tab" data-bind="css: { active: IsProfileSelected() == true }"><a href="#/profile">Profile</a></li>
+                <li role="presentation" id="account-tab" data-bind="css: { active: IAccountSelected() == true }"><a href="#/account">Account</a></li>
+                <li role="presentation" id="company-tab" data-bind="css: { active: IsCompanySelected() == true }"><a href="#/company">Company</a></li>
+                <li role="presentation" id="logout-tab" ><a href="#">Logout</a></li>
             </ul>
             <div class="clear"></div>
         </nav>
@@ -63,7 +68,7 @@
     </div>
     <div class="clear"></div>
 
-    </header>
+    
 
  
 

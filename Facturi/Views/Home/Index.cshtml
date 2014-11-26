@@ -9,11 +9,11 @@
 <script type="text/javascript">
 
     $(document).ready(function () {
-       
+        FactAppModule.getInstance().init();
     });
 </script>
 
-<script id="tmpl-dashboard" type="text/html">
+<script id="tmpl-dashboard" type="text/html" data-bind="with: BindingContext">
     <div id="dashboard-wrapper">
         <label>Dashboard page</label>
         <div class="container" id="body-container">
@@ -88,13 +88,19 @@
     </div>
 </script>
 
-<script id="tmpl-addcompany" type="text/html">
+<script id="tmpl-company" type="text/html">
      <div class="container">
         <label>here we will add companies</label>
     </div>
 </script>
 
-<script id="tmpl-profile" type="text/html">
+<script id="tmpl-account" type="text/html">
+     <div class="container">
+        <label>here we will have account template</label>
+    </div>
+</script>
+
+<script id="tmpl-profile" type="text/html" data-bind="with: BindingContext">
     <div class="container">
         <span>Here we will have user settings</span>
     </div>

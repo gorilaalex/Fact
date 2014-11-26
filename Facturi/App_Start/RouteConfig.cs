@@ -18,6 +18,9 @@ namespace Facturi
                 url: "{controller}/{action}/{id}",
                 defaults: new { controller = "Account", action = "Login", id = UrlParameter.Optional }
             );
+
+            routes.MapRoute("home", "{action}",
+new { controller = "Home", action = "index" });
         }
     }
 }

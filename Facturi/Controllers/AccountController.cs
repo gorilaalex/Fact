@@ -60,7 +60,7 @@ namespace Facturi.Controllers
                     else
                     {
                         model.IsSuccess = false;
-                        model.Message = response.Message;
+                        model.Message = "Something went wrong to login. Please try again.s";
                     }   
                 }
                 else
