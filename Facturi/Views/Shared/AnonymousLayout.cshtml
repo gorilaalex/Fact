@@ -5,23 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewBag.Title</title>
 
-     @Styles.Render("~/bundles/boot")
-     @Styles.Render("~/bundles/other")
-    <script type="text/javascript" src="~/Scripts/Utils/ext/jquery-2.1.1.js"></script>
-    <link href="~/Content/ext/bootstrap.css" rel="stylesheet" media="screen"/>
-    <script type="text/javascript" src="~/Scripts/Utils/ext/bootstrap.js"></script>
-    @Scripts.Render("~/bundles/jquery")
-    @Scripts.Render("~/bundles/jqueryval")
-    @Scripts.Render("~/bundles/jqueryui")
-
-    @Scripts.Render("~/bundles/dependent")
-    @Scripts.Render("~/bundles/common_js")
+   <script type="text/javascript" src="assets/scripts/lib/require/require.js"></script>
+    <script type="text/javascript" src="assets/scripts/src/config.js"></script>
+    <script>
+        require(['AppBootstrap']);
+    </script>
+   
     
-    @Scripts.Render("~/bundles/noauth_js")
-
-    <script type="text/javascript">
-        $.ajaxSetup({ cache: false });
-        </script>
 </head>
 <body>
     @Html.Hidden("LoginUrl", Url.Action("Login", "Account"))

@@ -244,6 +244,13 @@
     <Content Include="assets\scripts\lib\amplify\amplify.store.js" />
     <Content Include="assets\scripts\lib\bootstrap\bootstrap.js" />
     <None Include="assets\scripts\lib\jquery\jquery-2.1.1.intellisense.js" />
+    <Content Include="assets\scripts\lib\crypto\aes.js" />
+    <Content Include="assets\scripts\lib\crypto\core.js" />
+    <Content Include="assets\scripts\lib\crypto\enc-base64.js" />
+    <Content Include="assets\scripts\lib\crypto\enc-utf16.js" />
+    <Content Include="assets\scripts\lib\crypto\md5.js" />
+    <Content Include="assets\scripts\lib\crypto\sha3.js" />
+    <Content Include="assets\scripts\lib\crypto\_referenceCrypto.js" />
     <Content Include="assets\scripts\lib\jquery\jquery-2.1.1.js" />
     <Content Include="assets\scripts\lib\jquery\jquery-ui-1.9.2.custom.js" />
     <None Include="assets\scripts\lib\jquery\jquery.validate-vsdoc.js" />
@@ -259,7 +266,15 @@
     <Content Include="assets\scripts\lib\select\select2.js" />
     <Content Include="assets\scripts\src\AppBootStrap.js" />
     <Content Include="assets\scripts\src\config.js" />
+    <Content Include="assets\scripts\src\Module\ClientDataProxy.js" />
+    <Content Include="assets\scripts\src\Utils\Constants.js" />
+    <Content Include="assets\scripts\src\Utils\entities.js" />
+    <Content Include="assets\scripts\src\Utils\fact-app-module.js" />
+    <Content Include="assets\scripts\src\Utils\fact-app-navigation.js" />
+    <Content Include="assets\scripts\src\Utils\nav-model.js" />
+    <Content Include="assets\scripts\src\Utils\utils.js" />
     <Content Include="assets\scripts\src\ObjectDefinition\ObjectDefinition.js" />
+    <Content Include="assets\scripts\src\Utils\utils2.js" />
     <Content Include="assets\scripts\src\ViewModel\ViewModel.js" />
     <Content Include="assets\styles\lib\bootstrap\bootstrap-responsive.css" />
     <Content Include="assets\styles\lib\bootstrap\bootstrap-theme.css" />
@@ -436,7 +451,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="assets\data\" />
-    <Folder Include="assets\scripts\src\Module\" />
+    <Folder Include="assets\scripts\src\Utils\ext\" />
     <Folder Include="assets\templates\" />
     <Folder Include="Models\" />
     <Folder Include="Views\Company\" />

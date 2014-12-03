@@ -67,6 +67,24 @@
             var self = this;
 
             return self;
+        },
+
+        Login: function () {
+            var self = this;
+            self.Username = ko.observable('');
+            self.Password = ko.observable('');
+            self.RememberMe = ko.observable(false);
+
+            self.Challenge;
+            self.Response;
+            self.UseCaptcha = ko.observable(false);
+
+            self.bindCaptcha = function () {
+                self.Challenge = $("input#recaptcha_challenge_field").val();
+                self.Response = $("input#recaptcha_response_field").val();
+            };
+
+            return self;
         }
     };
 });
