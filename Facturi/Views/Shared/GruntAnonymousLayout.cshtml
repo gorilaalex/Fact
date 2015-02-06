@@ -1,0 +1,23 @@
+﻿<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewBag.Title</title>
+
+   <script type="text/javascript" src="assets/scripts/lib/require/require.js"></script>
+    <script type="text/javascript" src="assets/scripts/src/config.js"></script>
+    <script>
+        require(['AppBootstrap']);
+    </script>
+   <link href="~/assets/styles/src/app.css" rel="stylesheet" />
+    
+</head>
+<body>
+    @Html.Hidden("LoginUrl", Url.Action("Login", "Account"))
+    @Html.Hidden("RegisterUrl", Url.Action("Register", "Account"))
+    <div>
+        @RenderBody()
+    </div>
+</body>
+</html>

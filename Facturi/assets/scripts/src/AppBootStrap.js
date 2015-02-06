@@ -8,7 +8,7 @@
         loginVM.Init();
         console.log("PersonViewModel loaded, applying bindings...");
 
-        console.log("Utils loading...");
+        utils.init();
 
         var rememberMeValue = utils.pullFromLocalStore("rememberMe");
         if (rememberMeValue && rememberMeValue != null) {
@@ -16,6 +16,9 @@
             loginVM.Model().Username(rememberMeValue);
         }
         utils.bindData(loginVM, document.getElementById("container"));
+        console.log("bind success");
+
+        console.log("bind success");
         console.log("bind success");
     });
 });

@@ -15,7 +15,7 @@ namespace Facturi
 
             routes.MapRoute(
                 name: "Default",
-                url: "{controller}/{action}/{id}",
+                url: "{controller}/{action}",
                 defaults: new { controller = "Account", action = "Login", id = UrlParameter.Optional }
             );
 

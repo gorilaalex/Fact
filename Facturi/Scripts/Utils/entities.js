@@ -62,6 +62,29 @@ function User() {
 
 function FactModel() {
     var self = this;
+    self.Id = ko.observable();
+    self.Date = ko.observable();
+    self.ExpeditorId = ko.observable();//new expeditor
+    self.BuyerId = ko.observable();
+    self.SellerId = ko.observable();
+    self.TotalSum = ko.observable();
+    self.TotalTVA = ko.observable();
+    self.Series = ko.observable();
+    self.PayDate = ko.observable();
+    self.TVAType = ko.observable();
+
+    self.init = function (data) {
+        self.Id(data.Id);
+        self.Date(data.Date);
+        self.ExpeditorId(data.ExpeditorId);
+        self.BuyerId(data.BuyerId);
+        self.SellerId(data.SellerId);
+        self.TotalSum(data.TotalSum);
+        self.TotalTVA(data.TotalTVA);
+        self.Series(data.Series);
+        self.PayDate(data.PayDate);
+        self.TVAType(data.TVAType);
+    };
     // products, firma care cumpara , data la care a fost creata, 
 };
 

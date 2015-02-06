@@ -11,7 +11,7 @@ namespace DataAccessAbstraction.Repository
     {
         IOperationResponse<IFact> Insert(IFact fact);
         IOperationResponse<IFact> Update(IFact fact);
-        IOperationResponse<string> Delete(string id);
-        IOperationResponse<List<IFact>> GetAllByUser(string id);
+        IOperationResponse<string> Delete(Guid id);
+        IOperationResponse<List<IFact>> GetAllByUser(Guid id);
     }
 }

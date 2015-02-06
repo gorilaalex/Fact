@@ -7,11 +7,6 @@ function UserModel() {
     self.initModel = function (data) {
         self.Model().init(data);
     };
-    self.update = function () {
-    };
-    self.updateSuccess = function (data) {
-
-    };
     return self;
 };
 
@@ -21,36 +16,79 @@ function ProfileModule()
         return arguments.callee.instance;
     arguments.callee.instance = self;
 
-
-
     var self = this;
-    self.User = ko.observable(new UserModel());
+    self.User = ko.observable(new User());
+    self.Message = ko.observable();
    
     self.init = function () {
         console.log("log from profile module");
+        self.getUserDetails();
+    };
+  
+    self.getUserDetails = function () {
+        Utils.postOnServer(self.User().Model,
+            $("#GetDetails").val(), self.getUserDetailsSuccess
+        );
     };
 
+    self.getUserDetailsSuccess = function (data) {
+        if (data.IsSuccess) {
+            console.log(data);
+            self.User().init(data);
+        }
+    };
 
-  
     self.updateProfile = function () {
         self.bindValidation();
 
-        if (!$('#updateProfile').valid()) {
+        /*if (!$('#updateProfile').valid()) {
             return;
-        }
+        }*/
 
-        Utils.postOnServer(self.Model,
+        Utils.postOnServer(self.User,
             $("#UpdateUrl").val(), self.updateProfileSuccess
         );
     };
 
     self.updateProfileSuccess = function (data) {
         if (data.IsSuccess) {
+            console.log("yey!");
         }
+
+        self.Message(data.Message);
     };
 
     self.bindValidation = function () {
+        $.validator.setDefaults({
+            submitHandler: function () { }
+        });
 
+        $("#user-profile").validate({
+            rules: {
+                firstname: {
+                    required: true
+                },
+                lastname: {
+                    required: true
+                }
+            },
+            messages: {
+                firstname: {
+                    email: "Please enter firstname."
+                },
+                lastname: { required: "Please enter lastname." }
+            },
+            errorElement: "div",
+            errorPlacement: function (error, element) {
+                Utils.StyleValidationError(error, element);
+            },
+            highlight: function (element, errorClass, validClass) {
+                $(element).addClass('mandatory').removeClass('valid');
+            },
+            unhighlight: function (element, errorClass, validClass) {
+                $(element).removeClass('mandatory').addClass('valid');
+            }
+        });
     };
 
     

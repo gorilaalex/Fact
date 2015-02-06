@@ -1,4 +1,7 @@
 ﻿/// <reference path="ext/aes.js" />
+/// <reference path="ext/jquery-2.1.1.js" />
+/// <reference path="ext/knockout-3.2.0.js" />
+/// <reference path="ext/json2.js" />
 /// <reference path="ext/knockout.mapping-latest.js" />
 function Utils() {
     var self = this;
@@ -27,22 +30,28 @@ Utils.ajaxDone = function (elementId) {
 };
 
 Utils.postOnServer = function (model, url, successFunction) {
-    //console.log(model);
-   // var data = JSON.stringify(model);
-   // console.log(data);
+    console.log(url);
+    console.log(model);
+    var data = ko.toJSON(model);
+    console.log(data);
     $.ajax({
         url: url,
         type: 'POST',
-        data: ko.mapping.toJSON(model),
+        data: ko.toJSON(model),
         dataType: "json",
         contentType: "application/json; charset=utf-8",
-        beforeSend: function () { },
+        beforeSend: function () {
+            Utils.ajaxLoad("html");
+        },
         success: function (data) {
             successFunction(data);
         },
         error: function (error) {
             console.log(error);
         },
+        complete: function () {
+            Utils.ajaxDone("html");
+        }
     });
 };
 Utils.getOnServer = function (url, beforeFunction, successFunction, errorFunction, completeFunction) {
@@ -108,6 +117,7 @@ Utils.pullFromLocalStore = function (key) {
 };
 
 Utils.redirectToUrl = function (url) {
+    console.log(url);
     window.location.href = url;
 };
 
@@ -236,6 +246,7 @@ Utils.StyleValidationError = function (error, target) {
 
     target.before($errorWrapper);
     target.addClass('mandatory');
+    target.addClass('message-error');
 };
 
 Utils.StyleValidationErrorForHigherInputs = function (error, target) {
@@ -250,4 +261,5 @@ Utils.StyleValidationErrorForHigherInputs = function (error, target) {
 
     target.before($errorWrapper);
     target.addClass('mandatory');
+    target.addClass('message-error');
 };

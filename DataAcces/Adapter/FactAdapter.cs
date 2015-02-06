@@ -20,7 +20,7 @@ namespace DataAcces.Adapter
                     IFact fact = new Fact();
                     if (dt.Rows[0].Table.Columns.Contains("Id") && dt.Rows[0]["Id"] != null)
                     {
-                        fact.ID = new Guid(dt.Rows[0]["Id"].ToString());
+                        fact.Id = new Guid(dt.Rows[0]["Id"].ToString());
                     }
                     if (dt.Rows[0].Table.Columns.Contains("Series") && dt.Rows[0]["Series"] != null)
                     {
@@ -56,7 +56,7 @@ namespace DataAcces.Adapter
                     }
                     if (dt.Rows[0].Table.Columns.Contains("ExpeditorId") && dt.Rows[0]["ExpeditorId"] != null)
                     {
-                        fact.ExpeditorID = new Guid(dt.Rows[0]["ExpeditorId"].ToString());
+                        fact.ExpeditorId = new Guid(dt.Rows[0]["ExpeditorId"].ToString());
                     }
                     return fact;
                 }

@@ -32,11 +32,11 @@ namespace ViewModels.Facts
 
         public FactViewModel(IFact fact)
         {
-            this.ID = fact.ID;
+            this.ID = fact.Id;
             this.Date = fact.Date;
             this.Series = fact.Series;
             this.PayDate = fact.PayDate;
-            this.ExpeditorID = fact.ExpeditorID;
+            this.ExpeditorID = fact.ExpeditorId;
             this.SellerId = fact.SellerId;
             this.BuyerId = fact.BuyerId;
             this.TotalSum = fact.TotalSum;

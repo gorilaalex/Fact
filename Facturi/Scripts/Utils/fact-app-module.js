@@ -1,6 +1,7 @@
 ﻿/// <reference path="../Settings/settings-module.js" />
 /// <reference path="../Home/dashboard-module.js" />
 /// <reference path="../Account/user-session.js" />
+/// <reference path="../Facts/facts-definition.js" />
 /// <reference path="../Home/profile-module.js" />
 /// <reference path="Constants.js" />
 /// <reference path="fact-app-navigation.js" />
@@ -92,7 +93,8 @@ function FactAppModule() {
 
     self.runDashboard = function () {
         UserSession.getInstance().NavigationModel.SetToDashboard();
-        self.BindingContext = DashboardModule.getInstance();
+        self.BindingContext = FactModule.getInstance();
+        self.BindingContext.init();
         self.CurrentTemplate('tmpl-dashboard');
     };
 

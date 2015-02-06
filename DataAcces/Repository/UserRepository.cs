@@ -28,6 +28,11 @@ namespace DataAcces.Repository
 INSERT INTO [User] ([Id],[Username],[FirstName],[LastName],[CompanyId],[Password])VALUES (@idN,@username,@firstname, 
            @lastname,null,@password)
 select @idN ";
+        private const string UPDATE_USER = @"Update  [dbo].[User]
+           Set [FirstName] = @firstname
+           ,[LastName] = @lastname
+           ,[Password] = @password
+            where [Id]=@id";
         #endregion
 
         public UserRepository(string connection)
@@ -117,8 +122,33 @@ select @idN ";
         }
         public IOperationResponse<IUser> Update(IUser user)
         {
-            return new OperationResponse<IUser>(
-                );
+            try
+            {
+                var record = new SqlRecord<IUser>(user)
+                .Set(x => x.Id)
+                    .Set(x => x.Username)
+                    .Set(x => x.Password)
+                    .Set(x => x.FirstName)
+                    .Set(x => x.LastName);
+
+                // NonQueryResults
+                int result = SqlHelper.ExecuteNonQuery(_connectionString, CommandType.Text, UPDATE_USER, record.Parameters());
+
+                return new OperationResponse<IUser>()
+                {
+                    IsSuccess = true,
+                    Value = user
+                };
+            }
+            catch (Exception ex)
+            {
+                return new OperationResponse<IUser>()
+                {
+                    Message = ex.Message,
+                    IsSuccess = false,
+                    Value = null
+                };
+            }
         }
         public IOperationResponse<string> Delete(string id)
         {
@@ -142,15 +172,16 @@ select @idN ";
                 };
 
                 DataSet ds = new DataSet();
-                SqlHelper.FillDataset(_connectionString, CommandType.Text, CHECK_USER, ds, new string[] { "User" }, record.Parameters());
-                if (ds.Tables.Count > 0)
-                {
-                    return new OperationResponse<bool>()
+                 SqlHelper.FillDataset(_connectionString, CommandType.Text, CHECK_USER, ds, new []{"User"} ,record.Parameters());
+                
+                    if (ds.Tables.Count > 0 && ds.Tables[0].Rows.Count > 0)
                     {
-                        IsSuccess = false,
-                        Message = "An user with this email address is already registred."
-                    };
-                }
+                        return new OperationResponse<bool>()
+                        {
+                            IsSuccess = false,
+                            Message = "An user with this email address is already registred."
+                        };
+                    }
                 else
                 {
 

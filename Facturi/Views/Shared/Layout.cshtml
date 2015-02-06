@@ -25,6 +25,8 @@
 </head>
 <body>
     @Html.Hidden("LoginUrl", Url.Action("Login", "Account"))
+    
+    @Html.Hidden("UpdateUrl", Url.Action("Update", "Account"))
     @Html.Hidden("LogOutUrl", Url.Action("Logout", "Account"))
 
 
@@ -34,8 +36,11 @@
     
     @Html.Hidden("MyCompanyUrl", Url.Action("MyCompany", "Home"))
     
-    @Html.Hidden("MyAccountUrl", Url.Action("MyAccount", "Home"))
+    @Html.Hidden("GetDetails", Url.Action("GetUserDetails", "Account"))
 
+    @Html.Hidden("AddFactUrl", Url.Action("AddFact", "Facts"))
+    @Html.Hidden("GetFactsUrl", Url.Action("GetFacts", "Facts"))
+    @Html.Hidden("DeleteFactUrl", Url.Action("DeleteFact", "Facts"))
 
 
     @Html.Hidden("InsertUpdateCompanyUrl", Url.Action("AddCompany", "Home"))
@@ -46,9 +51,8 @@
         <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
             <ul class="nav nav-pills" >
                 <li role="presentation" id="dashboard-tab"><a href="#/dashboard">Home</a></li>
+                <li role="presentation" id="company-tab" ><a href="#/company">Add Company</a></li>
                 <li role="presentation" id="profile-tab" ><a href="#/profile">Profile</a></li>
-                <li role="presentation" id="account-tab"><a href="#/account">Account</a></li>
-                <li role="presentation" id="company-tab" ><a href="#/company">Company</a></li>
                 <li role="presentation" id="logout-tab" ><a href="#" data-bind="click: doLogout">Logout</a></li>
             </ul>
             <div class="clear"></div>
@@ -69,7 +73,7 @@
     <script src="@Url.Content("~/Scripts/Home/profile-module.js")" type="text/javascript"></script>
     <script src="@Url.Content("~/Scripts/Utils/fact-app-navigation.js")" type="text/javascript"> </script>
 
-    <div id="body-wrapper" class="content content-top-margin relative">
+    <div id="body-wrapper" class="content content-top-margin relative container-full">
         @RenderBody()
     </div>
 

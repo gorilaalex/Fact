@@ -1,7 +1,13 @@
 ﻿/// <reference path="../Utils/fact-app-module.js" />
 /// <reference path="../Utils/fact-app-navigation.js" />
-/// <reference path="../Utils/ext/crypto/_referenceCrypto.js" />
 /// <reference path="../Utils/utils.js" />
+/// <reference path="../Utils/ext/crypto/core.js" />
+/// <reference path="../Utils/ext/aes.js" />
+/// <reference path="../Utils/ext/crypto/core.js" />
+/// <reference path="../Utils/ext/crypto/enc-utf16.js" />
+/// <reference path="../Utils/ext/crypto/enc-base64.js" />
+/// <reference path="../Utils/ext/crypto/aes.js" />
+/// <reference path="../Utils/ext/crypto/_referenceCrypto.js" />
 function LoginViewModel() {
     var self = this;
     self.Username = ko.observable('');
@@ -23,6 +29,10 @@ function LoginModule() {
     var self = this;
     self.Model = ko.observable(new LoginViewModel());
     self.Message = ko.observable();
+
+    self.init = function () {
+        console.log("login module init");
+    };
 
     self.signUp = function () {
         Utils.redirectToUrl("/account/register");
@@ -61,7 +71,13 @@ function LoginModule() {
             errorElement: "div",
             errorPlacement: function (error, element) {
                 Utils.StyleValidationError(error, element);
-            }
+            },
+            highlight: function (element, errorClass, validClass) {
+            $(element).addClass('mandatory').removeClass('valid');
+            },
+            unhighlight: function (element, errorClass, validClass) {
+            $(element).removeClass('mandatory').addClass('valid');
+        }
         });
     };
 
@@ -69,12 +85,17 @@ function LoginModule() {
         if (!$("#login").valid()) {
             return;
         }
+       // var password = Utils.Encrypt(self.Model().Password(), self.Model().Username());
+        // console.log(password);
+        //var encrypted = CryptoJS.AES.encrypt(self.Model().Password(), self.Model().Username());
+        //  var crypto = CryptoJS.HmacSHA1(self.Model().Password(), self.Model().Username()).toString();
+       //var passhash = CryptoJS.MD5(self.Model().Password()).toString();
+       //self.Model().Password(passhash);
 
-       // var password = CryptoJS.AES.encrypt(self.Model().Password(), self.Model().Username());
-       // console.log(password);
-      //  debugger;
-      //  self.Model().Password(password);
         if (self.Model().Username() != null && self.Model().Username() != ''  && self.Model().Password() != null && self.Model().Password() != '') {
+            if (self.Model().RememberMe() == true) {
+                Utils.pushOnLocaleStore("rememberMe", self.Model().Username());
+            }
             Utils.postOnServer(self.Model(), $("#LoginUrl").val(), self.loginSuccess);
         }
     };
@@ -88,9 +109,7 @@ function LoginModule() {
                 Utils.pushOnLocaleStore("rememberMe", null);
             }
             if (data.ReturnUrl != null) {
-                //NavigationModel.getInstance().SetToDashboard();
                 Utils.redirectToUrl(data.ReturnUrl);
-                //FactAppModule.getInstance().init();
             }
         }
         else {
@@ -102,12 +121,17 @@ function LoginModule() {
 };
 
 $(document).ready(function () {
-    var loginVM = new LoginModule();
+
+    var loginModule = new LoginModule();
+
     var rememberMeValue = Utils.pullFromLocalStore("rememberMe");
     if(rememberMeValue && rememberMeValue !=null )
     {
-        loginVM.Model().RememberMe(true);
-        loginVM.Model().Username(rememberMeValue);
+        loginModule.Model().RememberMe(true);
+        loginModule.Model().Username(rememberMeValue);
+        console.log(loginModule.Model().Username());
     }
-    Utils.bindData(loginVM, document.getElementById("container"));
+    loginModule.initViewModel(loginModule.Model());
+
+    Utils.bindData(loginModule, document.getElementById("container"));
 });

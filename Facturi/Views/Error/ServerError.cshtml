@@ -1,0 +1,30 @@
+﻿@model ViewModel.Others.ErrorModel
+@{
+    ViewBag.Title = "ServerError";
+}
+
+<div class="error-page-wrapper">
+    <div class="template-wrapper" style="width: 700px; margin: 35px 65px 15px; -webkit-border-radius: 0 0 6px 6px; -moz-border-radius: 0 0 6px 6px; border-radius: 0 0 6px 6px; background-color: #fff; -webkit-box-shadow: 0 2px 1px rgba(255,255,255,.1); -moz-box-shadow: 0 2px 1px rgba(255,255,255,.1); box-shadow: 0 2px 1px rgba(255,255,255,.1);">
+        <div class="template-body" style="margin: 0 40px; background-color: #fff; padding: 50px 0;">
+            <div class="title" style="padding: 0 0 30px; font-family: Arial; font-size: 26px; font-weight: bold; color: #312a28;">Ooops, it looks like something went wrong...</div>
+            <div class="normal" style="font-size: 16px; color: red; font-weight:bold;">
+                @{
+                    string message = null;
+                    if(Model != null)
+                    {
+                        switch (Model.HttpStatusCode)
+                        {
+                            case 404:
+                                message = "The requested content was not found";        
+                                break;
+                            case 500:
+                                message = string.Concat("The following server error was encountered:<br /> ", Model.Exception.Message);
+                                break;
+                        }
+                    }
+                }
+                @Html.Raw(message)
+			</div>
+        </div>
+    </div>
+</div>

@@ -12,8 +12,165 @@ body {
 {
     clear: both;
 }
-.container {
-    width: auto;
+.container{
+display:inline-block;
+vertical-align:top;
+height:auto;
+}
+.container-full {
     padding:60px;
 }
+
 .wrapper { position: relative}
+
+.login-page {
+    height: auto;
+    width: 50%;
+    margin: 0 auto;
+}
+
+.login-form {
+    height: auto;
+/* width: 50%; */
+/* margin: 0 auto; */
+width: 480px;
+    background-color: whitesmoke;
+    padding-left: 100px;
+padding-bottom: 20px;
+padding-top: 10px;
+}
+.center {
+    margin-left: auto;
+    margin-right: auto;
+    width: 50px;
+ }
+
+.relative
+{
+    position:relative;
+}
+.absolute
+{
+    position:absolute;
+}
+
+.center-text {
+    text-align:center;
+}
+
+.censeo-error-wrapper {
+     padding: 5px 0 5px 9px;
+}
+
+    .censeo-error-wrapper .error {
+        width: inherit;
+        color: #F46464;
+        font-family: 'Raleway' !important;
+        font-weight: 700 !important;
+        font-size: 14px !important;
+    }
+
+.mandatory
+{
+    border: solid 2px #F46464 !important;
+}
+
+.mandatory-select {
+    border: solid 2px #F46464 !important;
+}
+
+.valid {
+    background-color:#ffffff !important;
+}
+
+
+/* info and errors */
+.message-info
+{
+    border: 1px solid;
+    clear: both;
+    padding: 10px 20px;
+}
+
+.message-error
+{
+    clear: both;
+    color: #e80c4d;
+    font-size: 1.1em;
+    font-weight: bold;
+    margin: 20px 0 10px 0;
+}
+
+.message-success
+{
+    color: #7ac0da;
+    font-size: 1.3em;
+    font-weight: bold;
+    margin: 20px 0 10px 0;
+}
+
+.content-wrapper
+{
+    margin: 0 auto;
+    width: 100%;
+}
+
+/* password strength*/
+#password-strength
+{
+    font-weight: bold;
+    padding: 5px 8px !important;
+    width: auto;
+    margin-left: 5px;
+    -webkit-border-radius: 0 0px 0px 0 !important;
+    -moz-border-radius: 0 0px 0px 0 !important;
+    border-radius: 0 0px 0px 0 !important;
+}
+
+.weak-pass
+{
+    background-color: #EDABAB !important;
+    border: 1px solid #BC0000 !important;
+}
+
+.good-pass
+{
+    background-color: #EDE3AB !important;
+    border: 1px solid #BC9F00 !important;
+}
+
+.strong-pass
+{
+    background-color: #D3EDAB !important;
+    border: 1px solid #73BC00 !important;
+}
+
+.password-match
+{
+    background: transparent url(../../Images/ok_indicator.png) no-repeat top left !important;
+    padding: 0 10px;
+    margin-top: 10px;
+}
+
+.password-match-text
+{
+    font-size: 16px;
+    color: #b0e887;
+    margin-left: 15px;
+}
+
+.password-no-match
+{
+    background: transparent url(../../Images/nok_indicator.png) no-repeat top left !important;
+    padding: 0 10px;
+    margin-top: 10px;
+}
+
+.password-no-match-text
+{
+    font-size: 16px;
+    color: #ffffff;
+    margin-left: 15px;
+}
+
+/* end password strength*/

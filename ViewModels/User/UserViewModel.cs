@@ -23,6 +23,8 @@ namespace ViewModel
             this.FirstName = user.FirstName;
         }
 
+       
+
         public Guid Id { get; set; }
         public string Username { get; set; }
         public string Password { get; set; }

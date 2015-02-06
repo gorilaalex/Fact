@@ -37,15 +37,15 @@ namespace Facturi
 
             #endregion
 
-            /*#region Modernizer
+            #region Modernizer
 
             // Use the development version of Modernizr to develop with and learn from. Then, when you're
             // ready for production, use the build tool at http://modernizr.com to pick only the tests you need.
             bundles.Add(new ScriptBundle("~/bundles/modernizr")
-               .Include("~/Scripts/ext/modernizr-*"));
+               .Include("~/Scripts/Utils/ext/modernizr-*"));
 
             #endregion
-            */
+            
            #region Crypto
 
             bundles.Add(new ScriptBundle("~/bundles/crypto")
@@ -84,6 +84,7 @@ namespace Facturi
 
             bundles.Add(new ScriptBundle("~/bundles/noauth_js")
                .Include("~/Account/login-module.js")
+                .Include("~/Scripts/Utils/utils.js")
                .Include("~/Account/register-module.js"));
 
             #endregion

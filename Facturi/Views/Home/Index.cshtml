@@ -3,64 +3,111 @@
     Layout = "~/Views/Shared/Layout.cshtml";
 }
 <script src="@Url.Content("~/Scripts/Home/profile-module.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/Facts/facts-definition.js")" type="text/javascript"></script>
 
-<script id="tmpl-dashboard" type="text/html">
+<script id="tmpl-dashboard" type="text/html" data-bind="with: BindingContext">
     <div id="dashboard-wrapper">
         <label>Dashboard page</label>
-        <div class="container " id="body-container">
-            
-            <div>
-                <form id="company">
-                    <div><span>Company Details:</span></div>
-                    <div class="input-group">
-                        <label>Contractor name</label>
-                        <input type="text" class="form-control" placeholder="ContractorName" >
-                    </div>
-                    <div class="input-group">
-                        <label>Serial Number</label>
-                        <input type="text" class="form-control" placeholder="SerialNumber" >
-                    </div>
-                    <div class="input-group">
-                        <label>CIF/CUI</label>
-                        <input type="text" class="form-control" placeholder="CIF/CUI" >
-                    </div>
-                    <div class="input-group">
-                        <label>IBAN</label>
-                        <input type="text" class="form-control" placeholder="IBAN" >
-                    </div>
-                    <div class="input-group">
-                        <label>Bank</label>
-                        <input type="text" class="form-control" placeholder="Bank" >
-                    </div>
-                    <div class="input-group">
-                        <label>Email</label>
-                        <input type="text" class="form-control" placeholder="Email" >
-                    </div>
-                    <div class="input-group">
-                        <label>Telephone</label>
-                        <input type="text" class="form-control" placeholder="Telephone" >
-                    </div>
-                    <div class="input-group">
-                        <label>SocialCapital</label>//need to make two cases for add company. one for user, the rest for facts
-            <input type="text" class="form-control" placeholder="SocialCapital" >
-                    </div>
-                    <div class="input-group">
-                        <label>TVARate</label>
-                        <input type="text" class="form-control" placeholder="TVARate" >
-                    </div>
-                    <div class="buttons">
-                        <button type="button" >Update</button>
-                    </div>
-                </form>
-            </div>
+        <div  id="body-container">
+            <table class="table table-condensed">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Buyer Id</th>
+                        <th>Creation Date</th>
+                        <th>Total Sum</th>
+                        <th>Total TVA</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody data-bind="foreach: Facts">
+                    <tr>
+                        <td><span data-bind="text: Model().Id"></span></td>
+                        <td><span data-bind="text: Model().BuyerId"></span></td>
+                        <td><span data-bind="text: Model().Date"></span></td>
+                        <td><span data-bind="text: Model().TotalSum"></span></td>
+                        <td><span data-bind="text: Model().TotalTVA"></span></td>
+                        <td>
+                           <div class="buttons" >
+                               <button class="btn btn-primary">Edit</button>
+                               <button class="btn btn-info">Print</button>   
+                               <button class="btn btn-danger">Delete</button>
+                            </div>
+                    </tr>
+                </tbody>
+            </table>
         </div>
     </div>
 </script>
 
-<script id="tmpl-company" type="text/html">
-     <div class="container">
-        <label>here we will add companies</label>
-    </div>
+<script id="tmpl-company" type="text/html" data-bind="with: BindingContext">
+    <div class="container">
+       <label>Add invoice</label>
+           <div>
+               <form id="company" class="form-horizontal" method="post" action="">
+                   <div class="control-group">
+                    <span data-bind="text: Message"></span>
+                </div>
+                   <div class="form-group">
+                            <label class="col-sm-2 control-label">Buyer Id</label>
+                            <div class="col-sm-10">
+                       <input type="text" class="form-control" placeholder="BuyerId" >
+                           </div>
+                   </div>
+                   <div class="form-group">
+                            <label class="col-sm-2 control-label">Total Sum</label>
+                            <div class="col-sm-10">
+                       <input type="text" class="form-control" placeholder="Total sum" data-bind="text: ViewModel().TotalSum" >
+                           </div>
+                   </div>
+                   <div class="form-group">
+                            <label class="col-sm-2 control-label">Total TVA</label>
+                            <div class="col-sm-10">
+                       <input type="text" class="form-control" placeholder="Total TVA" data-bind="text: ViewModel().TotalTVA" >
+                           </div>
+                   </div>
+                   <div class="form-group">
+                            <label class="col-sm-2 control-label">IBAN</label>
+                            <div class="col-sm-10">
+                       <input type="text" class="form-control" placeholder="IBAN" disabled >
+                       </div>
+                   </div>
+                   <div class="form-group">
+                            <label class="col-sm-2 control-label">Bank</label>
+                            <div class="col-sm-10">
+                       <input type="text" class="form-control" placeholder="Bank" disabled>
+                       </div>
+                   </div>
+                   <div class="form-group">
+                            <label class="col-sm-2 control-label">Email</label>
+                            <div class="col-sm-10">
+                       <input type="text" class="form-control" placeholder="Email" disabled>
+                       </div>
+                   </div>
+                   <div class="form-group">
+                            <label class="col-sm-2 control-label">Telephone</label>
+                            <div class="col-sm-10">
+                       <input type="text" class="form-control" placeholder="Telephone" disabled>
+                       </div>
+                   </div>
+                   <div class="form-group">
+                            <label class="col-sm-2 control-label">SocialCapital</label>
+                            <div class="col-sm-10">
+                       <input type="text" class="form-control" placeholder="SocialCapital" disabled>
+                       </div>
+                   </div>
+                   <div class="form-group">
+                            <label class="col-sm-2 control-label">TVARate</label>
+                            <div class="col-sm-10">
+                       <input type="text" class="form-control" placeholder="TVARate" disabled>
+                       </div>
+                   </div>
+                   <div class="form-group" style="margin-top: 15px;">
+                       <button class="btn btn-primary" type="button" data-bind="click: addFact">Add fact</button>
+                   </div>
+               </form>
+           </div>
+   </div>
 </script>
 
 <script id="tmpl-account" type="text/html">
@@ -70,26 +117,45 @@
 </script>
 
 <script id="tmpl-profile" type="text/html" data-bind="with: BindingContext">
-    <div class="container" >
+    <div class="container">
         <div>
-                <form id="user">
+                <form id="user-profile" class="form-horizontal" method="post" action="" autocomplete="off">
                     <div>
-                        <div><span >User details:</span></div>
-                        <div class="input-group">
-                            <label>Username</label>
-                            <input type="text" class="form-control" placeholder="Username" disabled >
-                        </div>
-                        <div class="input-group">
-                            <label>First name</label>
-                            <input type="text" class="form-control" placeholder="Firstname" >
-                        </div>
-                        <div class="input-group">
-                            <label>Last name</label>
-                            <input type="text" class="form-control" placeholder="Lastname" >
-                        </div>
-                            <div>
-                            <button>Update</button>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">Username</label>
+                            <div class="col-sm-10">
+                            <input type="text" class="form-control" placeholder="Username..." data-bind="value: User().Username" disabled />
                             </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">First name</label>
+                            <div class="col-sm-10">
+                            <input type="text" class="form-control" name="firstname" placeholder="Firstname..." data-bind="value: User().FirstName" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">Last name</label>
+                            <div class="col-sm-10">
+                            <input type="text" class="form-control" name="lastname" placeholder="Lastname..." data-bind="value: User().LastName"/>
+                                </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">Password</label>
+                            <div class="col-sm-10">
+                            <input type="text" class="form-control" placeholder="Password..." disabled />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">Confirm password</label>
+                            <div class="col-sm-10">
+                            <input type="text" class="form-control" placeholder="Confirm password..." disabled/>
+                            </div>
+                        </div>
+                        <div class="form-group" style="margin-top: 15px;">
+                            <div class="col-sm-offset-2 col-sm-10">
+                            <button class="btn btn-primary" type="button" data-bind="click: updateProfile">Update</button>
+                                </div>
+                        </div>
                     </div>
                 </form>
             </div>

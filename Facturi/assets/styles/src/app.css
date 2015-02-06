@@ -11,3 +11,8 @@
     max-width: 680px;
 }
 .wrapper { position: relative}
+.login-page {
+    background-image:url("/assets/images/rece2.jpg");
+    width:500px;
+    height:500px;
+}

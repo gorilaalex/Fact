@@ -1,12 +1,11 @@
 ﻿define(['require', 'jquery', 'knockout','utils', '../ObjectDefinition/ObjectDefinition', '../Module/ClientDataProxy'], function (require, $, ko,utils) {
     var ViewModels;
-    (function (ViewModels,utils) {
+    (function (ViewModels) {
         var UserViewModel = function () {
             var self = this;
             self.Model = ko.observable(new User());
             return self;
         };
-
         var LoginViewModel = function () {
             var self = this;
             
@@ -19,7 +18,8 @@
             self.Message = ko.observable();
 
             self.signUp = function () {
-                Utils.redirectToUrl("/account/register");
+                window.location.href = "/account/register";
+                //utils.redirectToUrl("/account/register");
             };
 
             self.initViewModel = function (data) {
@@ -30,7 +30,7 @@
                 self.bindValidation();
             };
 
-            self.bindValidation = function (jq) {
+            self.bindValidation = function () {
                 $.validator.setDefaults({
                     submitHandler: function () { }
                 });
@@ -60,30 +60,30 @@
             };
 
             self.login = function () {
-               // if (!$("#login").valid()) {
-               //     return;
-               // }
+                if (!$("#login").valid()) {
+                    return;
+                }
 
                 // var password = CryptoJS.AES.encrypt(self.Model().Password(), self.Model().Username());
-                // console.log(password);
+                 console.log($("#LoginUrl").val());
                 //  debugger;
                 //  self.Model().Password(password);
                 if (self.Model.Username != null && self.Model.Username != '' && self.Model.Password != null && self.Model.Password != '') {
-                    utils.postOnServer(self.Model, jq("#LoginUrl").val(), self.loginSuccess);
+                    utils.postOnServer(self.Model, $("#LoginUrl").val(), self.loginSuccess);
                 }
             };
 
             self.loginSuccess = function (data) {
                 if (data != null && data.IsSuccess) {
                     if (self.Model().RememberMe() == true) {
-                        Utils.pushOnLocaleStore("rememberMe", self.Model().Username());
+                        utils.pushOnLocaleStore("rememberMe", self.Model().Username());
                     }
                     else {
-                        Utils.pushOnLocaleStore("rememberMe", null);
+                        utils.pushOnLocaleStore("rememberMe", null);
                     }
                     if (data.ReturnUrl != null) {
                         //NavigationModel.getInstance().SetToDashboard();
-                        Utils.redirectToUrl(data.ReturnUrl);
+                        window.location.href = data.ReturnUrl;
                         //FactAppModule.getInstance().init();
                     }
                 }

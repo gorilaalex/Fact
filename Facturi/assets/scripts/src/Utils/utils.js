@@ -2,10 +2,12 @@
 /// <reference path="../../lib/amplify/amplify.core.js" />
 /// <reference path="ext/knockout.mapping-latest.js" />
 /// <reference path="../../lib/amplify/amplify.store.js" />
-define(['jquery', 'knockout', 'aes', 'amplify'], function ($, ko, aes, amplify) {
+define(['jquery', 'knockout','knockoutmapping', 'aes', 'amplify'], function ($, ko,mapping, aes, amplify) {
     var my = {};
+    ko.mapping = mapping;
     my.init = function () {
-        console.log("init library");
+        console.log("init utils library");
+        console.log("Utils loading...");
     };
 
     my.bindData = function (viewModel, DOMregion) {
@@ -15,6 +17,7 @@ define(['jquery', 'knockout', 'aes', 'amplify'], function ($, ko, aes, amplify) 
         console.log("in data bind");
         ko.applyBindings(viewModel, DOMregion);
         console.log("out data bind");
+
     };
     my.ajaxLoad = function (elementId) {
         $(elementId).addClass("effect");
@@ -27,7 +30,7 @@ define(['jquery', 'knockout', 'aes', 'amplify'], function ($, ko, aes, amplify) 
     my.postOnServer = function (model, url, successFunction) {
         //console.log(model);
         // var data = JSON.stringify(model);
-        // console.log(data);
+         console.log(url);
         $.ajax({
             url: url,
             type: 'POST',
@@ -106,6 +109,7 @@ define(['jquery', 'knockout', 'aes', 'amplify'], function ($, ko, aes, amplify) 
        },
        
     my.redirectToUrl = function (url) {
+        console.log("redirect to..." + url);
         window.location.href = url;
     },
 

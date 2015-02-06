@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ViewModels.User
 {
-    public class LoginViewModel
+    public class LoginViewModel:CaptchaViewModel
     {
         public string Username { get; set; }
         public string Password { get; set; }

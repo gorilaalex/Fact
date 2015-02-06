@@ -28,7 +28,7 @@ namespace DataAcces.Repository
             {
                 List<IProduct> products = new List<IProduct>();
                 var record = new SqlRecord<IFact>(new Fact() {
-                    ID = id
+                    Id = id
             });
 
 

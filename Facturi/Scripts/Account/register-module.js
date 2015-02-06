@@ -93,11 +93,10 @@ function RegisterModule() {
        // CryptoJS.AES.encrypt
       //  var password = CryptoJS.AES.encrypt(self.UserModel().Password, self.UserModel().Username);
        // console.log(password);
-      //  debugger;
-      //  self.UserModel().Password(password);
-      //  self.UserModel().ConfirmPassword(password);
-
-       
+        //  debugger;
+        var passhash = CryptoJS.MD5(self.UserModel().Password()).toString();
+        self.UserModel().Password(passhash);
+        self.UserModel().ConfirmPassword(passhash);
 
        Utils.postOnServer(self.UserModel(), $("#RegisterUrl").val(), self.registerSuccess);
 

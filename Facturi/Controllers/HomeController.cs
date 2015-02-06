@@ -4,14 +4,18 @@ using DataAccessAbstraction;
 using DataAccessAbstraction.Entities;
 using DataAccessAbstraction.Repository;
 using Facturi.App_FormsAuth;
+using iTextSharp.text;
+using iTextSharp.text.pdf;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using ViewModel;
 using ViewModel.Others;
+using ViewModels.Facts;
 using ViewModels.Unions;
 using ViewModels.User;
 
@@ -160,13 +164,15 @@ namespace Facturi.Controllers
 
         public ActionResult Index()
         {
-            UserFormsPrincipal principal = UserFormsPrincipal.GetPrincipal("Principal", HttpContext.Session);
-            if (principal != null && principal is UserFormsPrincipal && (principal.Identity as UserFormsIdentity).User != null)
-            {
-                return View();
-            }
-            else return RedirectToAction("Login", "Account");
+                UserFormsPrincipal principal = UserFormsPrincipal.GetPrincipal("Principal", HttpContext.Session);
+                if (principal != null && principal is UserFormsPrincipal && (principal.Identity as UserFormsIdentity).User != null)
+                {
+                    return View();
+                }
+
+                else return RedirectToAction("Login", "Account");
         }
+
 
     }
 }

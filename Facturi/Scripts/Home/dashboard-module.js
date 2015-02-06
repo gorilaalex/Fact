@@ -5,7 +5,6 @@
     arguments.callee.instance = self;
 
     self.doLogout = function () {
-        
         ProfileModule.getInstance().doLogout();
     };
 
